@@ -314,18 +314,18 @@ def Length_Gauge_X_Matrix(input_par):
 
     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
 
-    index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
     grid_size = grid.size
-    matrix_size = grid_size * len(index_map_l_m)
+    matrix_size = grid_size * len(index_map_m_l)
 
     Length_Gauge_Int_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=4, comm=PETSc.COMM_WORLD)
     istart, iend = Length_Gauge_Int_Hamiltonian.getOwnershipRange() 
    
     Coeff_Plus_Plus, Coeff_Minus_Plus, Coeff_Plus_Minus, Coeff_Minus_Minus  = CC.Length_Gauge_X_Coeff_Calculator(input_par)
     for i in range(istart, iend):
-        l_block = index_map_l_m[floor(i/grid_size)][0]
-        m_block = index_map_l_m[floor(i/grid_size)][1]
+        l_block = index_map_m_l[floor(i/grid_size)][1]
+        m_block = index_map_m_l[floor(i/grid_size)][0]
         grid_idx = i % grid_size 
 
 
@@ -333,11 +333,11 @@ def Length_Gauge_X_Matrix(input_par):
             l_prime = l_block + 1
 
             m_prime = m_block - 1
-            columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+            columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block, m_block])
 
             m_prime = m_block + 1
-            columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+            columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block, m_block])
         
         if l_block > 0:
@@ -345,12 +345,12 @@ def Length_Gauge_X_Matrix(input_par):
 
             if -1*m_block < l_prime:
                 m_prime = m_block - 1
-                columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+                columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Minus[l_block, m_block])
             
             if m_block < l_prime:
                 m_prime = m_block + 1
-                columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+                columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Plus[l_block, m_block])
 
            
@@ -362,18 +362,18 @@ def Length_Gauge_Y_Matrix(input_par):
     
     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
 
-    index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
     grid_size = grid.size
-    matrix_size = grid_size * len(index_map_l_m)
+    matrix_size = grid_size * len(index_map_m_l)
     
     Length_Gauge_Int_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=4, comm=PETSc.COMM_WORLD)
     istart, iend = Length_Gauge_Int_Hamiltonian.getOwnershipRange() 
     
     Coeff_Plus_Plus, Coeff_Minus_Plus, Coeff_Plus_Minus, Coeff_Minus_Minus = CC.Length_Gauge_Y_Coeff_Calculator(input_par)
     for i in range(istart, iend):
-        l_block = index_map_l_m[floor(i/grid_size)][0]
-        m_block = index_map_l_m[floor(i/grid_size)][1]
+        l_block = index_map_m_l[floor(i/grid_size)][1]
+        m_block = index_map_m_l[floor(i/grid_size)][0]
         grid_idx = i % grid_size 
 
 
@@ -381,11 +381,11 @@ def Length_Gauge_Y_Matrix(input_par):
             l_prime = l_block + 1
 
             m_prime = m_block - 1
-            columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+            columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block,m_block])
 
             m_prime = m_block + 1
-            columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+            columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block,m_block])
         
         if l_block > 0:
@@ -393,12 +393,12 @@ def Length_Gauge_Y_Matrix(input_par):
 
             if -1*m_block < l_prime:
                 m_prime = m_block - 1
-                columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+                columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Minus[l_block,m_block])
             
             if m_block < l_prime:
                 m_prime = m_block + 1
-                columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+                columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Plus[l_block,m_block])
 
            
@@ -410,18 +410,18 @@ def Length_Gauge_Right_Circular_Matrix(input_par):
     
     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
 
-    index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
     grid_size = grid.size
-    matrix_size = grid_size * len(index_map_l_m)
+    matrix_size = grid_size * len(index_map_m_l)
    
     Length_Gauge_Int_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=2, comm=PETSc.COMM_WORLD)
     istart, iend = Length_Gauge_Int_Hamiltonian.getOwnershipRange() 
     
     Coeff_Plus_Plus, Coeff_Minus_Plus = CC.Length_Gauge_Right_Coeff_Calculator(input_par)
     for i in range(istart, iend):
-        l_block = index_map_l_m[floor(i/grid_size)][0]
-        m_block = index_map_l_m[floor(i/grid_size)][1]
+        l_block = index_map_m_l[floor(i/grid_size)][1]
+        m_block = index_map_m_l[floor(i/grid_size)][0]
         grid_idx = i % grid_size 
 
         if input_par["m_max"] == 0:
@@ -432,7 +432,7 @@ def Length_Gauge_Right_Circular_Matrix(input_par):
             l_prime = l_block + 1
         
             m_prime = m_block + 1
-            columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+            columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block,m_block])
         
 
@@ -442,7 +442,7 @@ def Length_Gauge_Right_Circular_Matrix(input_par):
             if m_block < l_prime:
                 m_prime = m_block + 1
 
-                columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+                columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Plus[l_block,m_block])
 
     Length_Gauge_Int_Hamiltonian.assemblyBegin()
@@ -453,10 +453,10 @@ def Length_Gauge_Left_Circular_Matirx(input_par):
     
     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
 
-    index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
     grid_size = grid.size
-    matrix_size = grid_size * len(index_map_l_m)
+    matrix_size = grid_size * len(index_map_m_l)
     
 
     Length_Gauge_Int_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=4, comm=PETSc.COMM_WORLD)
@@ -464,8 +464,8 @@ def Length_Gauge_Left_Circular_Matirx(input_par):
     
     Coeff_Plus_Minus, Coeff_Minus_Minus = CC.Length_Gauge_Left_Coeff_Calculator(input_par)
     for i in range(istart, iend):
-        l_block = index_map_l_m[floor(i/grid_size)][0]
-        m_block = index_map_l_m[floor(i/grid_size)][1]
+        l_block = index_map_m_l[floor(i/grid_size)][1]
+        m_block = index_map_m_l[floor(i/grid_size)][0]
         grid_idx = i % grid_size 
 
         if input_par["m_max"] == 0:
@@ -476,7 +476,7 @@ def Length_Gauge_Left_Circular_Matirx(input_par):
             l_prime = l_block + 1
         
             m_prime = m_block - 1
-            columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+            columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block,m_block])
         
         if l_block > 0:
@@ -485,7 +485,7 @@ def Length_Gauge_Left_Circular_Matirx(input_par):
             if -1*m_block < l_prime:
                 m_prime = m_block - 1
                 
-                columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+                columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Minus[l_block,m_block])
                      
     Length_Gauge_Int_Hamiltonian.assemblyBegin()

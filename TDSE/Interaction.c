@@ -1320,14 +1320,12 @@ static const char __pyx_k_Int_Ham_Right[] = "Int_Ham_Right";
 static const char __pyx_k_Int_Ham_Upper[] = "Int_Ham_Upper";
 static const char __pyx_k_assemblyBegin[] = "assemblyBegin";
 static const char __pyx_k_index_map_box[] = "index_map_box";
-static const char __pyx_k_index_map_l_m[] = "index_map_l_m";
 static const char __pyx_k_index_map_m_l[] = "index_map_m_l";
 static const char __pyx_k_Coeff_Plus_Plus[] = "Coeff_Plus_Plus";
 static const char __pyx_k_Interaction_pyx[] = "Interaction.pyx";
 static const char __pyx_k_Coeff_Minus_Plus[] = "Coeff_Minus_Plus";
 static const char __pyx_k_Coeff_Plus_Minus[] = "Coeff_Plus_Minus";
 static const char __pyx_k_Coeff_Minus_Minus[] = "Coeff_Minus_Minus";
-static const char __pyx_k_Index_Map_L_Block[] = "Index_Map_L_Block";
 static const char __pyx_k_Index_Map_M_Block[] = "Index_Map_M_Block";
 static const char __pyx_k_getOwnershipRange[] = "getOwnershipRange";
 static const char __pyx_k_Int_Ham_Left_Lower[] = "Int_Ham_Left_Lower";
@@ -1373,7 +1371,6 @@ static PyObject *__pyx_n_s_Coefficent_Calculator;
 static PyObject *__pyx_n_s_DIFFERENT_NONZERO_PATTERN;
 static PyObject *__pyx_n_s_Get_rank;
 static PyObject *__pyx_n_s_H2_Module;
-static PyObject *__pyx_n_s_Index_Map_L_Block;
 static PyObject *__pyx_n_s_Index_Map_M_Block;
 static PyObject *__pyx_n_s_Int_Ham_Left;
 static PyObject *__pyx_n_s_Int_Ham_Left_Lower;
@@ -1436,7 +1433,6 @@ static PyObject *__pyx_n_s_i;
 static PyObject *__pyx_n_s_iend;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_index_map_box;
-static PyObject *__pyx_n_s_index_map_l_m;
 static PyObject *__pyx_n_s_index_map_m_l;
 static PyObject *__pyx_n_s_init;
 static PyObject *__pyx_n_s_input_par;
@@ -10092,7 +10088,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
   int __pyx_v_columon_idx;
   int __pyx_v_grid_idx;
   int __pyx_v_grid_size;
-  PyObject *__pyx_v_index_map_l_m = NULL;
+  PyObject *__pyx_v_index_map_m_l = NULL;
   PyObject *__pyx_v_index_map_box = NULL;
   PyObject *__pyx_v_grid = NULL;
   Py_ssize_t __pyx_v_matrix_size;
@@ -10124,13 +10120,13 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
   /* "Interaction.pyx":317
  *     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
  * 
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)             # <<<<<<<<<<<<<<
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)             # <<<<<<<<<<<<<<
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Mod); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Index_Map_L_Block); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 317, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Index_Map_M_Block); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -10194,17 +10190,17 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
     __PYX_ERR(0, 317, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
-  __pyx_v_index_map_l_m = __pyx_t_3;
+  __pyx_v_index_map_m_l = __pyx_t_3;
   __pyx_t_3 = 0;
   __pyx_v_index_map_box = __pyx_t_2;
   __pyx_t_2 = 0;
 
   /* "Interaction.pyx":318
  * 
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])             # <<<<<<<<<<<<<<
  *     grid_size = grid.size
- *     matrix_size = grid_size * len(index_map_l_m)
+ *     matrix_size = grid_size * len(index_map_m_l)
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Mod); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 318, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -10275,10 +10271,10 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
   __pyx_t_1 = 0;
 
   /* "Interaction.pyx":319
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size             # <<<<<<<<<<<<<<
- *     matrix_size = grid_size * len(index_map_l_m)
+ *     matrix_size = grid_size * len(index_map_m_l)
  * 
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grid, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 319, __pyx_L1_error)
@@ -10290,15 +10286,15 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
   /* "Interaction.pyx":320
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size
- *     matrix_size = grid_size * len(index_map_l_m)             # <<<<<<<<<<<<<<
+ *     matrix_size = grid_size * len(index_map_m_l)             # <<<<<<<<<<<<<<
  * 
  *     Length_Gauge_Int_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=4, comm=PETSc.COMM_WORLD)
  */
-  __pyx_t_10 = PyObject_Length(__pyx_v_index_map_l_m); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 320, __pyx_L1_error)
+  __pyx_t_10 = PyObject_Length(__pyx_v_index_map_m_l); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 320, __pyx_L1_error)
   __pyx_v_matrix_size = (__pyx_v_grid_size * __pyx_t_10);
 
   /* "Interaction.pyx":322
- *     matrix_size = grid_size * len(index_map_l_m)
+ *     matrix_size = grid_size * len(index_map_m_l)
  * 
  *     Length_Gauge_Int_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=4, comm=PETSc.COMM_WORLD)             # <<<<<<<<<<<<<<
  *     istart, iend = Length_Gauge_Int_Hamiltonian.getOwnershipRange()
@@ -10442,7 +10438,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
  * 
  *     Coeff_Plus_Plus, Coeff_Minus_Plus, Coeff_Plus_Minus, Coeff_Minus_Minus  = CC.Length_Gauge_X_Coeff_Calculator(input_par)             # <<<<<<<<<<<<<<
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_CC); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -10536,8 +10532,8 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
  * 
  *     Coeff_Plus_Plus, Coeff_Minus_Plus, Coeff_Plus_Minus, Coeff_Minus_Minus  = CC.Length_Gauge_X_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):             # <<<<<<<<<<<<<<
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  */
   __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 326, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -10596,8 +10592,8 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
     /* "Interaction.pyx":327
  *     Coeff_Plus_Plus, Coeff_Minus_Plus, Coeff_Plus_Minus, Coeff_Minus_Minus  = CC.Length_Gauge_X_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]             # <<<<<<<<<<<<<<
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]             # <<<<<<<<<<<<<<
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  *         grid_idx = i % grid_size
  */
     __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_floor); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 327, __pyx_L1_error)
@@ -10623,10 +10619,10 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
     if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 327, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_index_map_l_m, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 327, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_index_map_m_l, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 327, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 327, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_9, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 327, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 327, __pyx_L1_error)
@@ -10635,8 +10631,8 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
 
     /* "Interaction.pyx":328
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]             # <<<<<<<<<<<<<<
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]             # <<<<<<<<<<<<<<
  *         grid_idx = i % grid_size
  * 
  */
@@ -10663,10 +10659,10 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
     if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 328, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_index_map_l_m, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 328, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_index_map_m_l, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 328, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_9, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 328, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 328, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 328, __pyx_L1_error)
@@ -10674,8 +10670,8 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
     __pyx_v_m_block = __pyx_t_8;
 
     /* "Interaction.pyx":329
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  *         grid_idx = i % grid_size             # <<<<<<<<<<<<<<
  * 
  * 
@@ -10720,7 +10716,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
  *             l_prime = l_block + 1
  * 
  *             m_prime = m_block - 1             # <<<<<<<<<<<<<<
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block, m_block])
  */
       __pyx_v_m_prime = (__pyx_v_m_block - 1);
@@ -10728,15 +10724,15 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
       /* "Interaction.pyx":336
  * 
  *             m_prime = m_block - 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block, m_block])
  * 
  */
       __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 336, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 336, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 336, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 336, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 336, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 336, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
@@ -10765,7 +10761,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
 
       /* "Interaction.pyx":337
  *             m_prime = m_block - 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block, m_block])             # <<<<<<<<<<<<<<
  * 
  *             m_prime = m_block + 1
@@ -10853,7 +10849,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block, m_block])
  * 
  *             m_prime = m_block + 1             # <<<<<<<<<<<<<<
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block, m_block])
  */
       __pyx_v_m_prime = (__pyx_v_m_block + 1);
@@ -10861,15 +10857,15 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
       /* "Interaction.pyx":340
  * 
  *             m_prime = m_block + 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block, m_block])
  * 
  */
       __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 340, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 340, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 340, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 340, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 340, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_t_13 = PyTuple_New(2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 340, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
@@ -10898,7 +10894,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
 
       /* "Interaction.pyx":341
  *             m_prime = m_block + 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block, m_block])             # <<<<<<<<<<<<<<
  * 
  *         if l_block > 0:
@@ -11015,7 +11011,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
  * 
  *             if -1*m_block < l_prime:             # <<<<<<<<<<<<<<
  *                 m_prime = m_block - 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  */
       __pyx_t_12 = (((-1L * __pyx_v_m_block) < __pyx_v_l_prime) != 0);
       if (__pyx_t_12) {
@@ -11024,7 +11020,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
  * 
  *             if -1*m_block < l_prime:
  *                 m_prime = m_block - 1             # <<<<<<<<<<<<<<
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Minus[l_block, m_block])
  */
         __pyx_v_m_prime = (__pyx_v_m_block - 1);
@@ -11032,15 +11028,15 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
         /* "Interaction.pyx":348
  *             if -1*m_block < l_prime:
  *                 m_prime = m_block - 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Minus[l_block, m_block])
  * 
  */
         __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 348, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 348, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 348, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 348, __pyx_L1_error)
+        __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 348, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 348, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
@@ -11069,7 +11065,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
 
         /* "Interaction.pyx":349
  *                 m_prime = m_block - 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Minus[l_block, m_block])             # <<<<<<<<<<<<<<
  * 
  *             if m_block < l_prime:
@@ -11158,7 +11154,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
  * 
  *             if -1*m_block < l_prime:             # <<<<<<<<<<<<<<
  *                 m_prime = m_block - 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  */
       }
 
@@ -11167,7 +11163,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
  * 
  *             if m_block < l_prime:             # <<<<<<<<<<<<<<
  *                 m_prime = m_block + 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  */
       __pyx_t_12 = ((__pyx_v_m_block < __pyx_v_l_prime) != 0);
       if (__pyx_t_12) {
@@ -11176,7 +11172,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
  * 
  *             if m_block < l_prime:
  *                 m_prime = m_block + 1             # <<<<<<<<<<<<<<
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Plus[l_block, m_block])
  */
         __pyx_v_m_prime = (__pyx_v_m_block + 1);
@@ -11184,15 +11180,15 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
         /* "Interaction.pyx":353
  *             if m_block < l_prime:
  *                 m_prime = m_block + 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Plus[l_block, m_block])
  * 
  */
         __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 353, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 353, __pyx_L1_error)
+        __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 353, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
-        __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 353, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 353, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 353, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
@@ -11221,7 +11217,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
 
         /* "Interaction.pyx":354
  *                 m_prime = m_block + 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Plus[l_block, m_block])             # <<<<<<<<<<<<<<
  * 
  * 
@@ -11310,7 +11306,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
  * 
  *             if m_block < l_prime:             # <<<<<<<<<<<<<<
  *                 m_prime = m_block + 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  */
       }
 
@@ -11327,8 +11323,8 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
  * 
  *     Coeff_Plus_Plus, Coeff_Minus_Plus, Coeff_Plus_Minus, Coeff_Minus_Minus  = CC.Length_Gauge_X_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):             # <<<<<<<<<<<<<<
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  */
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -11418,7 +11414,7 @@ static PyObject *__pyx_pf_11Interaction_24Length_Gauge_X_Matrix(CYTHON_UNUSED Py
   __Pyx_AddTraceback("Interaction.Length_Gauge_X_Matrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_index_map_l_m);
+  __Pyx_XDECREF(__pyx_v_index_map_m_l);
   __Pyx_XDECREF(__pyx_v_index_map_box);
   __Pyx_XDECREF(__pyx_v_grid);
   __Pyx_XDECREF(__pyx_v_Length_Gauge_Int_Hamiltonian);
@@ -11464,7 +11460,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
   int __pyx_v_columon_idx;
   int __pyx_v_grid_idx;
   int __pyx_v_grid_size;
-  PyObject *__pyx_v_index_map_l_m = NULL;
+  PyObject *__pyx_v_index_map_m_l = NULL;
   PyObject *__pyx_v_index_map_box = NULL;
   PyObject *__pyx_v_grid = NULL;
   Py_ssize_t __pyx_v_matrix_size;
@@ -11496,13 +11492,13 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
   /* "Interaction.pyx":365
  *     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
  * 
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)             # <<<<<<<<<<<<<<
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)             # <<<<<<<<<<<<<<
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Mod); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 365, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Index_Map_L_Block); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 365, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Index_Map_M_Block); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 365, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -11566,17 +11562,17 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
     __PYX_ERR(0, 365, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
-  __pyx_v_index_map_l_m = __pyx_t_3;
+  __pyx_v_index_map_m_l = __pyx_t_3;
   __pyx_t_3 = 0;
   __pyx_v_index_map_box = __pyx_t_2;
   __pyx_t_2 = 0;
 
   /* "Interaction.pyx":366
  * 
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])             # <<<<<<<<<<<<<<
  *     grid_size = grid.size
- *     matrix_size = grid_size * len(index_map_l_m)
+ *     matrix_size = grid_size * len(index_map_m_l)
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Mod); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 366, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -11647,10 +11643,10 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
   __pyx_t_1 = 0;
 
   /* "Interaction.pyx":367
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size             # <<<<<<<<<<<<<<
- *     matrix_size = grid_size * len(index_map_l_m)
+ *     matrix_size = grid_size * len(index_map_m_l)
  * 
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grid, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 367, __pyx_L1_error)
@@ -11662,15 +11658,15 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
   /* "Interaction.pyx":368
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size
- *     matrix_size = grid_size * len(index_map_l_m)             # <<<<<<<<<<<<<<
+ *     matrix_size = grid_size * len(index_map_m_l)             # <<<<<<<<<<<<<<
  * 
  *     Length_Gauge_Int_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=4, comm=PETSc.COMM_WORLD)
  */
-  __pyx_t_10 = PyObject_Length(__pyx_v_index_map_l_m); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 368, __pyx_L1_error)
+  __pyx_t_10 = PyObject_Length(__pyx_v_index_map_m_l); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 368, __pyx_L1_error)
   __pyx_v_matrix_size = (__pyx_v_grid_size * __pyx_t_10);
 
   /* "Interaction.pyx":370
- *     matrix_size = grid_size * len(index_map_l_m)
+ *     matrix_size = grid_size * len(index_map_m_l)
  * 
  *     Length_Gauge_Int_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=4, comm=PETSc.COMM_WORLD)             # <<<<<<<<<<<<<<
  *     istart, iend = Length_Gauge_Int_Hamiltonian.getOwnershipRange()
@@ -11814,7 +11810,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
  * 
  *     Coeff_Plus_Plus, Coeff_Minus_Plus, Coeff_Plus_Minus, Coeff_Minus_Minus = CC.Length_Gauge_Y_Coeff_Calculator(input_par)             # <<<<<<<<<<<<<<
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_CC); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 373, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -11908,8 +11904,8 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
  * 
  *     Coeff_Plus_Plus, Coeff_Minus_Plus, Coeff_Plus_Minus, Coeff_Minus_Minus = CC.Length_Gauge_Y_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):             # <<<<<<<<<<<<<<
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  */
   __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 374, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -11968,8 +11964,8 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
     /* "Interaction.pyx":375
  *     Coeff_Plus_Plus, Coeff_Minus_Plus, Coeff_Plus_Minus, Coeff_Minus_Minus = CC.Length_Gauge_Y_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]             # <<<<<<<<<<<<<<
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]             # <<<<<<<<<<<<<<
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  *         grid_idx = i % grid_size
  */
     __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_floor); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 375, __pyx_L1_error)
@@ -11995,10 +11991,10 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
     if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 375, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_index_map_l_m, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 375, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_index_map_m_l, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 375, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 375, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_9, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 375, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 375, __pyx_L1_error)
@@ -12007,8 +12003,8 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
 
     /* "Interaction.pyx":376
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]             # <<<<<<<<<<<<<<
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]             # <<<<<<<<<<<<<<
  *         grid_idx = i % grid_size
  * 
  */
@@ -12035,10 +12031,10 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
     if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 376, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_index_map_l_m, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 376, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_index_map_m_l, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 376, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_9, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 376, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 376, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 376, __pyx_L1_error)
@@ -12046,8 +12042,8 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
     __pyx_v_m_block = __pyx_t_8;
 
     /* "Interaction.pyx":377
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  *         grid_idx = i % grid_size             # <<<<<<<<<<<<<<
  * 
  * 
@@ -12092,7 +12088,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
  *             l_prime = l_block + 1
  * 
  *             m_prime = m_block - 1             # <<<<<<<<<<<<<<
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block,m_block])
  */
       __pyx_v_m_prime = (__pyx_v_m_block - 1);
@@ -12100,15 +12096,15 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
       /* "Interaction.pyx":384
  * 
  *             m_prime = m_block - 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block,m_block])
  * 
  */
       __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 384, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 384, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 384, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 384, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 384, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 384, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
@@ -12137,7 +12133,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
 
       /* "Interaction.pyx":385
  *             m_prime = m_block - 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block,m_block])             # <<<<<<<<<<<<<<
  * 
  *             m_prime = m_block + 1
@@ -12225,7 +12221,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block,m_block])
  * 
  *             m_prime = m_block + 1             # <<<<<<<<<<<<<<
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block,m_block])
  */
       __pyx_v_m_prime = (__pyx_v_m_block + 1);
@@ -12233,15 +12229,15 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
       /* "Interaction.pyx":388
  * 
  *             m_prime = m_block + 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block,m_block])
  * 
  */
       __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 388, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 388, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 388, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 388, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 388, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_t_13 = PyTuple_New(2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 388, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
@@ -12270,7 +12266,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
 
       /* "Interaction.pyx":389
  *             m_prime = m_block + 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block,m_block])             # <<<<<<<<<<<<<<
  * 
  *         if l_block > 0:
@@ -12387,7 +12383,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
  * 
  *             if -1*m_block < l_prime:             # <<<<<<<<<<<<<<
  *                 m_prime = m_block - 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  */
       __pyx_t_12 = (((-1L * __pyx_v_m_block) < __pyx_v_l_prime) != 0);
       if (__pyx_t_12) {
@@ -12396,7 +12392,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
  * 
  *             if -1*m_block < l_prime:
  *                 m_prime = m_block - 1             # <<<<<<<<<<<<<<
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Minus[l_block,m_block])
  */
         __pyx_v_m_prime = (__pyx_v_m_block - 1);
@@ -12404,15 +12400,15 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
         /* "Interaction.pyx":396
  *             if -1*m_block < l_prime:
  *                 m_prime = m_block - 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Minus[l_block,m_block])
  * 
  */
         __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 396, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 396, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 396, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 396, __pyx_L1_error)
+        __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 396, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 396, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
@@ -12441,7 +12437,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
 
         /* "Interaction.pyx":397
  *                 m_prime = m_block - 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Minus[l_block,m_block])             # <<<<<<<<<<<<<<
  * 
  *             if m_block < l_prime:
@@ -12530,7 +12526,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
  * 
  *             if -1*m_block < l_prime:             # <<<<<<<<<<<<<<
  *                 m_prime = m_block - 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  */
       }
 
@@ -12539,7 +12535,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
  * 
  *             if m_block < l_prime:             # <<<<<<<<<<<<<<
  *                 m_prime = m_block + 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  */
       __pyx_t_12 = ((__pyx_v_m_block < __pyx_v_l_prime) != 0);
       if (__pyx_t_12) {
@@ -12548,7 +12544,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
  * 
  *             if m_block < l_prime:
  *                 m_prime = m_block + 1             # <<<<<<<<<<<<<<
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Plus[l_block,m_block])
  */
         __pyx_v_m_prime = (__pyx_v_m_block + 1);
@@ -12556,15 +12552,15 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
         /* "Interaction.pyx":401
  *             if m_block < l_prime:
  *                 m_prime = m_block + 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Plus[l_block,m_block])
  * 
  */
         __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 401, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 401, __pyx_L1_error)
+        __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 401, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
-        __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 401, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 401, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 401, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
@@ -12593,7 +12589,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
 
         /* "Interaction.pyx":402
  *                 m_prime = m_block + 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Plus[l_block,m_block])             # <<<<<<<<<<<<<<
  * 
  * 
@@ -12682,7 +12678,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
  * 
  *             if m_block < l_prime:             # <<<<<<<<<<<<<<
  *                 m_prime = m_block + 1
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  */
       }
 
@@ -12699,8 +12695,8 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
  * 
  *     Coeff_Plus_Plus, Coeff_Minus_Plus, Coeff_Plus_Minus, Coeff_Minus_Minus = CC.Length_Gauge_Y_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):             # <<<<<<<<<<<<<<
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  */
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -12790,7 +12786,7 @@ static PyObject *__pyx_pf_11Interaction_26Length_Gauge_Y_Matrix(CYTHON_UNUSED Py
   __Pyx_AddTraceback("Interaction.Length_Gauge_Y_Matrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_index_map_l_m);
+  __Pyx_XDECREF(__pyx_v_index_map_m_l);
   __Pyx_XDECREF(__pyx_v_index_map_box);
   __Pyx_XDECREF(__pyx_v_grid);
   __Pyx_XDECREF(__pyx_v_Length_Gauge_Int_Hamiltonian);
@@ -12836,7 +12832,7 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
   int __pyx_v_columon_idx;
   int __pyx_v_grid_idx;
   int __pyx_v_grid_size;
-  PyObject *__pyx_v_index_map_l_m = NULL;
+  PyObject *__pyx_v_index_map_m_l = NULL;
   PyObject *__pyx_v_index_map_box = NULL;
   PyObject *__pyx_v_grid = NULL;
   Py_ssize_t __pyx_v_matrix_size;
@@ -12866,13 +12862,13 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
   /* "Interaction.pyx":413
  *     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
  * 
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)             # <<<<<<<<<<<<<<
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)             # <<<<<<<<<<<<<<
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Mod); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 413, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Index_Map_L_Block); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 413, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Index_Map_M_Block); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 413, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -12936,17 +12932,17 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
     __PYX_ERR(0, 413, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
-  __pyx_v_index_map_l_m = __pyx_t_3;
+  __pyx_v_index_map_m_l = __pyx_t_3;
   __pyx_t_3 = 0;
   __pyx_v_index_map_box = __pyx_t_2;
   __pyx_t_2 = 0;
 
   /* "Interaction.pyx":414
  * 
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])             # <<<<<<<<<<<<<<
  *     grid_size = grid.size
- *     matrix_size = grid_size * len(index_map_l_m)
+ *     matrix_size = grid_size * len(index_map_m_l)
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Mod); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 414, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -13017,10 +13013,10 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
   __pyx_t_1 = 0;
 
   /* "Interaction.pyx":415
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size             # <<<<<<<<<<<<<<
- *     matrix_size = grid_size * len(index_map_l_m)
+ *     matrix_size = grid_size * len(index_map_m_l)
  * 
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grid, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 415, __pyx_L1_error)
@@ -13032,15 +13028,15 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
   /* "Interaction.pyx":416
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size
- *     matrix_size = grid_size * len(index_map_l_m)             # <<<<<<<<<<<<<<
+ *     matrix_size = grid_size * len(index_map_m_l)             # <<<<<<<<<<<<<<
  * 
  *     Length_Gauge_Int_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=2, comm=PETSc.COMM_WORLD)
  */
-  __pyx_t_10 = PyObject_Length(__pyx_v_index_map_l_m); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 416, __pyx_L1_error)
+  __pyx_t_10 = PyObject_Length(__pyx_v_index_map_m_l); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 416, __pyx_L1_error)
   __pyx_v_matrix_size = (__pyx_v_grid_size * __pyx_t_10);
 
   /* "Interaction.pyx":418
- *     matrix_size = grid_size * len(index_map_l_m)
+ *     matrix_size = grid_size * len(index_map_m_l)
  * 
  *     Length_Gauge_Int_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=2, comm=PETSc.COMM_WORLD)             # <<<<<<<<<<<<<<
  *     istart, iend = Length_Gauge_Int_Hamiltonian.getOwnershipRange()
@@ -13184,7 +13180,7 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
  * 
  *     Coeff_Plus_Plus, Coeff_Minus_Plus = CC.Length_Gauge_Right_Coeff_Calculator(input_par)             # <<<<<<<<<<<<<<
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_CC); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 421, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -13261,8 +13257,8 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
  * 
  *     Coeff_Plus_Plus, Coeff_Minus_Plus = CC.Length_Gauge_Right_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):             # <<<<<<<<<<<<<<
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  */
   __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 422, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -13321,8 +13317,8 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
     /* "Interaction.pyx":423
  *     Coeff_Plus_Plus, Coeff_Minus_Plus = CC.Length_Gauge_Right_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]             # <<<<<<<<<<<<<<
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]             # <<<<<<<<<<<<<<
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  *         grid_idx = i % grid_size
  */
     __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_floor); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 423, __pyx_L1_error)
@@ -13348,10 +13344,10 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
     if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 423, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_v_index_map_l_m, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 423, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_v_index_map_m_l, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 423, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_6, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 423, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 423, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 423, __pyx_L1_error)
@@ -13360,8 +13356,8 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
 
     /* "Interaction.pyx":424
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]             # <<<<<<<<<<<<<<
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]             # <<<<<<<<<<<<<<
  *         grid_idx = i % grid_size
  * 
  */
@@ -13388,10 +13384,10 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
     if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 424, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_v_index_map_l_m, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 424, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_v_index_map_m_l, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 424, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 424, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_6, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 424, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 424, __pyx_L1_error)
@@ -13399,8 +13395,8 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
     __pyx_v_m_block = __pyx_t_8;
 
     /* "Interaction.pyx":425
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  *         grid_idx = i % grid_size             # <<<<<<<<<<<<<<
  * 
  *         if input_par["m_max"] == 0:
@@ -13538,7 +13534,7 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
  *             l_prime = l_block + 1
  * 
  *             m_prime = m_block + 1             # <<<<<<<<<<<<<<
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block,m_block])
  */
       __pyx_v_m_prime = (__pyx_v_m_block + 1);
@@ -13546,15 +13542,15 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
       /* "Interaction.pyx":435
  * 
  *             m_prime = m_block + 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block,m_block])
  * 
  */
       __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 435, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 435, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 435, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 435, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 435, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 435, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
@@ -13583,7 +13579,7 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
 
       /* "Interaction.pyx":436
  *             m_prime = m_block + 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Plus[l_block,m_block])             # <<<<<<<<<<<<<<
  * 
  * 
@@ -13710,22 +13706,22 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
  *             if m_block < l_prime:
  *                 m_prime = m_block + 1             # <<<<<<<<<<<<<<
  * 
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  */
         __pyx_v_m_prime = (__pyx_v_m_block + 1);
 
         /* "Interaction.pyx":445
  *                 m_prime = m_block + 1
  * 
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Plus[l_block,m_block])
  * 
  */
         __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 445, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 445, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 445, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 445, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 445, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __pyx_t_13 = PyTuple_New(2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 445, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_13);
@@ -13754,7 +13750,7 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
 
         /* "Interaction.pyx":446
  * 
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Plus[l_block,m_block])             # <<<<<<<<<<<<<<
  * 
  *     Length_Gauge_Int_Hamiltonian.assemblyBegin()
@@ -13860,8 +13856,8 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
  * 
  *     Coeff_Plus_Plus, Coeff_Minus_Plus = CC.Length_Gauge_Right_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):             # <<<<<<<<<<<<<<
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  */
     __pyx_L9_continue:;
   }
@@ -13952,7 +13948,7 @@ static PyObject *__pyx_pf_11Interaction_28Length_Gauge_Right_Circular_Matrix(CYT
   __Pyx_AddTraceback("Interaction.Length_Gauge_Right_Circular_Matrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_index_map_l_m);
+  __Pyx_XDECREF(__pyx_v_index_map_m_l);
   __Pyx_XDECREF(__pyx_v_index_map_box);
   __Pyx_XDECREF(__pyx_v_grid);
   __Pyx_XDECREF(__pyx_v_Length_Gauge_Int_Hamiltonian);
@@ -13996,7 +13992,7 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
   int __pyx_v_columon_idx;
   int __pyx_v_grid_idx;
   int __pyx_v_grid_size;
-  PyObject *__pyx_v_index_map_l_m = NULL;
+  PyObject *__pyx_v_index_map_m_l = NULL;
   PyObject *__pyx_v_index_map_box = NULL;
   PyObject *__pyx_v_grid = NULL;
   Py_ssize_t __pyx_v_matrix_size;
@@ -14026,13 +14022,13 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
   /* "Interaction.pyx":456
  *     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
  * 
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)             # <<<<<<<<<<<<<<
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)             # <<<<<<<<<<<<<<
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Mod); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 456, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Index_Map_L_Block); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 456, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_Index_Map_M_Block); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 456, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -14096,17 +14092,17 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
     __PYX_ERR(0, 456, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
-  __pyx_v_index_map_l_m = __pyx_t_3;
+  __pyx_v_index_map_m_l = __pyx_t_3;
   __pyx_t_3 = 0;
   __pyx_v_index_map_box = __pyx_t_2;
   __pyx_t_2 = 0;
 
   /* "Interaction.pyx":457
  * 
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])             # <<<<<<<<<<<<<<
  *     grid_size = grid.size
- *     matrix_size = grid_size * len(index_map_l_m)
+ *     matrix_size = grid_size * len(index_map_m_l)
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Mod); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 457, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -14177,10 +14173,10 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
   __pyx_t_1 = 0;
 
   /* "Interaction.pyx":458
- *     index_map_l_m, index_map_box = Mod.Index_Map_L_Block(input_par)
+ *     index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size             # <<<<<<<<<<<<<<
- *     matrix_size = grid_size * len(index_map_l_m)
+ *     matrix_size = grid_size * len(index_map_m_l)
  * 
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grid, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 458, __pyx_L1_error)
@@ -14192,11 +14188,11 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
   /* "Interaction.pyx":459
  *     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
  *     grid_size = grid.size
- *     matrix_size = grid_size * len(index_map_l_m)             # <<<<<<<<<<<<<<
+ *     matrix_size = grid_size * len(index_map_m_l)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_10 = PyObject_Length(__pyx_v_index_map_l_m); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 459, __pyx_L1_error)
+  __pyx_t_10 = PyObject_Length(__pyx_v_index_map_m_l); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 459, __pyx_L1_error)
   __pyx_v_matrix_size = (__pyx_v_grid_size * __pyx_t_10);
 
   /* "Interaction.pyx":462
@@ -14344,7 +14340,7 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
  * 
  *     Coeff_Plus_Minus, Coeff_Minus_Minus = CC.Length_Gauge_Left_Coeff_Calculator(input_par)             # <<<<<<<<<<<<<<
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_CC); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 465, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -14421,8 +14417,8 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
  * 
  *     Coeff_Plus_Minus, Coeff_Minus_Minus = CC.Length_Gauge_Left_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):             # <<<<<<<<<<<<<<
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  */
   __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 466, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -14481,8 +14477,8 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
     /* "Interaction.pyx":467
  *     Coeff_Plus_Minus, Coeff_Minus_Minus = CC.Length_Gauge_Left_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]             # <<<<<<<<<<<<<<
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]             # <<<<<<<<<<<<<<
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  *         grid_idx = i % grid_size
  */
     __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_floor); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 467, __pyx_L1_error)
@@ -14508,10 +14504,10 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
     if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 467, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_v_index_map_l_m, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 467, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_v_index_map_m_l, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 467, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_6, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 467, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 467, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 467, __pyx_L1_error)
@@ -14520,8 +14516,8 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
 
     /* "Interaction.pyx":468
  *     for i in range(istart, iend):
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]             # <<<<<<<<<<<<<<
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]             # <<<<<<<<<<<<<<
  *         grid_idx = i % grid_size
  * 
  */
@@ -14548,10 +14544,10 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
     if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 468, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_v_index_map_l_m, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 468, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_v_index_map_m_l, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 468, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 468, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_6, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 468, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 468, __pyx_L1_error)
@@ -14559,8 +14555,8 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
     __pyx_v_m_block = __pyx_t_8;
 
     /* "Interaction.pyx":469
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  *         grid_idx = i % grid_size             # <<<<<<<<<<<<<<
  * 
  *         if input_par["m_max"] == 0:
@@ -14698,7 +14694,7 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
  *             l_prime = l_block + 1
  * 
  *             m_prime = m_block - 1             # <<<<<<<<<<<<<<
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block,m_block])
  */
       __pyx_v_m_prime = (__pyx_v_m_block - 1);
@@ -14706,15 +14702,15 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
       /* "Interaction.pyx":479
  * 
  *             m_prime = m_block - 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block,m_block])
  * 
  */
       __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 479, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 479, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 479, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 479, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 479, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 479, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
@@ -14743,7 +14739,7 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
 
       /* "Interaction.pyx":480
  *             m_prime = m_block - 1
- *             columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *             columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *             Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Plus_Minus[l_block,m_block])             # <<<<<<<<<<<<<<
  * 
  *         if l_block > 0:
@@ -14870,22 +14866,22 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
  *             if -1*m_block < l_prime:
  *                 m_prime = m_block - 1             # <<<<<<<<<<<<<<
  * 
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  */
         __pyx_v_m_prime = (__pyx_v_m_block - 1);
 
         /* "Interaction.pyx":488
  *                 m_prime = m_block - 1
  * 
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx             # <<<<<<<<<<<<<<
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx             # <<<<<<<<<<<<<<
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Minus[l_block,m_block])
  * 
  */
         __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_grid_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 488, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 488, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 488, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_m_prime); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 488, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_l_prime); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 488, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __pyx_t_13 = PyTuple_New(2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 488, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_13);
@@ -14914,7 +14910,7 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
 
         /* "Interaction.pyx":489
  * 
- *                 columon_idx = grid_size*index_map_box[(l_prime, m_prime)] + grid_idx
+ *                 columon_idx = grid_size*index_map_box[(m_prime, l_prime)] + grid_idx
  *                 Length_Gauge_Int_Hamiltonian.setValue(i, columon_idx, grid[grid_idx] * Coeff_Minus_Minus[l_block,m_block])             # <<<<<<<<<<<<<<
  * 
  *     Length_Gauge_Int_Hamiltonian.assemblyBegin()
@@ -15020,8 +15016,8 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
  * 
  *     Coeff_Plus_Minus, Coeff_Minus_Minus = CC.Length_Gauge_Left_Coeff_Calculator(input_par)
  *     for i in range(istart, iend):             # <<<<<<<<<<<<<<
- *         l_block = index_map_l_m[floor(i/grid_size)][0]
- *         m_block = index_map_l_m[floor(i/grid_size)][1]
+ *         l_block = index_map_m_l[floor(i/grid_size)][1]
+ *         m_block = index_map_m_l[floor(i/grid_size)][0]
  */
     __pyx_L9_continue:;
   }
@@ -15109,7 +15105,7 @@ static PyObject *__pyx_pf_11Interaction_30Length_Gauge_Left_Circular_Matirx(CYTH
   __Pyx_AddTraceback("Interaction.Length_Gauge_Left_Circular_Matirx", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_index_map_l_m);
+  __Pyx_XDECREF(__pyx_v_index_map_m_l);
   __Pyx_XDECREF(__pyx_v_index_map_box);
   __Pyx_XDECREF(__pyx_v_grid);
   __Pyx_XDECREF(__pyx_v_Length_Gauge_Int_Hamiltonian);
@@ -15181,7 +15177,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_DIFFERENT_NONZERO_PATTERN, __pyx_k_DIFFERENT_NONZERO_PATTERN, sizeof(__pyx_k_DIFFERENT_NONZERO_PATTERN), 0, 0, 1, 1},
   {&__pyx_n_s_Get_rank, __pyx_k_Get_rank, sizeof(__pyx_k_Get_rank), 0, 0, 1, 1},
   {&__pyx_n_s_H2_Module, __pyx_k_H2_Module, sizeof(__pyx_k_H2_Module), 0, 0, 1, 1},
-  {&__pyx_n_s_Index_Map_L_Block, __pyx_k_Index_Map_L_Block, sizeof(__pyx_k_Index_Map_L_Block), 0, 0, 1, 1},
   {&__pyx_n_s_Index_Map_M_Block, __pyx_k_Index_Map_M_Block, sizeof(__pyx_k_Index_Map_M_Block), 0, 0, 1, 1},
   {&__pyx_n_s_Int_Ham_Left, __pyx_k_Int_Ham_Left, sizeof(__pyx_k_Int_Ham_Left), 0, 0, 1, 1},
   {&__pyx_n_s_Int_Ham_Left_Lower, __pyx_k_Int_Ham_Left_Lower, sizeof(__pyx_k_Int_Ham_Left_Lower), 0, 0, 1, 1},
@@ -15244,7 +15239,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_iend, __pyx_k_iend, sizeof(__pyx_k_iend), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_index_map_box, __pyx_k_index_map_box, sizeof(__pyx_k_index_map_box), 0, 0, 1, 1},
-  {&__pyx_n_s_index_map_l_m, __pyx_k_index_map_l_m, sizeof(__pyx_k_index_map_l_m), 0, 0, 1, 1},
   {&__pyx_n_s_index_map_m_l, __pyx_k_index_map_m_l, sizeof(__pyx_k_index_map_m_l), 0, 0, 1, 1},
   {&__pyx_n_s_init, __pyx_k_init, sizeof(__pyx_k_init), 0, 0, 1, 1},
   {&__pyx_n_s_input_par, __pyx_k_input_par, sizeof(__pyx_k_input_par), 0, 0, 1, 1},
@@ -15439,7 +15433,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
  */
-  __pyx_tuple__25 = PyTuple_Pack(20, __pyx_n_s_input_par, __pyx_n_s_l_block, __pyx_n_s_m_block, __pyx_n_s_l_prime, __pyx_n_s_m_prime, __pyx_n_s_columon_idx, __pyx_n_s_grid_idx, __pyx_n_s_grid_size, __pyx_n_s_index_map_l_m, __pyx_n_s_index_map_box, __pyx_n_s_grid, __pyx_n_s_matrix_size, __pyx_n_s_Length_Gauge_Int_Hamiltonian, __pyx_n_s_istart, __pyx_n_s_iend, __pyx_n_s_Coeff_Plus_Plus, __pyx_n_s_Coeff_Minus_Plus, __pyx_n_s_Coeff_Plus_Minus, __pyx_n_s_Coeff_Minus_Minus, __pyx_n_s_i); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 313, __pyx_L1_error)
+  __pyx_tuple__25 = PyTuple_Pack(20, __pyx_n_s_input_par, __pyx_n_s_l_block, __pyx_n_s_m_block, __pyx_n_s_l_prime, __pyx_n_s_m_prime, __pyx_n_s_columon_idx, __pyx_n_s_grid_idx, __pyx_n_s_grid_size, __pyx_n_s_index_map_m_l, __pyx_n_s_index_map_box, __pyx_n_s_grid, __pyx_n_s_matrix_size, __pyx_n_s_Length_Gauge_Int_Hamiltonian, __pyx_n_s_istart, __pyx_n_s_iend, __pyx_n_s_Coeff_Plus_Plus, __pyx_n_s_Coeff_Minus_Plus, __pyx_n_s_Coeff_Plus_Minus, __pyx_n_s_Coeff_Minus_Minus, __pyx_n_s_i); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__25);
   __Pyx_GIVEREF(__pyx_tuple__25);
   __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(1, 0, 20, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Interaction_pyx, __pyx_n_s_Length_Gauge_X_Matrix, 313, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(0, 313, __pyx_L1_error)
@@ -15451,7 +15445,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
  */
-  __pyx_tuple__27 = PyTuple_Pack(20, __pyx_n_s_input_par, __pyx_n_s_l_block, __pyx_n_s_m_block, __pyx_n_s_l_prime, __pyx_n_s_m_prime, __pyx_n_s_columon_idx, __pyx_n_s_grid_idx, __pyx_n_s_grid_size, __pyx_n_s_index_map_l_m, __pyx_n_s_index_map_box, __pyx_n_s_grid, __pyx_n_s_matrix_size, __pyx_n_s_Length_Gauge_Int_Hamiltonian, __pyx_n_s_istart, __pyx_n_s_iend, __pyx_n_s_Coeff_Plus_Plus, __pyx_n_s_Coeff_Minus_Plus, __pyx_n_s_Coeff_Plus_Minus, __pyx_n_s_Coeff_Minus_Minus, __pyx_n_s_i); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 361, __pyx_L1_error)
+  __pyx_tuple__27 = PyTuple_Pack(20, __pyx_n_s_input_par, __pyx_n_s_l_block, __pyx_n_s_m_block, __pyx_n_s_l_prime, __pyx_n_s_m_prime, __pyx_n_s_columon_idx, __pyx_n_s_grid_idx, __pyx_n_s_grid_size, __pyx_n_s_index_map_m_l, __pyx_n_s_index_map_box, __pyx_n_s_grid, __pyx_n_s_matrix_size, __pyx_n_s_Length_Gauge_Int_Hamiltonian, __pyx_n_s_istart, __pyx_n_s_iend, __pyx_n_s_Coeff_Plus_Plus, __pyx_n_s_Coeff_Minus_Plus, __pyx_n_s_Coeff_Plus_Minus, __pyx_n_s_Coeff_Minus_Minus, __pyx_n_s_i); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 361, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__27);
   __Pyx_GIVEREF(__pyx_tuple__27);
   __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(1, 0, 20, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Interaction_pyx, __pyx_n_s_Length_Gauge_Y_Matrix, 361, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 361, __pyx_L1_error)
@@ -15463,7 +15457,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
  */
-  __pyx_tuple__29 = PyTuple_Pack(18, __pyx_n_s_input_par, __pyx_n_s_l_block, __pyx_n_s_m_block, __pyx_n_s_l_prime, __pyx_n_s_m_prime, __pyx_n_s_columon_idx, __pyx_n_s_grid_idx, __pyx_n_s_grid_size, __pyx_n_s_index_map_l_m, __pyx_n_s_index_map_box, __pyx_n_s_grid, __pyx_n_s_matrix_size, __pyx_n_s_Length_Gauge_Int_Hamiltonian, __pyx_n_s_istart, __pyx_n_s_iend, __pyx_n_s_Coeff_Plus_Plus, __pyx_n_s_Coeff_Minus_Plus, __pyx_n_s_i); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 409, __pyx_L1_error)
+  __pyx_tuple__29 = PyTuple_Pack(18, __pyx_n_s_input_par, __pyx_n_s_l_block, __pyx_n_s_m_block, __pyx_n_s_l_prime, __pyx_n_s_m_prime, __pyx_n_s_columon_idx, __pyx_n_s_grid_idx, __pyx_n_s_grid_size, __pyx_n_s_index_map_m_l, __pyx_n_s_index_map_box, __pyx_n_s_grid, __pyx_n_s_matrix_size, __pyx_n_s_Length_Gauge_Int_Hamiltonian, __pyx_n_s_istart, __pyx_n_s_iend, __pyx_n_s_Coeff_Plus_Plus, __pyx_n_s_Coeff_Minus_Plus, __pyx_n_s_i); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 409, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__29);
   __Pyx_GIVEREF(__pyx_tuple__29);
   __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 18, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Interaction_pyx, __pyx_n_s_Length_Gauge_Right_Circular_Matr, 409, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 409, __pyx_L1_error)
@@ -15475,7 +15469,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
  */
-  __pyx_tuple__31 = PyTuple_Pack(18, __pyx_n_s_input_par, __pyx_n_s_l_block, __pyx_n_s_m_block, __pyx_n_s_l_prime, __pyx_n_s_m_prime, __pyx_n_s_columon_idx, __pyx_n_s_grid_idx, __pyx_n_s_grid_size, __pyx_n_s_index_map_l_m, __pyx_n_s_index_map_box, __pyx_n_s_grid, __pyx_n_s_matrix_size, __pyx_n_s_Length_Gauge_Int_Hamiltonian, __pyx_n_s_istart, __pyx_n_s_iend, __pyx_n_s_Coeff_Plus_Minus, __pyx_n_s_Coeff_Minus_Minus, __pyx_n_s_i); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 452, __pyx_L1_error)
+  __pyx_tuple__31 = PyTuple_Pack(18, __pyx_n_s_input_par, __pyx_n_s_l_block, __pyx_n_s_m_block, __pyx_n_s_l_prime, __pyx_n_s_m_prime, __pyx_n_s_columon_idx, __pyx_n_s_grid_idx, __pyx_n_s_grid_size, __pyx_n_s_index_map_m_l, __pyx_n_s_index_map_box, __pyx_n_s_grid, __pyx_n_s_matrix_size, __pyx_n_s_Length_Gauge_Int_Hamiltonian, __pyx_n_s_istart, __pyx_n_s_iend, __pyx_n_s_Coeff_Plus_Minus, __pyx_n_s_Coeff_Minus_Minus, __pyx_n_s_i); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 452, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__31);
   __Pyx_GIVEREF(__pyx_tuple__31);
   __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(1, 0, 18, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Interaction_pyx, __pyx_n_s_Length_Gauge_Left_Circular_Matir, 452, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 452, __pyx_L1_error)
