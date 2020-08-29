@@ -1,8 +1,8 @@
 if True:
     import TISE
     import numpy as np
-    import matplotlib
-    matplotlib.use('Agg')
+    # import matplotlib
+    # matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     from mpi4py import MPI
     comm = MPI.COMM_WORLD

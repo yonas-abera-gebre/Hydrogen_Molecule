@@ -62,11 +62,15 @@ def Build_Hamiltonian_Second_Order(input_par, grid, m):
     Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     istart, iend = Hamiltonian.getOwnershipRange()
 
+    with open(sys.path[0] + "/Nuclear_Electron_Int.json") as file:
+        Nuc_Ele_Int = json.load(file)
+
     for i  in range(istart, iend):
         l_block = floor(i/grid_size)
         grid_idx = i % grid_size
 
-        Hamiltonian.setValue(i, i, 1.0/h2 + 0.5*l_block*(l_block+1)*pow(grid[grid_idx], -2.0) + H2_Plus_Potential(grid[grid_idx], l_block, l_block, m, input_par["R_o"]))    
+        # Hamiltonian.setValue(i, i, 1.0/h2 + 0.5*l_block*(l_block+1)*pow(grid[grid_idx], -2.0) + H2_Plus_Potential(grid[grid_idx], l_block, l_block, m, input_par["R_o"]))   
+        Hamiltonian.setValue(i, i, 1.0/h2 + Nuc_Ele_Int[str((m, l_block, l_block))])
         if grid_idx >=  1:
             Hamiltonian.setValue(i, i-1, (-1.0/2.0)/h2)
         if grid_idx < grid.size - 1:
@@ -80,7 +84,7 @@ def Build_Hamiltonian_Second_Order(input_par, grid, m):
         l_prime_list.remove(l_block)
         for l_prime in l_prime_list:
             col_idx = grid_size*l_prime + grid_idx
-            Hamiltonian.setValue(i, col_idx, H2_Plus_Potential(grid[grid_idx], l_block, l_prime, m, input_par["R_o"]))
+            Hamiltonian.setValue(i, col_idx, Nuc_Ele_Int[str((m, l_block, l_prime))])
 
     Hamiltonian.assemblyBegin()
     Hamiltonian.assemblyEnd()
@@ -150,7 +154,8 @@ def TISE(input_par):
     ViewHDF5 = PETSc.Viewer()
     ViewHDF5.createHDF5(input_par["Target_File"], mode=PETSc.Viewer.Mode.WRITE, comm= PETSc.COMM_WORLD)
 
-    
+    Pot.Potential(input_par)
+
     for m in range(0, input_par["m_max_bound_state"] + 1):
         if rank == 0:
             print("Calculating the B-States for m = " + str(m) + "\n")

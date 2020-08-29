@@ -3,7 +3,7 @@ if True:
     import sys
     import h5py
     import matplotlib
-    matplotlib.use('Agg')
+    matplotlib.pyplot.switch_backend('agg')
     import matplotlib.pyplot as plt
     from math import pi, sqrt, log, ceil
     import scipy.integrate as Int
