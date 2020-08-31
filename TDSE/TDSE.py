@@ -11,6 +11,7 @@ if True:
     import H2_Module as Mod 
     import cProfile
     import Propagate as Prop
+    import Potential as Pot
     import Interaction as Int
 
 if True:
@@ -46,13 +47,17 @@ def Inital_State(input_par, wave_function):
     inital_state = input_par["inital_state"]
     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
     index_map_l_m, index_map_box = Mod.Index_Map_M_Block(input_par)
-    psi_size = len(grid) * len(index_map_l_m)
-    psi = np.zeros(int(psi_size), dtype=complex)
+    psi = np.zeros(int(len(grid) * len(index_map_l_m)), dtype=complex)
 
-    for amp, m_n_p in zip(inital_state["amplitudes"], inital_state["m,n,parity_values"]):
-        psi_n_l = amp * wave_function[(m_n_p[0], m_n_p[1], m_n_p[2])]
-        psi_idx = int(m_n_p[0] * len(psi_n_l))
-        psi[psi_idx : psi_idx + len(psi_n_l)] += psi_n_l
+    for amp, m_n_pair in zip(inital_state["amplitudes"], inital_state["m,n,parity_values"]):
+        psi_m_n = amp * wave_function[(m_n_pair[0], m_n_pair[1], m_n_pair[2])]
+        
+        box_idx =  index_map_box[(m_n_pair[0], m_n_pair[0])]
+        l_min_idx = int(grid.size*m_n_pair[0])
+        l_max_idx = int(min(input_par["l_max"], input_par["l_max_bound_state"])*grid.size + grid.size)
+
+        psi_m_n = psi_m_n[l_min_idx:l_max_idx]
+        psi[box_idx: box_idx + len(psi_m_n)] += psi_m_n
 
     psi = psi / np.linalg.norm(psi)   
 
@@ -61,12 +66,8 @@ def Inital_State(input_par, wave_function):
 if __name__=="__main__":
 
     input_par = Mod.Input_File_Reader(input_file = "input.json")
-    if rank == 0:
-        print("Getting eigen states \n")
-
+    Pot.Potential(input_par)
     energy, wave_function = Eigen_State_Solver(input_par)
-    if rank == 0:
-        print("Making Psi \n")
 
     psi_inital = Inital_State(input_par, wave_function)
     

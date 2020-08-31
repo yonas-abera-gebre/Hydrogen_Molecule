@@ -39,6 +39,24 @@ def Index_Map_M_Block(input_par):
 
     return index_map_m_l, index_map_box
 
+def Potential_Index(input_par):
+    l_max = max(input_par["l_max"], input_par["l_max_bound_state"])
+    m_max = max(input_par["m_max"], input_par["m_max_bound_state"])
+    index_map = {}
+    
+    block = 0
+    for m in np.arange(0, m_max + 1):
+        for l in np.arange(0, l_max + 1):
+            index_map[block] = (m,l)
+            block += 1
+
+        if m > 0:
+            m = -1*m
+            for l in np.arange(0, l_max + 1):
+                index_map[block] = (m,l)
+                block += 1
+
+    return index_map
 
 def Target_File_Reader(input_par):
     file = h5py.File(input_par["Target_File"], 'r')
