@@ -3,7 +3,7 @@ if True:
     import time
     import json
     import H2_Module as Mod 
-    import Potential as Pot
+    from Potential import H2_Plus_Potential
     from math import ceil, floor
     import numpy as np
 
@@ -21,6 +21,9 @@ if True:
 
 
 def Eigen_Value_Solver(Hamiltonian, number_of_eigenvalues, input_par, m, Viewer):
+    if rank == 0:
+        print("Diagonalizing")
+        
     EV_Solver = SLEPc.EPS().create(comm=PETSc.COMM_WORLD)
     EV_Solver.setOperators(Hamiltonian) ##pass the hamiltonian to the 
     EV_Solver.setProblemType(SLEPc.EPS.ProblemType.NHEP)
@@ -62,14 +65,13 @@ def Build_Hamiltonian_Second_Order(input_par, grid, m):
     Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     istart, iend = Hamiltonian.getOwnershipRange()
 
-    with open("Nuclear_Electron_Int.json") as file:
-        Nuc_Ele_Int = json.load(file)
+    R_o = input_par["R_o"]
 
     for i  in range(istart, iend):
         l_block = floor(i/grid_size)
         grid_idx = i % grid_size
-
-        Hamiltonian.setValue(i, i, 1.0/h2 + Nuc_Ele_Int[str((m, l_block, l_block))][grid_idx])
+        r = grid[grid_idx]
+        Hamiltonian.setValue(i, i, 1.0/h2 + H2_Plus_Potential(r, l_block, l_block, m, R_o))
         if grid_idx >=  1:
             Hamiltonian.setValue(i, i-1, (-1.0/2.0)/h2)
         if grid_idx < grid.size - 1:
@@ -83,7 +85,7 @@ def Build_Hamiltonian_Second_Order(input_par, grid, m):
         l_prime_list.remove(l_block)
         for l_prime in l_prime_list:
             col_idx = grid_size*l_prime + grid_idx
-            Hamiltonian.setValue(i, col_idx, Nuc_Ele_Int[str((m, l_block, l_prime))][grid_idx])
+            Hamiltonian.setValue(i, col_idx, H2_Plus_Potential(r, l_block, l_prime, m, R_o))
 
     Hamiltonian.assemblyBegin()
     Hamiltonian.assemblyEnd()
@@ -98,14 +100,14 @@ def Build_Hamiltonian_Fourth_Order(input_par, grid, m):
     Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     istart, iend = Hamiltonian.getOwnershipRange()
 
-    with open("Nuclear_Electron_Int.json") as file:
-        Nuc_Ele_Int = json.load(file)
+    R_o = input_par["R_o"]
 
     for i  in range(istart, iend):
         l_block = floor(i/grid_size)
         grid_idx = i % grid_size
-        
-        Hamiltonian.setValue(i, i, (15.0/ 12.0)/h2 + Nuc_Ele_Int[str((m, l_block, l_block))][grid_idx])  
+        r = grid[grid_idx]
+
+        Hamiltonian.setValue(i, i, (15.0/ 12.0)/h2 + H2_Plus_Potential(r, l_block, l_block, m, R_o))  
         if grid_idx >=  1:
             Hamiltonian.setValue(i, i-1, (-2.0/3.0)/h2)
         if grid_idx >= 2:
@@ -124,18 +126,18 @@ def Build_Hamiltonian_Fourth_Order(input_par, grid, m):
         l_prime_list.remove(l_block)
         for l_prime in l_prime_list:
             col_idx = grid_size*l_prime + grid_idx
-            Hamiltonian.setValue(i, col_idx, Nuc_Ele_Int[str((m, l_block, l_prime))][grid_idx])
+            Hamiltonian.setValue(i, col_idx, H2_Plus_Potential(r, l_block, l_prime, m, R_o))
 
     for i in np.arange(0, matrix_size, grid_size):
         l_block = floor(i/grid_size)
 
-        Hamiltonian.setValue(i, i, (20.0/24.0)/h2 + Nuc_Ele_Int[str((m, l_block, l_block))][0]) 
+        Hamiltonian.setValue(i, i, (20.0/24.0)/h2 + H2_Plus_Potential(grid[0], l_block, l_block, m, R_o)) 
         Hamiltonian.setValue(i, i+1, (-6.0/24.0)/h2)
         Hamiltonian.setValue(i, i+2, (-4.0/24.0)/h2)
         Hamiltonian.setValue(i, i+3, (1.0/24.0)/h2) 
 
         j = i + (grid_size - 1)
-        Hamiltonian.setValue(j, j, (20.0/24.0)/h2 + Nuc_Ele_Int[str((m, l_block, l_block))][grid_size - 1]) 
+        Hamiltonian.setValue(j, j, (20.0/24.0)/h2 + H2_Plus_Potential(grid[grid_size - 1], l_block, l_block, m, R_o)) 
         Hamiltonian.setValue(j, j-1, (-6.0/24.0)/h2)
         Hamiltonian.setValue(j, j-2, (-4.0/24.0)/h2)
         Hamiltonian.setValue(j, j-3, (1.0/24.0)/h2)
@@ -174,6 +176,5 @@ def TISE(input_par):
 
 if __name__=="__main__":
     input_par = Mod.Input_File_Reader("input.json")
-    Pot.Potential(input_par)
     TISE(input_par)
     
