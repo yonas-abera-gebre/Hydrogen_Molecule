@@ -3,10 +3,8 @@ from sympy.physics.wigner import gaunt, wigner_3j
 import json
 import H2_Module as Mod 
 import matplotlib.pyplot as plt
-from mpi4py import MPI
-comm = MPI.COMM_WORLD
-rank = comm.Get_rank()
 import time
+
 
 def Nucleus_Electron_Interaction(grid, l, l_prime, m, R_o, R_o_idx):
 

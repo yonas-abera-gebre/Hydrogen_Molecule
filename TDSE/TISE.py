@@ -19,6 +19,7 @@ if True:
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
+
 def Eigen_Value_Solver(Hamiltonian, number_of_eigenvalues, input_par, m, Viewer):
     EV_Solver = SLEPc.EPS().create(comm=PETSc.COMM_WORLD)
     EV_Solver.setOperators(Hamiltonian) ##pass the hamiltonian to the 
