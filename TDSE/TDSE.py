@@ -66,7 +66,6 @@ def Inital_State(input_par, wave_function):
 if __name__=="__main__":
 
     input_par = Mod.Input_File_Reader(input_file = "input.json")
-    Pot.Potential(input_par)
     energy, wave_function = Eigen_State_Solver(input_par)
 
     psi_inital = Inital_State(input_par, wave_function)
