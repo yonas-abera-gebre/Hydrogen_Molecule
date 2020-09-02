@@ -188,7 +188,7 @@ def Build_FF_Hamiltonian_Fourth_Order(input_par):
         l_blk = index_map_m_1[floor(i/grid_size)][1]
         m_blk = index_map_m_1[floor(i/grid_size)][0]
 
-        FF_Hamiltonian.setValue(i, i, (20.0/24.0)/h2 + H2_Plus_Potential(0, l_blk, l_blk, m_blk, R_o))
+        FF_Hamiltonian.setValue(i, i, (20.0/24.0)/h2 + H2_Plus_Potential(grid[0], l_blk, l_blk, m_blk, R_o))
         FF_Hamiltonian.setValue(i, i+1, (-6.0/24.0)/h2)
         FF_Hamiltonian.setValue(i, i+2, (-4.0/24.0)/h2)
         FF_Hamiltonian.setValue(i, i+3, (1.0/24.0)/h2)
