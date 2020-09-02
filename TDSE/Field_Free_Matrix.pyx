@@ -6,7 +6,7 @@ if True:
     from numpy import pi
     from math import floor
     import H2_Module as Mod 
-    import Potential as Pot
+    from Potential import H2_Plus_Potential
          
 if True:
     import petsc4py
@@ -28,6 +28,7 @@ def Build_FF_Hamiltonian_Second_Order(input_par):
     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
     grid_size = grid.size
     matrix_size = grid_size * len(index_map_box)
+    R_o = input_par["R_o"]
 
     if input_par["ECS_region"] < 1.00 and input_par["ECS_region"] > 0.00:
         ECS_idx = np.where(grid > grid[-1] * input_par["ECS_region"])[0][0]
@@ -44,30 +45,28 @@ def Build_FF_Hamiltonian_Second_Order(input_par):
     FF_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     istart, iend = FF_Hamiltonian.getOwnershipRange() 
 
-    with open("Nuclear_Electron_Int.json") as file:
-        Nuc_Ele_Int = json.load(file)
-
     for i in range(istart, iend):
         grid_idx = i % grid_size 
         m_blk = index_map_m_1[floor(i/grid_size)][0]
         l_blk = index_map_m_1[floor(i/grid_size)][1]
-
+        r = grid[grid_idx]
+        
         if grid_idx < ECS_idx:
-            FF_Hamiltonian.setValue(i, i, 1.0/h2 + Nuc_Ele_Int[str((m_blk, l_blk, l_blk))][grid_idx])
+            FF_Hamiltonian.setValue(i, i, 1.0/h2 + H2_Plus_Potential(r, l_blk, l_blk, m_blk, R_o))
             if grid_idx >=  1:
                 FF_Hamiltonian.setValue(i, i-1, -0.5/h2)
             if grid_idx < grid_size - 1:
                 FF_Hamiltonian.setValue(i, i+1, -0.5/h2)
 
         elif grid_idx > ECS_idx:
-            FF_Hamiltonian.setValue(i, i,  -1.0j/h2 + Nuc_Ele_Int[str((m_blk, l_blk, l_blk))][grid_idx])
+            FF_Hamiltonian.setValue(i, i,  -1.0j/h2 + H2_Plus_Potential(r, l_blk, l_blk, m_blk, R_o))
             if grid_idx >=  1:
                 FF_Hamiltonian.setValue(i, i-1, 0.5j/h2)
             if grid_idx < grid_size - 1:
                 FF_Hamiltonian.setValue(i, i+1, 0.5j/h2)
 
         else:
-            FF_Hamiltonian.setValue(i, i, np.exp(-1.0j*pi/4.0)/h2 + Nuc_Ele_Int[str((m_blk, l_blk, l_blk))][grid_idx])
+            FF_Hamiltonian.setValue(i, i, np.exp(-1.0j*pi/4.0)/h2 + H2_Plus_Potential(r, l_blk, l_blk, m_blk, R_o))
             if grid_idx >=  1:
                 FF_Hamiltonian.setValue(i, i-1, -1/(1 + np.exp(1.0j*pi/4.0))/h2)
             if grid_idx < grid_size - 1:
@@ -84,7 +83,7 @@ def Build_FF_Hamiltonian_Second_Order(input_par):
             if abs(m_blk) > l_prime:
                 continue
             col_idx = grid_size*index_map_box[(m_blk, l_prime)] + grid_idx
-            FF_Hamiltonian.setValue(i, col_idx, + Nuc_Ele_Int[str((m_blk, l_blk, l_prime))][grid_idx])
+            FF_Hamiltonian.setValue(i, col_idx, + H2_Plus_Potential(r, l_blk, l_prime, m_blk, R_o))
 
     FF_Hamiltonian.assemblyBegin()
     FF_Hamiltonian.assemblyEnd()
@@ -102,6 +101,7 @@ def Build_FF_Hamiltonian_Fourth_Order(input_par):
     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
     grid_size = grid.size
     matrix_size = grid_size * len(index_map_box)
+    R_o = input_par["R_o"]
 
     if input_par["ECS_region"] < 1.00 and input_par["ECS_region"] > 0.00:
         ECS_idx = np.where(grid > grid[-1] * input_par["ECS_region"])[0][0]
@@ -129,16 +129,14 @@ def Build_FF_Hamiltonian_Fourth_Order(input_par):
     FF_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     istart, iend = FF_Hamiltonian.getOwnershipRange() 
 
-    with open("Nuclear_Electron_Int.json") as file:
-        Nuc_Ele_Int = json.load(file)
-
     for i in range(istart, iend):
         grid_idx = i % grid_size 
         m_blk = index_map_m_1[floor(i/grid_size)][0]
         l_blk = index_map_m_1[floor(i/grid_size)][1]
- 
+        r = grid[grid_idx]
+
         if grid_idx < ECS_idx:
-            FF_Hamiltonian.setValue(i, i, (15.0/ 12.0)/h2 + Nuc_Ele_Int[str((m_blk, l_blk, l_blk))][grid_idx])
+            FF_Hamiltonian.setValue(i, i, (15.0/ 12.0)/h2 + H2_Plus_Potential(r, l_blk, l_blk, m_blk, R_o))
             if grid_idx >=  1:
                 FF_Hamiltonian.setValue(i, i-1, (-2.0/3.0)/h2)
             if grid_idx >= 2:
@@ -149,7 +147,7 @@ def Build_FF_Hamiltonian_Fourth_Order(input_par):
                 FF_Hamiltonian.setValue(i, i+2, (1.0/24.0)/h2)
         
         if grid_idx == ECS_idx:
-            FF_Hamiltonian.setValue(i, i, ECS_Stencil[2]/h2 + Nuc_Ele_Int[str((m_blk, l_blk, l_blk))][grid_idx])
+            FF_Hamiltonian.setValue(i, i, ECS_Stencil[2]/h2 + H2_Plus_Potential(r, l_blk, l_blk, m_blk, R_o))
             if grid_idx >=  1:
                 FF_Hamiltonian.setValue(i, i-1, ECS_Stencil[1]/h2)
             if grid_idx >= 2:
@@ -160,7 +158,7 @@ def Build_FF_Hamiltonian_Fourth_Order(input_par):
                 FF_Hamiltonian.setValue(i, i+2, ECS_Stencil[4]/h2)
 
         if grid_idx > ECS_idx:
-            FF_Hamiltonian.setValue(i, i, (15.0/ 12.0)* -1.0j/h2 + Nuc_Ele_Int[str((m_blk, l_blk, l_blk))][grid_idx])
+            FF_Hamiltonian.setValue(i, i, (15.0/ 12.0)* -1.0j/h2 + H2_Plus_Potential(r, l_blk, l_blk, m_blk, R_o))
             if grid_idx >=  1:
                 FF_Hamiltonian.setValue(i, i-1, (-2.0/3.0) * -1.0j/h2)
             if grid_idx >= 2:
@@ -183,20 +181,20 @@ def Build_FF_Hamiltonian_Fourth_Order(input_par):
             if abs(m_blk) > l_prime:
                 continue
             col_idx = grid_size*index_map_box[(m_blk, l_prime)] + grid_idx
-            FF_Hamiltonian.setValue(i, col_idx, + Nuc_Ele_Int[str((m_blk, l_blk, l_prime))][grid_idx])
+            FF_Hamiltonian.setValue(i, col_idx, + H2_Plus_Potential(r, l_blk, l_prime, m_blk, R_o))
 
 
     for i in np.arange(0, matrix_size, grid_size):
         l_blk = index_map_m_1[floor(i/grid_size)][1]
         m_blk = index_map_m_1[floor(i/grid_size)][0]
 
-        FF_Hamiltonian.setValue(i, i, (20.0/24.0)/h2 + Nuc_Ele_Int[str((m_blk, l_blk, l_blk))][0])
+        FF_Hamiltonian.setValue(i, i, (20.0/24.0)/h2 + H2_Plus_Potential(0, l_blk, l_blk, m_blk, R_o))
         FF_Hamiltonian.setValue(i, i+1, (-6.0/24.0)/h2)
         FF_Hamiltonian.setValue(i, i+2, (-4.0/24.0)/h2)
         FF_Hamiltonian.setValue(i, i+3, (1.0/24.0)/h2)
 
         j = i + (grid_size - 1)
-        FF_Hamiltonian.setValue(j,j, (20.0/24.0) * -1.0j/h2 + Nuc_Ele_Int[str((m_blk, l_blk, l_blk))][grid_size - 1])
+        FF_Hamiltonian.setValue(j,j, (20.0/24.0) * -1.0j/h2 + H2_Plus_Potential(grid[grid_size-1], l_blk, l_blk, m_blk, R_o))
         FF_Hamiltonian.setValue(j,j - 1, (-6.0/24.0) * -1.0j/h2)
         FF_Hamiltonian.setValue(j,j - 2, (-4.0/24.0) * -1.0j/h2)
         FF_Hamiltonian.setValue(j,j - 3, (1.0/24.0) * -1.0j/h2)
