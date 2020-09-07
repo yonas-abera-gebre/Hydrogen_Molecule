@@ -1,5 +1,6 @@
 from math import sqrt
 
+
 cdef double factorial_new(int x):
     cdef double y = 1.0
     cdef int i
