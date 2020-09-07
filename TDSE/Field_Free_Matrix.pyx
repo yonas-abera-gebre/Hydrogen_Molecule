@@ -41,7 +41,7 @@ def Build_FF_Hamiltonian_Second_Order(input_par):
                 print("ECS region has to be between 0.0 and 1.00\n")
                 exit() 
 
-    nnz = int((input_par["l_max"] + 1)/2) + 4
+    nnz = int(len(index_map_box)/2) + 4
     FF_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     istart, iend = FF_Hamiltonian.getOwnershipRange() 
 
@@ -124,7 +124,7 @@ def Build_FF_Hamiltonian_Fourth_Order(input_par):
     
     ECS_Stencil = Fourth_Order_Stencil()
 
-    nnz = int((input_par["l_max"] + 1)/2) + 6
+    nnz = int(len(index_map_box)/2) + 6
 
     FF_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     istart, iend = FF_Hamiltonian.getOwnershipRange() 

@@ -1028,6 +1028,17 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
 
+/* pow2.proto */
+#define __Pyx_PyNumber_Power2(a, b) PyNumber_Power(a, b, Py_None)
+
+/* PyIntBinop.proto */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, int inplace, int zerodivision_check);
+#else
+#define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace, zerodivision_check)\
+    (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
+#endif
+
 /* RaiseArgTupleInvalid.proto */
 static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
     Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
@@ -1039,17 +1050,6 @@ static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_n
 static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
     const char* function_name);
-
-/* pow2.proto */
-#define __Pyx_PyNumber_Power2(a, b) PyNumber_Power(a, b, Py_None)
-
-/* PyIntBinop.proto */
-#if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, int inplace, int zerodivision_check);
-#else
-#define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace, zerodivision_check)\
-    (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
-#endif
 
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
@@ -1084,10 +1084,10 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
@@ -1116,8 +1116,10 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
 /* Module declarations from 'Potential' */
+static double __pyx_f_9Potential_factorial_new(int); /*proto*/
 static double __pyx_f_9Potential_clebsch(int, int, int, int, int, int); /*proto*/
 static double __pyx_f_9Potential_wigner3j(int, int, int, int, int, int); /*proto*/
+static double __pyx_f_9Potential_H2_Plus_Potential(double, int, int, int, double, int __pyx_skip_dispatch); /*proto*/
 #define __Pyx_MODULE_NAME "Potential"
 extern int __pyx_module_is_main_Potential;
 int __pyx_module_is_main_Potential = 0;
@@ -1127,60 +1129,163 @@ static PyObject *__pyx_builtin_range;
 static const char __pyx_k_l[] = "l";
 static const char __pyx_k_m[] = "m";
 static const char __pyx_k_r[] = "r";
-static const char __pyx_k_np[] = "np";
 static const char __pyx_k_R_o[] = "R_o";
-static const char __pyx_k_coef[] = "coef";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_math[] = "math";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_sqrt[] = "sqrt";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_lamda[] = "lamda";
-static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_l_prime[] = "l_prime";
-static const char __pyx_k_Potential[] = "Potential";
-static const char __pyx_k_factorial[] = "factorial";
-static const char __pyx_k_Potential_pyx[] = "Potential.pyx";
-static const char __pyx_k_potential_value[] = "potential_value";
-static const char __pyx_k_H2_Plus_Potential[] = "H2_Plus_Potential";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static PyObject *__pyx_n_s_H2_Plus_Potential;
-static PyObject *__pyx_n_s_Potential;
-static PyObject *__pyx_kp_s_Potential_pyx;
 static PyObject *__pyx_n_s_R_o;
 static PyObject *__pyx_n_s_cline_in_traceback;
-static PyObject *__pyx_n_s_coef;
-static PyObject *__pyx_n_s_factorial;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_l;
 static PyObject *__pyx_n_s_l_prime;
-static PyObject *__pyx_n_s_lamda;
 static PyObject *__pyx_n_s_m;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_math;
 static PyObject *__pyx_n_s_name;
-static PyObject *__pyx_n_s_np;
-static PyObject *__pyx_n_s_numpy;
-static PyObject *__pyx_n_s_potential_value;
 static PyObject *__pyx_n_s_r;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_sqrt;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_pf_9Potential_H2_Plus_Potential(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_r, int __pyx_v_l, int __pyx_v_l_prime, int __pyx_v_m, double __pyx_v_R_o); /* proto */
-static PyObject *__pyx_float_0_0;
 static PyObject *__pyx_float_neg_1_0;
 static PyObject *__pyx_float_neg_2_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
 static PyObject *__pyx_int_neg_2;
-static PyObject *__pyx_tuple_;
-static PyObject *__pyx_codeobj__2;
 /* Late includes */
 
-/* "Potential.pyx":4
- * from math import factorial
+/* "Potential.pyx":3
+ * from math import sqrt
+ * 
+ * cdef double factorial_new(int x):             # <<<<<<<<<<<<<<
+ *     cdef double y = 1.0
+ *     cdef int i
+ */
+
+static double __pyx_f_9Potential_factorial_new(int __pyx_v_x) {
+  double __pyx_v_y;
+  int __pyx_v_i;
+  double __pyx_r;
+  __Pyx_RefNannyDeclarations
+  long __pyx_t_1;
+  long __pyx_t_2;
+  int __pyx_t_3;
+  __Pyx_RefNannySetupContext("factorial_new", 0);
+
+  /* "Potential.pyx":4
+ * 
+ * cdef double factorial_new(int x):
+ *     cdef double y = 1.0             # <<<<<<<<<<<<<<
+ *     cdef int i
+ *     if x == 0:
+ */
+  __pyx_v_y = 1.0;
+
+  /* "Potential.pyx":6
+ *     cdef double y = 1.0
+ *     cdef int i
+ *     if x == 0:             # <<<<<<<<<<<<<<
+ *         return 1.0
+ *     elif x == 1:
+ */
+  switch (__pyx_v_x) {
+    case 0:
+
+    /* "Potential.pyx":7
+ *     cdef int i
+ *     if x == 0:
+ *         return 1.0             # <<<<<<<<<<<<<<
+ *     elif x == 1:
+ *         return 1.0
+ */
+    __pyx_r = 1.0;
+    goto __pyx_L0;
+
+    /* "Potential.pyx":6
+ *     cdef double y = 1.0
+ *     cdef int i
+ *     if x == 0:             # <<<<<<<<<<<<<<
+ *         return 1.0
+ *     elif x == 1:
+ */
+    break;
+    case 1:
+
+    /* "Potential.pyx":9
+ *         return 1.0
+ *     elif x == 1:
+ *         return 1.0             # <<<<<<<<<<<<<<
+ *     for i in range(1, x+1):
+ *         y *= i
+ */
+    __pyx_r = 1.0;
+    goto __pyx_L0;
+
+    /* "Potential.pyx":8
+ *     if x == 0:
+ *         return 1.0
+ *     elif x == 1:             # <<<<<<<<<<<<<<
+ *         return 1.0
+ *     for i in range(1, x+1):
+ */
+    break;
+    default: break;
+  }
+
+  /* "Potential.pyx":10
+ *     elif x == 1:
+ *         return 1.0
+ *     for i in range(1, x+1):             # <<<<<<<<<<<<<<
+ *         y *= i
+ *     return y
+ */
+  __pyx_t_1 = (__pyx_v_x + 1);
+  __pyx_t_2 = __pyx_t_1;
+  for (__pyx_t_3 = 1; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
+
+    /* "Potential.pyx":11
+ *         return 1.0
+ *     for i in range(1, x+1):
+ *         y *= i             # <<<<<<<<<<<<<<
+ *     return y
+ * 
+ */
+    __pyx_v_y = (__pyx_v_y * __pyx_v_i);
+  }
+
+  /* "Potential.pyx":12
+ *     for i in range(1, x+1):
+ *         y *= i
+ *     return y             # <<<<<<<<<<<<<<
+ * 
+ * cdef double clebsch(int j1, int j2, int j3, int m1, int m2, int m3):
+ */
+  __pyx_r = __pyx_v_y;
+  goto __pyx_L0;
+
+  /* "Potential.pyx":3
+ * from math import sqrt
+ * 
+ * cdef double factorial_new(int x):             # <<<<<<<<<<<<<<
+ *     cdef double y = 1.0
+ *     cdef int i
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "Potential.pyx":14
+ *     return y
  * 
  * cdef double clebsch(int j1, int j2, int j3, int m1, int m2, int m3):             # <<<<<<<<<<<<<<
  *     cdef int vmin, vmax, v
@@ -1206,12 +1311,17 @@ static double __pyx_f_9Potential_clebsch(int __pyx_v_j1, int __pyx_v_j2, int __p
   PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
   PyObject *__pyx_t_11 = NULL;
-  PyObject *__pyx_t_12 = NULL;
-  PyObject *__pyx_t_13 = NULL;
-  double __pyx_t_14;
+  double __pyx_t_12;
+  double __pyx_t_13;
+  PyObject *__pyx_t_14 = NULL;
+  double __pyx_t_15;
+  double __pyx_t_16;
+  double __pyx_t_17;
+  double __pyx_t_18;
+  double __pyx_t_19;
   __Pyx_RefNannySetupContext("clebsch", 0);
 
-  /* "Potential.pyx":29
+  /* "Potential.pyx":39
  *     """
  * 
  *     if m3 != m1 + m2:             # <<<<<<<<<<<<<<
@@ -1221,7 +1331,7 @@ static double __pyx_f_9Potential_clebsch(int __pyx_v_j1, int __pyx_v_j2, int __p
   __pyx_t_1 = ((__pyx_v_m3 != (__pyx_v_m1 + __pyx_v_m2)) != 0);
   if (__pyx_t_1) {
 
-    /* "Potential.pyx":30
+    /* "Potential.pyx":40
  * 
  *     if m3 != m1 + m2:
  *         return 0             # <<<<<<<<<<<<<<
@@ -1231,7 +1341,7 @@ static double __pyx_f_9Potential_clebsch(int __pyx_v_j1, int __pyx_v_j2, int __p
     __pyx_r = 0.0;
     goto __pyx_L0;
 
-    /* "Potential.pyx":29
+    /* "Potential.pyx":39
  *     """
  * 
  *     if m3 != m1 + m2:             # <<<<<<<<<<<<<<
@@ -1240,7 +1350,7 @@ static double __pyx_f_9Potential_clebsch(int __pyx_v_j1, int __pyx_v_j2, int __p
  */
   }
 
-  /* "Potential.pyx":31
+  /* "Potential.pyx":41
  *     if m3 != m1 + m2:
  *         return 0
  *     vmin = max([-j1 + j2 + m3, -j1 + m1, 0])             # <<<<<<<<<<<<<<
@@ -1263,12 +1373,12 @@ static double __pyx_f_9Potential_clebsch(int __pyx_v_j1, int __pyx_v_j2, int __p
   }
   __pyx_v_vmin = __pyx_t_6;
 
-  /* "Potential.pyx":32
+  /* "Potential.pyx":42
  *         return 0
  *     vmin = max([-j1 + j2 + m3, -j1 + m1, 0])
  *     vmax = min([j2 + j3 + m1, j3 - j1 + j2, j3 + m3])             # <<<<<<<<<<<<<<
  * 
- *     C = ((2.0 * j3 + 1.0) * factorial(j3 + j1 - j2) *
+ *     C = sqrt((2.0 * j3 + 1.0)) * sqrt(factorial_new(j3 + j1 - j2)/factorial_new(j1 + j2 + j3 + 1))
  */
   __pyx_t_2 = ((__pyx_v_j3 - __pyx_v_j1) + __pyx_v_j2);
   __pyx_t_4 = (__pyx_v_j3 + __pyx_v_m3);
@@ -1286,387 +1396,241 @@ static double __pyx_f_9Potential_clebsch(int __pyx_v_j1, int __pyx_v_j2, int __p
   }
   __pyx_v_vmax = __pyx_t_7;
 
-  /* "Potential.pyx":34
+  /* "Potential.pyx":44
  *     vmax = min([j2 + j3 + m1, j3 - j1 + j2, j3 + m3])
  * 
- *     C = ((2.0 * j3 + 1.0) * factorial(j3 + j1 - j2) *             # <<<<<<<<<<<<<<
- *                 factorial(j3 - j1 + j2) * factorial(j1 + j2 - j3) *
- *                 factorial(j3 + m3) * factorial(j3 - m3) /
+ *     C = sqrt((2.0 * j3 + 1.0)) * sqrt(factorial_new(j3 + j1 - j2)/factorial_new(j1 + j2 + j3 + 1))             # <<<<<<<<<<<<<<
+ *     C *= sqrt(factorial_new(j3 - j1 + j2)/factorial_new(j1 - m1))
+ *     C *= sqrt(factorial_new(j1 + j2 - j3)/factorial_new(j1 + m1))
  */
-  __pyx_t_8 = PyFloat_FromDouble(((2.0 * __pyx_v_j3) + 1.0)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_factorial); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_10 = PyFloat_FromDouble(((2.0 * __pyx_v_j3) + 1.0)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_11 = __Pyx_PyInt_From_int(((__pyx_v_j3 + __pyx_v_j1) - __pyx_v_j2)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_12 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_10))) {
-    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_10);
-    if (likely(__pyx_t_12)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
-      __Pyx_INCREF(__pyx_t_12);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_10, function);
-    }
-  }
-  __pyx_t_9 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_12, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = PyNumber_Multiply(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_10);
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-
-  /* "Potential.pyx":35
- * 
- *     C = ((2.0 * j3 + 1.0) * factorial(j3 + j1 - j2) *
- *                 factorial(j3 - j1 + j2) * factorial(j1 + j2 - j3) *             # <<<<<<<<<<<<<<
- *                 factorial(j3 + m3) * factorial(j3 - m3) /
- *                 (factorial(j1 + j2 + j3 + 1) *
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_factorial); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_11 = __Pyx_PyInt_From_int(((__pyx_v_j3 - __pyx_v_j1) + __pyx_v_j2)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_12 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
-    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_8);
-    if (likely(__pyx_t_12)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
-      __Pyx_INCREF(__pyx_t_12);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_8, function);
-    }
-  }
-  __pyx_t_9 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_12, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-  /* "Potential.pyx":34
- *     vmax = min([j2 + j3 + m1, j3 - j1 + j2, j3 + m3])
- * 
- *     C = ((2.0 * j3 + 1.0) * factorial(j3 + j1 - j2) *             # <<<<<<<<<<<<<<
- *                 factorial(j3 - j1 + j2) * factorial(j1 + j2 - j3) *
- *                 factorial(j3 + m3) * factorial(j3 - m3) /
- */
-  __pyx_t_8 = PyNumber_Multiply(__pyx_t_10, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-
-  /* "Potential.pyx":35
- * 
- *     C = ((2.0 * j3 + 1.0) * factorial(j3 + j1 - j2) *
- *                 factorial(j3 - j1 + j2) * factorial(j1 + j2 - j3) *             # <<<<<<<<<<<<<<
- *                 factorial(j3 + m3) * factorial(j3 - m3) /
- *                 (factorial(j1 + j2 + j3 + 1) *
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_factorial); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_11 = __Pyx_PyInt_From_int(((__pyx_v_j1 + __pyx_v_j2) - __pyx_v_j3)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_12 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_10))) {
-    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_10);
-    if (likely(__pyx_t_12)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
-      __Pyx_INCREF(__pyx_t_12);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_10, function);
-    }
-  }
-  __pyx_t_9 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_12, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = PyNumber_Multiply(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_10);
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-
-  /* "Potential.pyx":36
- *     C = ((2.0 * j3 + 1.0) * factorial(j3 + j1 - j2) *
- *                 factorial(j3 - j1 + j2) * factorial(j1 + j2 - j3) *
- *                 factorial(j3 + m3) * factorial(j3 - m3) /             # <<<<<<<<<<<<<<
- *                 (factorial(j1 + j2 + j3 + 1) *
- *                 factorial(j1 - m1) * factorial(j1 + m1) *
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_factorial); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_11 = __Pyx_PyInt_From_int((__pyx_v_j3 + __pyx_v_m3)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_12 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
-    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_8);
-    if (likely(__pyx_t_12)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
-      __Pyx_INCREF(__pyx_t_12);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_8, function);
-    }
-  }
-  __pyx_t_9 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_12, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-  /* "Potential.pyx":35
- * 
- *     C = ((2.0 * j3 + 1.0) * factorial(j3 + j1 - j2) *
- *                 factorial(j3 - j1 + j2) * factorial(j1 + j2 - j3) *             # <<<<<<<<<<<<<<
- *                 factorial(j3 + m3) * factorial(j3 - m3) /
- *                 (factorial(j1 + j2 + j3 + 1) *
- */
-  __pyx_t_8 = PyNumber_Multiply(__pyx_t_10, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-
-  /* "Potential.pyx":36
- *     C = ((2.0 * j3 + 1.0) * factorial(j3 + j1 - j2) *
- *                 factorial(j3 - j1 + j2) * factorial(j1 + j2 - j3) *
- *                 factorial(j3 + m3) * factorial(j3 - m3) /             # <<<<<<<<<<<<<<
- *                 (factorial(j1 + j2 + j3 + 1) *
- *                 factorial(j1 - m1) * factorial(j1 + m1) *
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_factorial); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_11 = __Pyx_PyInt_From_int((__pyx_v_j3 - __pyx_v_m3)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_12 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_10))) {
-    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_10);
-    if (likely(__pyx_t_12)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
-      __Pyx_INCREF(__pyx_t_12);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_10, function);
-    }
-  }
-  __pyx_t_9 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_12, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = PyNumber_Multiply(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_10);
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-
-  /* "Potential.pyx":37
- *                 factorial(j3 - j1 + j2) * factorial(j1 + j2 - j3) *
- *                 factorial(j3 + m3) * factorial(j3 - m3) /
- *                 (factorial(j1 + j2 + j3 + 1) *             # <<<<<<<<<<<<<<
- *                 factorial(j1 - m1) * factorial(j1 + m1) *
- *                 factorial(j2 - m2) * factorial(j2 + m2)))**(1/2.)
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_factorial); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 37, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_11 = __Pyx_PyInt_From_long((((__pyx_v_j1 + __pyx_v_j2) + __pyx_v_j3) + 1)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 37, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_12 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
-    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_8);
-    if (likely(__pyx_t_12)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
-      __Pyx_INCREF(__pyx_t_12);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_8, function);
-    }
-  }
-  __pyx_t_9 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_12, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 37, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-  /* "Potential.pyx":38
- *                 factorial(j3 + m3) * factorial(j3 - m3) /
- *                 (factorial(j1 + j2 + j3 + 1) *
- *                 factorial(j1 - m1) * factorial(j1 + m1) *             # <<<<<<<<<<<<<<
- *                 factorial(j2 - m2) * factorial(j2 + m2)))**(1/2.)
- * 
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_factorial); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 38, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_12 = __Pyx_PyInt_From_int((__pyx_v_j1 - __pyx_v_m1)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 38, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_13 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
-    __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_11);
-    if (likely(__pyx_t_13)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-      __Pyx_INCREF(__pyx_t_13);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_11, function);
-    }
-  }
-  __pyx_t_8 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12);
-  __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 38, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-
-  /* "Potential.pyx":37
- *                 factorial(j3 - j1 + j2) * factorial(j1 + j2 - j3) *
- *                 factorial(j3 + m3) * factorial(j3 - m3) /
- *                 (factorial(j1 + j2 + j3 + 1) *             # <<<<<<<<<<<<<<
- *                 factorial(j1 - m1) * factorial(j1 + m1) *
- *                 factorial(j2 - m2) * factorial(j2 + m2)))**(1/2.)
- */
-  __pyx_t_11 = PyNumber_Multiply(__pyx_t_9, __pyx_t_8); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 37, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-  /* "Potential.pyx":38
- *                 factorial(j3 + m3) * factorial(j3 - m3) /
- *                 (factorial(j1 + j2 + j3 + 1) *
- *                 factorial(j1 - m1) * factorial(j1 + m1) *             # <<<<<<<<<<<<<<
- *                 factorial(j2 - m2) * factorial(j2 + m2)))**(1/2.)
- * 
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_factorial); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 38, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_12 = __Pyx_PyInt_From_int((__pyx_v_j1 + __pyx_v_m1)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 38, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_13 = NULL;
+  __pyx_t_11 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_9))) {
-    __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_9);
-    if (likely(__pyx_t_13)) {
+    __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_9);
+    if (likely(__pyx_t_11)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
-      __Pyx_INCREF(__pyx_t_13);
+      __Pyx_INCREF(__pyx_t_11);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_9, function);
     }
   }
-  __pyx_t_8 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_12);
-  __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 38, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = PyNumber_Multiply(__pyx_t_11, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 38, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-  /* "Potential.pyx":39
- *                 (factorial(j1 + j2 + j3 + 1) *
- *                 factorial(j1 - m1) * factorial(j1 + m1) *
- *                 factorial(j2 - m2) * factorial(j2 + m2)))**(1/2.)             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_factorial); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 39, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_12 = __Pyx_PyInt_From_int((__pyx_v_j2 - __pyx_v_m2)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 39, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_13 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
-    __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_11);
-    if (likely(__pyx_t_13)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-      __Pyx_INCREF(__pyx_t_13);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_11, function);
-    }
-  }
-  __pyx_t_8 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12);
-  __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 39, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-
-  /* "Potential.pyx":38
- *                 factorial(j3 + m3) * factorial(j3 - m3) /
- *                 (factorial(j1 + j2 + j3 + 1) *
- *                 factorial(j1 - m1) * factorial(j1 + m1) *             # <<<<<<<<<<<<<<
- *                 factorial(j2 - m2) * factorial(j2 + m2)))**(1/2.)
- * 
- */
-  __pyx_t_11 = PyNumber_Multiply(__pyx_t_9, __pyx_t_8); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 38, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-  /* "Potential.pyx":39
- *                 (factorial(j1 + j2 + j3 + 1) *
- *                 factorial(j1 - m1) * factorial(j1 + m1) *
- *                 factorial(j2 - m2) * factorial(j2 + m2)))**(1/2.)             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_factorial); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 39, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_12 = __Pyx_PyInt_From_int((__pyx_v_j2 + __pyx_v_m2)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 39, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_13 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_9))) {
-    __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_9);
-    if (likely(__pyx_t_13)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
-      __Pyx_INCREF(__pyx_t_13);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_9, function);
-    }
-  }
-  __pyx_t_8 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_12);
-  __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 39, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = PyNumber_Multiply(__pyx_t_11, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 39, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-  /* "Potential.pyx":36
- *     C = ((2.0 * j3 + 1.0) * factorial(j3 + j1 - j2) *
- *                 factorial(j3 - j1 + j2) * factorial(j1 + j2 - j3) *
- *                 factorial(j3 + m3) * factorial(j3 - m3) /             # <<<<<<<<<<<<<<
- *                 (factorial(j1 + j2 + j3 + 1) *
- *                 factorial(j1 - m1) * factorial(j1 + m1) *
- */
-  __pyx_t_8 = __Pyx_PyNumber_Divide(__pyx_t_10, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 36, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_8 = (__pyx_t_11) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_11, __pyx_t_10) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_10);
+  __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-
-  /* "Potential.pyx":39
- *                 (factorial(j1 + j2 + j3 + 1) *
- *                 factorial(j1 - m1) * factorial(j1 + m1) *
- *                 factorial(j2 - m2) * factorial(j2 + m2)))**(1/2.)             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __pyx_t_9 = PyFloat_FromDouble((1.0 / 2.)); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_12 = __pyx_f_9Potential_factorial_new(((__pyx_v_j3 + __pyx_v_j1) - __pyx_v_j2));
+  __pyx_t_13 = __pyx_f_9Potential_factorial_new((((__pyx_v_j1 + __pyx_v_j2) + __pyx_v_j3) + 1));
+  if (unlikely(__pyx_t_13 == 0)) {
+    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+    __PYX_ERR(0, 44, __pyx_L1_error)
+  }
+  __pyx_t_11 = PyFloat_FromDouble((__pyx_t_12 / __pyx_t_13)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_14 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_10))) {
+    __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_10);
+    if (likely(__pyx_t_14)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+      __Pyx_INCREF(__pyx_t_14);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_10, function);
+    }
+  }
+  __pyx_t_9 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_14, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_10 = PyNumber_Power(__pyx_t_8, __pyx_t_9, Py_None); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __pyx_t_10 = PyNumber_Multiply(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_10); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_13 = __pyx_PyFloat_AsDouble(__pyx_t_10); if (unlikely((__pyx_t_13 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_v_C = __pyx_t_14;
+  __pyx_v_C = __pyx_t_13;
 
-  /* "Potential.pyx":43
+  /* "Potential.pyx":45
  * 
+ *     C = sqrt((2.0 * j3 + 1.0)) * sqrt(factorial_new(j3 + j1 - j2)/factorial_new(j1 + j2 + j3 + 1))
+ *     C *= sqrt(factorial_new(j3 - j1 + j2)/factorial_new(j1 - m1))             # <<<<<<<<<<<<<<
+ *     C *= sqrt(factorial_new(j1 + j2 - j3)/factorial_new(j1 + m1))
+ *     C *= sqrt(factorial_new(j3 + m3)/factorial_new(j2 - m2))
+ */
+  __pyx_t_10 = PyFloat_FromDouble(__pyx_v_C); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_13 = __pyx_f_9Potential_factorial_new(((__pyx_v_j3 - __pyx_v_j1) + __pyx_v_j2));
+  __pyx_t_12 = __pyx_f_9Potential_factorial_new((__pyx_v_j1 - __pyx_v_m1));
+  if (unlikely(__pyx_t_12 == 0)) {
+    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+    __PYX_ERR(0, 45, __pyx_L1_error)
+  }
+  __pyx_t_11 = PyFloat_FromDouble((__pyx_t_13 / __pyx_t_12)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_14 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
+    __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_8);
+    if (likely(__pyx_t_14)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+      __Pyx_INCREF(__pyx_t_14);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_8, function);
+    }
+  }
+  __pyx_t_9 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_14, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __pyx_t_8 = PyNumber_InPlaceMultiply(__pyx_t_10, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_8); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __pyx_v_C = __pyx_t_12;
+
+  /* "Potential.pyx":46
+ *     C = sqrt((2.0 * j3 + 1.0)) * sqrt(factorial_new(j3 + j1 - j2)/factorial_new(j1 + j2 + j3 + 1))
+ *     C *= sqrt(factorial_new(j3 - j1 + j2)/factorial_new(j1 - m1))
+ *     C *= sqrt(factorial_new(j1 + j2 - j3)/factorial_new(j1 + m1))             # <<<<<<<<<<<<<<
+ *     C *= sqrt(factorial_new(j3 + m3)/factorial_new(j2 - m2))
+ *     C *= sqrt(factorial_new(j3 - m3)/factorial_new(j2 + m2))
+ */
+  __pyx_t_8 = PyFloat_FromDouble(__pyx_v_C); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_12 = __pyx_f_9Potential_factorial_new(((__pyx_v_j1 + __pyx_v_j2) - __pyx_v_j3));
+  __pyx_t_13 = __pyx_f_9Potential_factorial_new((__pyx_v_j1 + __pyx_v_m1));
+  if (unlikely(__pyx_t_13 == 0)) {
+    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+    __PYX_ERR(0, 46, __pyx_L1_error)
+  }
+  __pyx_t_11 = PyFloat_FromDouble((__pyx_t_12 / __pyx_t_13)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_14 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_10))) {
+    __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_10);
+    if (likely(__pyx_t_14)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+      __Pyx_INCREF(__pyx_t_14);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_10, function);
+    }
+  }
+  __pyx_t_9 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_14, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __pyx_t_10 = PyNumber_InPlaceMultiply(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_t_13 = __pyx_PyFloat_AsDouble(__pyx_t_10); if (unlikely((__pyx_t_13 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __pyx_v_C = __pyx_t_13;
+
+  /* "Potential.pyx":47
+ *     C *= sqrt(factorial_new(j3 - j1 + j2)/factorial_new(j1 - m1))
+ *     C *= sqrt(factorial_new(j1 + j2 - j3)/factorial_new(j1 + m1))
+ *     C *= sqrt(factorial_new(j3 + m3)/factorial_new(j2 - m2))             # <<<<<<<<<<<<<<
+ *     C *= sqrt(factorial_new(j3 - m3)/factorial_new(j2 + m2))
+ * 
+ */
+  __pyx_t_10 = PyFloat_FromDouble(__pyx_v_C); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_13 = __pyx_f_9Potential_factorial_new((__pyx_v_j3 + __pyx_v_m3));
+  __pyx_t_12 = __pyx_f_9Potential_factorial_new((__pyx_v_j2 - __pyx_v_m2));
+  if (unlikely(__pyx_t_12 == 0)) {
+    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+    __PYX_ERR(0, 47, __pyx_L1_error)
+  }
+  __pyx_t_11 = PyFloat_FromDouble((__pyx_t_13 / __pyx_t_12)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_14 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
+    __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_8);
+    if (likely(__pyx_t_14)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+      __Pyx_INCREF(__pyx_t_14);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_8, function);
+    }
+  }
+  __pyx_t_9 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_14, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __pyx_t_8 = PyNumber_InPlaceMultiply(__pyx_t_10, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_8); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __pyx_v_C = __pyx_t_12;
+
+  /* "Potential.pyx":48
+ *     C *= sqrt(factorial_new(j1 + j2 - j3)/factorial_new(j1 + m1))
+ *     C *= sqrt(factorial_new(j3 + m3)/factorial_new(j2 - m2))
+ *     C *= sqrt(factorial_new(j3 - m3)/factorial_new(j2 + m2))             # <<<<<<<<<<<<<<
+ * 
+ *     S = 0
+ */
+  __pyx_t_8 = PyFloat_FromDouble(__pyx_v_C); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_12 = __pyx_f_9Potential_factorial_new((__pyx_v_j3 - __pyx_v_m3));
+  __pyx_t_13 = __pyx_f_9Potential_factorial_new((__pyx_v_j2 + __pyx_v_m2));
+  if (unlikely(__pyx_t_13 == 0)) {
+    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+    __PYX_ERR(0, 48, __pyx_L1_error)
+  }
+  __pyx_t_11 = PyFloat_FromDouble((__pyx_t_12 / __pyx_t_13)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_14 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_10))) {
+    __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_10);
+    if (likely(__pyx_t_14)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+      __Pyx_INCREF(__pyx_t_14);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_10, function);
+    }
+  }
+  __pyx_t_9 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_14, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __pyx_t_10 = PyNumber_InPlaceMultiply(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_t_13 = __pyx_PyFloat_AsDouble(__pyx_t_10); if (unlikely((__pyx_t_13 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __pyx_v_C = __pyx_t_13;
+
+  /* "Potential.pyx":50
+ *     C *= sqrt(factorial_new(j3 - m3)/factorial_new(j2 + m2))
  * 
  *     S = 0             # <<<<<<<<<<<<<<
  * 
@@ -1674,256 +1638,102 @@ static double __pyx_f_9Potential_clebsch(int __pyx_v_j1, int __pyx_v_j2, int __p
  */
   __pyx_v_S = 0.0;
 
-  /* "Potential.pyx":45
+  /* "Potential.pyx":52
  *     S = 0
  * 
  *     for v in range(vmin, vmax + 1):             # <<<<<<<<<<<<<<
- *         S += (-1.0) ** (v + j2 + m2) / factorial(v) * \
- *             factorial(j2 + j3 + m1 - v) * factorial(j1 - m1 + v) / \
+ *         S += (-1.0) ** (v + j2 + m2) / factorial_new(v) * \
+ *             (factorial_new(j2 + j3 + m1 - v)/factorial_new(j3 - j1 + j2 - v)) * (factorial_new(j1 - m1 + v) / factorial_new(j3 + m3 - v))/\
  */
   __pyx_t_6 = (__pyx_v_vmax + 1);
   __pyx_t_3 = __pyx_t_6;
   for (__pyx_t_7 = __pyx_v_vmin; __pyx_t_7 < __pyx_t_3; __pyx_t_7+=1) {
     __pyx_v_v = __pyx_t_7;
 
-    /* "Potential.pyx":46
+    /* "Potential.pyx":53
  * 
  *     for v in range(vmin, vmax + 1):
- *         S += (-1.0) ** (v + j2 + m2) / factorial(v) * \             # <<<<<<<<<<<<<<
- *             factorial(j2 + j3 + m1 - v) * factorial(j1 - m1 + v) / \
- *             factorial(j3 - j1 + j2 - v) / factorial(j3 + m3 - v) / \
+ *         S += (-1.0) ** (v + j2 + m2) / factorial_new(v) * \             # <<<<<<<<<<<<<<
+ *             (factorial_new(j2 + j3 + m1 - v)/factorial_new(j3 - j1 + j2 - v)) * (factorial_new(j1 - m1 + v) / factorial_new(j3 + m3 - v))/\
+ *             factorial_new(v + j1 - j2 - m3)
  */
-    __pyx_t_10 = PyFloat_FromDouble(__pyx_v_S); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_9 = PyFloat_FromDouble(pow(-1.0, ((double)((__pyx_v_v + __pyx_v_j2) + __pyx_v_m2)))); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_factorial); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_12 = __Pyx_PyInt_From_int(__pyx_v_v); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_13 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
-      __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_11);
-      if (likely(__pyx_t_13)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-        __Pyx_INCREF(__pyx_t_13);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_11, function);
-      }
+    __pyx_t_13 = pow(-1.0, ((double)((__pyx_v_v + __pyx_v_j2) + __pyx_v_m2)));
+    __pyx_t_12 = __pyx_f_9Potential_factorial_new(__pyx_v_v);
+    if (unlikely(__pyx_t_12 == 0)) {
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      __PYX_ERR(0, 53, __pyx_L1_error)
     }
-    __pyx_t_8 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12);
-    __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __pyx_t_11 = __Pyx_PyNumber_Divide(__pyx_t_9, __pyx_t_8); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_11);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "Potential.pyx":47
+    /* "Potential.pyx":54
  *     for v in range(vmin, vmax + 1):
- *         S += (-1.0) ** (v + j2 + m2) / factorial(v) * \
- *             factorial(j2 + j3 + m1 - v) * factorial(j1 - m1 + v) / \             # <<<<<<<<<<<<<<
- *             factorial(j3 - j1 + j2 - v) / factorial(j3 + m3 - v) / \
- *             factorial(v + j1 - j2 - m3)
- */
-    __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_factorial); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_12 = __Pyx_PyInt_From_int((((__pyx_v_j2 + __pyx_v_j3) + __pyx_v_m1) - __pyx_v_v)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_13 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_9))) {
-      __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_9);
-      if (likely(__pyx_t_13)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
-        __Pyx_INCREF(__pyx_t_13);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_9, function);
-      }
-    }
-    __pyx_t_8 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_12);
-    __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-
-    /* "Potential.pyx":46
- * 
- *     for v in range(vmin, vmax + 1):
- *         S += (-1.0) ** (v + j2 + m2) / factorial(v) * \             # <<<<<<<<<<<<<<
- *             factorial(j2 + j3 + m1 - v) * factorial(j1 - m1 + v) / \
- *             factorial(j3 - j1 + j2 - v) / factorial(j3 + m3 - v) / \
- */
-    __pyx_t_9 = PyNumber_Multiply(__pyx_t_11, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-    /* "Potential.pyx":47
- *     for v in range(vmin, vmax + 1):
- *         S += (-1.0) ** (v + j2 + m2) / factorial(v) * \
- *             factorial(j2 + j3 + m1 - v) * factorial(j1 - m1 + v) / \             # <<<<<<<<<<<<<<
- *             factorial(j3 - j1 + j2 - v) / factorial(j3 + m3 - v) / \
- *             factorial(v + j1 - j2 - m3)
- */
-    __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_factorial); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_12 = __Pyx_PyInt_From_int(((__pyx_v_j1 - __pyx_v_m1) + __pyx_v_v)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_13 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
-      __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_11);
-      if (likely(__pyx_t_13)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-        __Pyx_INCREF(__pyx_t_13);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_11, function);
-      }
-    }
-    __pyx_t_8 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12);
-    __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __pyx_t_11 = PyNumber_Multiply(__pyx_t_9, __pyx_t_8); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_11);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-    /* "Potential.pyx":48
- *         S += (-1.0) ** (v + j2 + m2) / factorial(v) * \
- *             factorial(j2 + j3 + m1 - v) * factorial(j1 - m1 + v) / \
- *             factorial(j3 - j1 + j2 - v) / factorial(j3 + m3 - v) / \             # <<<<<<<<<<<<<<
- *             factorial(v + j1 - j2 - m3)
+ *         S += (-1.0) ** (v + j2 + m2) / factorial_new(v) * \
+ *             (factorial_new(j2 + j3 + m1 - v)/factorial_new(j3 - j1 + j2 - v)) * (factorial_new(j1 - m1 + v) / factorial_new(j3 + m3 - v))/\             # <<<<<<<<<<<<<<
+ *             factorial_new(v + j1 - j2 - m3)
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_factorial); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 48, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_12 = __Pyx_PyInt_From_int((((__pyx_v_j3 - __pyx_v_j1) + __pyx_v_j2) - __pyx_v_v)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 48, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_13 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_9))) {
-      __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_9);
-      if (likely(__pyx_t_13)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
-        __Pyx_INCREF(__pyx_t_13);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_9, function);
-      }
+    __pyx_t_15 = __pyx_f_9Potential_factorial_new((((__pyx_v_j2 + __pyx_v_j3) + __pyx_v_m1) - __pyx_v_v));
+    __pyx_t_16 = __pyx_f_9Potential_factorial_new((((__pyx_v_j3 - __pyx_v_j1) + __pyx_v_j2) - __pyx_v_v));
+    if (unlikely(__pyx_t_16 == 0)) {
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      __PYX_ERR(0, 54, __pyx_L1_error)
     }
-    __pyx_t_8 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_12);
-    __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 48, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-    /* "Potential.pyx":47
+    /* "Potential.pyx":53
+ * 
  *     for v in range(vmin, vmax + 1):
- *         S += (-1.0) ** (v + j2 + m2) / factorial(v) * \
- *             factorial(j2 + j3 + m1 - v) * factorial(j1 - m1 + v) / \             # <<<<<<<<<<<<<<
- *             factorial(j3 - j1 + j2 - v) / factorial(j3 + m3 - v) / \
- *             factorial(v + j1 - j2 - m3)
+ *         S += (-1.0) ** (v + j2 + m2) / factorial_new(v) * \             # <<<<<<<<<<<<<<
+ *             (factorial_new(j2 + j3 + m1 - v)/factorial_new(j3 - j1 + j2 - v)) * (factorial_new(j1 - m1 + v) / factorial_new(j3 + m3 - v))/\
+ *             factorial_new(v + j1 - j2 - m3)
  */
-    __pyx_t_9 = __Pyx_PyNumber_Divide(__pyx_t_11, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __pyx_t_17 = __pyx_f_9Potential_factorial_new(((__pyx_v_j1 - __pyx_v_m1) + __pyx_v_v));
 
-    /* "Potential.pyx":48
- *         S += (-1.0) ** (v + j2 + m2) / factorial(v) * \
- *             factorial(j2 + j3 + m1 - v) * factorial(j1 - m1 + v) / \
- *             factorial(j3 - j1 + j2 - v) / factorial(j3 + m3 - v) / \             # <<<<<<<<<<<<<<
- *             factorial(v + j1 - j2 - m3)
+    /* "Potential.pyx":54
+ *     for v in range(vmin, vmax + 1):
+ *         S += (-1.0) ** (v + j2 + m2) / factorial_new(v) * \
+ *             (factorial_new(j2 + j3 + m1 - v)/factorial_new(j3 - j1 + j2 - v)) * (factorial_new(j1 - m1 + v) / factorial_new(j3 + m3 - v))/\             # <<<<<<<<<<<<<<
+ *             factorial_new(v + j1 - j2 - m3)
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_factorial); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 48, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_12 = __Pyx_PyInt_From_int(((__pyx_v_j3 + __pyx_v_m3) - __pyx_v_v)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 48, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_13 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
-      __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_11);
-      if (likely(__pyx_t_13)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-        __Pyx_INCREF(__pyx_t_13);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_11, function);
-      }
+    __pyx_t_18 = __pyx_f_9Potential_factorial_new(((__pyx_v_j3 + __pyx_v_m3) - __pyx_v_v));
+    if (unlikely(__pyx_t_18 == 0)) {
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      __PYX_ERR(0, 54, __pyx_L1_error)
     }
-    __pyx_t_8 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12);
-    __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 48, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __pyx_t_11 = __Pyx_PyNumber_Divide(__pyx_t_9, __pyx_t_8); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 48, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_11);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __pyx_t_19 = (((__pyx_t_13 / __pyx_t_12) * (__pyx_t_15 / __pyx_t_16)) * (__pyx_t_17 / __pyx_t_18));
 
-    /* "Potential.pyx":49
- *             factorial(j2 + j3 + m1 - v) * factorial(j1 - m1 + v) / \
- *             factorial(j3 - j1 + j2 - v) / factorial(j3 + m3 - v) / \
- *             factorial(v + j1 - j2 - m3)             # <<<<<<<<<<<<<<
+    /* "Potential.pyx":55
+ *         S += (-1.0) ** (v + j2 + m2) / factorial_new(v) * \
+ *             (factorial_new(j2 + j3 + m1 - v)/factorial_new(j3 - j1 + j2 - v)) * (factorial_new(j1 - m1 + v) / factorial_new(j3 + m3 - v))/\
+ *             factorial_new(v + j1 - j2 - m3)             # <<<<<<<<<<<<<<
  * 
  *     C = C * S
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_factorial); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 49, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_12 = __Pyx_PyInt_From_int((((__pyx_v_v + __pyx_v_j1) - __pyx_v_j2) - __pyx_v_m3)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 49, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_13 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_9))) {
-      __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_9);
-      if (likely(__pyx_t_13)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
-        __Pyx_INCREF(__pyx_t_13);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_9, function);
-      }
-    }
-    __pyx_t_8 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_12);
-    __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 49, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __pyx_t_18 = __pyx_f_9Potential_factorial_new((((__pyx_v_v + __pyx_v_j1) - __pyx_v_j2) - __pyx_v_m3));
 
-    /* "Potential.pyx":48
- *         S += (-1.0) ** (v + j2 + m2) / factorial(v) * \
- *             factorial(j2 + j3 + m1 - v) * factorial(j1 - m1 + v) / \
- *             factorial(j3 - j1 + j2 - v) / factorial(j3 + m3 - v) / \             # <<<<<<<<<<<<<<
- *             factorial(v + j1 - j2 - m3)
+    /* "Potential.pyx":54
+ *     for v in range(vmin, vmax + 1):
+ *         S += (-1.0) ** (v + j2 + m2) / factorial_new(v) * \
+ *             (factorial_new(j2 + j3 + m1 - v)/factorial_new(j3 - j1 + j2 - v)) * (factorial_new(j1 - m1 + v) / factorial_new(j3 + m3 - v))/\             # <<<<<<<<<<<<<<
+ *             factorial_new(v + j1 - j2 - m3)
  * 
  */
-    __pyx_t_9 = __Pyx_PyNumber_Divide(__pyx_t_11, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 48, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    if (unlikely(__pyx_t_18 == 0)) {
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      __PYX_ERR(0, 54, __pyx_L1_error)
+    }
 
-    /* "Potential.pyx":46
+    /* "Potential.pyx":53
  * 
  *     for v in range(vmin, vmax + 1):
- *         S += (-1.0) ** (v + j2 + m2) / factorial(v) * \             # <<<<<<<<<<<<<<
- *             factorial(j2 + j3 + m1 - v) * factorial(j1 - m1 + v) / \
- *             factorial(j3 - j1 + j2 - v) / factorial(j3 + m3 - v) / \
+ *         S += (-1.0) ** (v + j2 + m2) / factorial_new(v) * \             # <<<<<<<<<<<<<<
+ *             (factorial_new(j2 + j3 + m1 - v)/factorial_new(j3 - j1 + j2 - v)) * (factorial_new(j1 - m1 + v) / factorial_new(j3 + m3 - v))/\
+ *             factorial_new(v + j1 - j2 - m3)
  */
-    __pyx_t_8 = PyNumber_InPlaceAdd(__pyx_t_10, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_8); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_v_S = __pyx_t_14;
+    __pyx_v_S = (__pyx_v_S + (__pyx_t_19 / __pyx_t_18));
   }
 
-  /* "Potential.pyx":51
- *             factorial(v + j1 - j2 - m3)
+  /* "Potential.pyx":57
+ *             factorial_new(v + j1 - j2 - m3)
  * 
  *     C = C * S             # <<<<<<<<<<<<<<
  *     return C
@@ -1931,7 +1741,7 @@ static double __pyx_f_9Potential_clebsch(int __pyx_v_j1, int __pyx_v_j2, int __p
  */
   __pyx_v_C = (__pyx_v_C * __pyx_v_S);
 
-  /* "Potential.pyx":52
+  /* "Potential.pyx":58
  * 
  *     C = C * S
  *     return C             # <<<<<<<<<<<<<<
@@ -1941,8 +1751,8 @@ static double __pyx_f_9Potential_clebsch(int __pyx_v_j1, int __pyx_v_j2, int __p
   __pyx_r = __pyx_v_C;
   goto __pyx_L0;
 
-  /* "Potential.pyx":4
- * from math import factorial
+  /* "Potential.pyx":14
+ *     return y
  * 
  * cdef double clebsch(int j1, int j2, int j3, int m1, int m2, int m3):             # <<<<<<<<<<<<<<
  *     cdef int vmin, vmax, v
@@ -1955,8 +1765,7 @@ static double __pyx_f_9Potential_clebsch(int __pyx_v_j1, int __pyx_v_j2, int __p
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12);
-  __Pyx_XDECREF(__pyx_t_13);
+  __Pyx_XDECREF(__pyx_t_14);
   __Pyx_WriteUnraisable("Potential.clebsch", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
@@ -1964,7 +1773,7 @@ static double __pyx_f_9Potential_clebsch(int __pyx_v_j1, int __pyx_v_j2, int __p
   return __pyx_r;
 }
 
-/* "Potential.pyx":54
+/* "Potential.pyx":60
  *     return C
  * 
  * cdef double wigner3j(int j1, int j2, int j3, int m1, int m2, int m3):             # <<<<<<<<<<<<<<
@@ -1978,7 +1787,7 @@ static double __pyx_f_9Potential_wigner3j(int __pyx_v_j1, int __pyx_v_j2, int __
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("wigner3j", 0);
 
-  /* "Potential.pyx":56
+  /* "Potential.pyx":62
  * cdef double wigner3j(int j1, int j2, int j3, int m1, int m2, int m3):
  *     cdef double ret_val
  *     ret_val = clebsch(j1, j2, j3, m1, m2, -m3)             # <<<<<<<<<<<<<<
@@ -1987,7 +1796,7 @@ static double __pyx_f_9Potential_wigner3j(int __pyx_v_j1, int __pyx_v_j2, int __
  */
   __pyx_v_ret_val = __pyx_f_9Potential_clebsch(__pyx_v_j1, __pyx_v_j2, __pyx_v_j3, __pyx_v_m1, __pyx_v_m2, (-__pyx_v_m3));
 
-  /* "Potential.pyx":57
+  /* "Potential.pyx":63
  *     cdef double ret_val
  *     ret_val = clebsch(j1, j2, j3, m1, m2, -m3)
  *     ret_val *= (-1.)**(-j1+j2+m3)             # <<<<<<<<<<<<<<
@@ -1996,7 +1805,7 @@ static double __pyx_f_9Potential_wigner3j(int __pyx_v_j1, int __pyx_v_j2, int __
  */
   __pyx_v_ret_val = (__pyx_v_ret_val * pow(-1., ((double)(((-__pyx_v_j1) + __pyx_v_j2) + __pyx_v_m3))));
 
-  /* "Potential.pyx":58
+  /* "Potential.pyx":64
  *     ret_val = clebsch(j1, j2, j3, m1, m2, -m3)
  *     ret_val *= (-1.)**(-j1+j2+m3)
  *     ret_val *= (2*j3+1)**(-1/2.)             # <<<<<<<<<<<<<<
@@ -2005,7 +1814,7 @@ static double __pyx_f_9Potential_wigner3j(int __pyx_v_j1, int __pyx_v_j2, int __
  */
   __pyx_v_ret_val = (__pyx_v_ret_val * pow(((double)((2 * __pyx_v_j3) + 1)), (-1.0 / 2.)));
 
-  /* "Potential.pyx":59
+  /* "Potential.pyx":65
  *     ret_val *= (-1.)**(-j1+j2+m3)
  *     ret_val *= (2*j3+1)**(-1/2.)
  *     return ret_val             # <<<<<<<<<<<<<<
@@ -2015,7 +1824,7 @@ static double __pyx_f_9Potential_wigner3j(int __pyx_v_j1, int __pyx_v_j2, int __
   __pyx_r = __pyx_v_ret_val;
   goto __pyx_L0;
 
-  /* "Potential.pyx":54
+  /* "Potential.pyx":60
  *     return C
  * 
  * cdef double wigner3j(int j1, int j2, int j3, int m1, int m2, int m3):             # <<<<<<<<<<<<<<
@@ -2029,17 +1838,551 @@ static double __pyx_f_9Potential_wigner3j(int __pyx_v_j1, int __pyx_v_j2, int __
   return __pyx_r;
 }
 
-/* "Potential.pyx":63
+/* "Potential.pyx":69
  * 
  * 
- * def H2_Plus_Potential(double r, int l, int l_prime, int m, double R_o):             # <<<<<<<<<<<<<<
+ * cpdef double H2_Plus_Potential(double r, int l, int l_prime, int m, double R_o):             # <<<<<<<<<<<<<<
  *     R_o = R_o / 2.0
  * 
  */
 
+static PyObject *__pyx_pw_9Potential_1H2_Plus_Potential(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static double __pyx_f_9Potential_H2_Plus_Potential(double __pyx_v_r, int __pyx_v_l, int __pyx_v_l_prime, int __pyx_v_m, double __pyx_v_R_o, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  double __pyx_v_potential_value;
+  PyObject *__pyx_v_lamda = NULL;
+  double __pyx_v_coef;
+  double __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  double __pyx_t_7;
+  Py_ssize_t __pyx_t_8;
+  PyObject *(*__pyx_t_9)(PyObject *);
+  int __pyx_t_10;
+  PyObject *__pyx_t_11 = NULL;
+  PyObject *__pyx_t_12 = NULL;
+  PyObject *__pyx_t_13 = NULL;
+  __Pyx_RefNannySetupContext("H2_Plus_Potential", 0);
+
+  /* "Potential.pyx":70
+ * 
+ * cpdef double H2_Plus_Potential(double r, int l, int l_prime, int m, double R_o):
+ *     R_o = R_o / 2.0             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double potential_value = 0.0
+ */
+  __pyx_v_R_o = (__pyx_v_R_o / 2.0);
+
+  /* "Potential.pyx":72
+ *     R_o = R_o / 2.0
+ * 
+ *     cdef double potential_value = 0.0             # <<<<<<<<<<<<<<
+ * 
+ *     if abs(m) > l or abs(m) > l_prime:
+ */
+  __pyx_v_potential_value = 0.0;
+
+  /* "Potential.pyx":74
+ *     cdef double potential_value = 0.0
+ * 
+ *     if abs(m) > l or abs(m) > l_prime:             # <<<<<<<<<<<<<<
+ *         if l == l_prime:
+ *             return 0.5*l*(l+1)*pow(r,-2)
+ */
+  __pyx_t_2 = abs(__pyx_v_m); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_3 = ((__pyx_t_2 > __pyx_v_l) != 0);
+  if (!__pyx_t_3) {
+  } else {
+    __pyx_t_1 = __pyx_t_3;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_2 = abs(__pyx_v_m); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_3 = ((__pyx_t_2 > __pyx_v_l_prime) != 0);
+  __pyx_t_1 = __pyx_t_3;
+  __pyx_L4_bool_binop_done:;
+  if (__pyx_t_1) {
+
+    /* "Potential.pyx":75
+ * 
+ *     if abs(m) > l or abs(m) > l_prime:
+ *         if l == l_prime:             # <<<<<<<<<<<<<<
+ *             return 0.5*l*(l+1)*pow(r,-2)
+ *         else:
+ */
+    __pyx_t_1 = ((__pyx_v_l == __pyx_v_l_prime) != 0);
+    if (__pyx_t_1) {
+
+      /* "Potential.pyx":76
+ *     if abs(m) > l or abs(m) > l_prime:
+ *         if l == l_prime:
+ *             return 0.5*l*(l+1)*pow(r,-2)             # <<<<<<<<<<<<<<
+ *         else:
+ *             return 0.0
+ */
+      __pyx_t_4 = PyFloat_FromDouble(((0.5 * __pyx_v_l) * (__pyx_v_l + 1))); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 76, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_6 = __Pyx_PyNumber_Power2(__pyx_t_5, __pyx_int_neg_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 76, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_5 = PyNumber_Multiply(__pyx_t_4, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 76, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_r = __pyx_t_7;
+      goto __pyx_L0;
+
+      /* "Potential.pyx":75
+ * 
+ *     if abs(m) > l or abs(m) > l_prime:
+ *         if l == l_prime:             # <<<<<<<<<<<<<<
+ *             return 0.5*l*(l+1)*pow(r,-2)
+ *         else:
+ */
+    }
+
+    /* "Potential.pyx":78
+ *             return 0.5*l*(l+1)*pow(r,-2)
+ *         else:
+ *             return 0.0             # <<<<<<<<<<<<<<
+ * 
+ *     if r <= R_o:
+ */
+    /*else*/ {
+      __pyx_r = 0.0;
+      goto __pyx_L0;
+    }
+
+    /* "Potential.pyx":74
+ *     cdef double potential_value = 0.0
+ * 
+ *     if abs(m) > l or abs(m) > l_prime:             # <<<<<<<<<<<<<<
+ *         if l == l_prime:
+ *             return 0.5*l*(l+1)*pow(r,-2)
+ */
+  }
+
+  /* "Potential.pyx":80
+ *             return 0.0
+ * 
+ *     if r <= R_o:             # <<<<<<<<<<<<<<
+ *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
+ *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
+ */
+  __pyx_t_1 = ((__pyx_v_r <= __pyx_v_R_o) != 0);
+  if (__pyx_t_1) {
+
+    /* "Potential.pyx":81
+ * 
+ *     if r <= R_o:
+ *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):             # <<<<<<<<<<<<<<
+ *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
+ *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef
+ */
+    __pyx_t_2 = abs((__pyx_v_l - __pyx_v_l_prime)); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = __Pyx_PyInt_From_long(((__pyx_v_l + __pyx_v_l_prime) + 2)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_6);
+    PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_6);
+    __Pyx_INCREF(__pyx_int_2);
+    __Pyx_GIVEREF(__pyx_int_2);
+    PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_int_2);
+    __pyx_t_5 = 0;
+    __pyx_t_6 = 0;
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (likely(PyList_CheckExact(__pyx_t_6)) || PyTuple_CheckExact(__pyx_t_6)) {
+      __pyx_t_4 = __pyx_t_6; __Pyx_INCREF(__pyx_t_4); __pyx_t_8 = 0;
+      __pyx_t_9 = NULL;
+    } else {
+      __pyx_t_8 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_9 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 81, __pyx_L1_error)
+    }
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    for (;;) {
+      if (likely(!__pyx_t_9)) {
+        if (likely(PyList_CheckExact(__pyx_t_4))) {
+          if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_4)) break;
+          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+          __pyx_t_6 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 81, __pyx_L1_error)
+          #else
+          __pyx_t_6 = PySequence_ITEM(__pyx_t_4, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_6);
+          #endif
+        } else {
+          if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
+          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+          __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 81, __pyx_L1_error)
+          #else
+          __pyx_t_6 = PySequence_ITEM(__pyx_t_4, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_6);
+          #endif
+        }
+      } else {
+        __pyx_t_6 = __pyx_t_9(__pyx_t_4);
+        if (unlikely(!__pyx_t_6)) {
+          PyObject* exc_type = PyErr_Occurred();
+          if (exc_type) {
+            if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+            else __PYX_ERR(0, 81, __pyx_L1_error)
+          }
+          break;
+        }
+        __Pyx_GOTREF(__pyx_t_6);
+      }
+      __Pyx_XDECREF_SET(__pyx_v_lamda, __pyx_t_6);
+      __pyx_t_6 = 0;
+
+      /* "Potential.pyx":82
+ *     if r <= R_o:
+ *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
+ *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)             # <<<<<<<<<<<<<<
+ *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef
+ *     else:
+ */
+      __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_lamda); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 82, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_v_lamda); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 82, __pyx_L1_error)
+      __pyx_v_coef = (__pyx_f_9Potential_wigner3j(__pyx_v_l, __pyx_t_2, __pyx_v_l_prime, 0, 0, 0) * __pyx_f_9Potential_wigner3j(__pyx_v_l, __pyx_t_10, __pyx_v_l_prime, (-__pyx_v_m), 0, __pyx_v_m));
+
+      /* "Potential.pyx":83
+ *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
+ *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
+ *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef             # <<<<<<<<<<<<<<
+ *     else:
+ *          for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
+ */
+      __pyx_t_6 = PyFloat_FromDouble(__pyx_v_potential_value); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 83, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 83, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_11 = __Pyx_PyNumber_Power2(__pyx_t_5, __pyx_v_lamda); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 83, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_R_o); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 83, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_12 = __Pyx_PyInt_AddObjC(__pyx_v_lamda, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 83, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_12);
+      __pyx_t_13 = __Pyx_PyNumber_Power2(__pyx_t_5, __pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 83, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __pyx_t_12 = __Pyx_PyNumber_Divide(__pyx_t_11, __pyx_t_13); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 83, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_12);
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __pyx_t_13 = PyFloat_FromDouble(__pyx_v_coef); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 83, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __pyx_t_11 = PyNumber_Multiply(__pyx_t_12, __pyx_t_13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 83, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __pyx_t_13 = PyNumber_InPlaceAdd(__pyx_t_6, __pyx_t_11); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 83, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_t_13); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 83, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __pyx_v_potential_value = __pyx_t_7;
+
+      /* "Potential.pyx":81
+ * 
+ *     if r <= R_o:
+ *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):             # <<<<<<<<<<<<<<
+ *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
+ *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef
+ */
+    }
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+    /* "Potential.pyx":80
+ *             return 0.0
+ * 
+ *     if r <= R_o:             # <<<<<<<<<<<<<<
+ *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
+ *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
+ */
+    goto __pyx_L7;
+  }
+
+  /* "Potential.pyx":85
+ *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef
+ *     else:
+ *          for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):             # <<<<<<<<<<<<<<
+ *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
+ *             potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef
+ */
+  /*else*/ {
+    __pyx_t_10 = abs((__pyx_v_l - __pyx_v_l_prime)); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 85, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_t_10); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_13 = __Pyx_PyInt_From_long(((__pyx_v_l + __pyx_v_l_prime) + 2)); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __pyx_t_11 = PyTuple_New(3); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_13);
+    PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_t_13);
+    __Pyx_INCREF(__pyx_int_2);
+    __Pyx_GIVEREF(__pyx_int_2);
+    PyTuple_SET_ITEM(__pyx_t_11, 2, __pyx_int_2);
+    __pyx_t_4 = 0;
+    __pyx_t_13 = 0;
+    __pyx_t_13 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_11, NULL); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    if (likely(PyList_CheckExact(__pyx_t_13)) || PyTuple_CheckExact(__pyx_t_13)) {
+      __pyx_t_11 = __pyx_t_13; __Pyx_INCREF(__pyx_t_11); __pyx_t_8 = 0;
+      __pyx_t_9 = NULL;
+    } else {
+      __pyx_t_8 = -1; __pyx_t_11 = PyObject_GetIter(__pyx_t_13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 85, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __pyx_t_9 = Py_TYPE(__pyx_t_11)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 85, __pyx_L1_error)
+    }
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+    for (;;) {
+      if (likely(!__pyx_t_9)) {
+        if (likely(PyList_CheckExact(__pyx_t_11))) {
+          if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_11)) break;
+          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+          __pyx_t_13 = PyList_GET_ITEM(__pyx_t_11, __pyx_t_8); __Pyx_INCREF(__pyx_t_13); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 85, __pyx_L1_error)
+          #else
+          __pyx_t_13 = PySequence_ITEM(__pyx_t_11, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 85, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_13);
+          #endif
+        } else {
+          if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_11)) break;
+          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+          __pyx_t_13 = PyTuple_GET_ITEM(__pyx_t_11, __pyx_t_8); __Pyx_INCREF(__pyx_t_13); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 85, __pyx_L1_error)
+          #else
+          __pyx_t_13 = PySequence_ITEM(__pyx_t_11, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 85, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_13);
+          #endif
+        }
+      } else {
+        __pyx_t_13 = __pyx_t_9(__pyx_t_11);
+        if (unlikely(!__pyx_t_13)) {
+          PyObject* exc_type = PyErr_Occurred();
+          if (exc_type) {
+            if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+            else __PYX_ERR(0, 85, __pyx_L1_error)
+          }
+          break;
+        }
+        __Pyx_GOTREF(__pyx_t_13);
+      }
+      __Pyx_XDECREF_SET(__pyx_v_lamda, __pyx_t_13);
+      __pyx_t_13 = 0;
+
+      /* "Potential.pyx":86
+ *     else:
+ *          for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
+ *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)             # <<<<<<<<<<<<<<
+ *             potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef
+ * 
+ */
+      __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_v_lamda); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_lamda); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L1_error)
+      __pyx_v_coef = (__pyx_f_9Potential_wigner3j(__pyx_v_l, __pyx_t_10, __pyx_v_l_prime, 0, 0, 0) * __pyx_f_9Potential_wigner3j(__pyx_v_l, __pyx_t_2, __pyx_v_l_prime, (-__pyx_v_m), 0, __pyx_v_m));
+
+      /* "Potential.pyx":87
+ *          for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
+ *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
+ *             potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef             # <<<<<<<<<<<<<<
+ * 
+ *     potential_value = -2.0 * pow(-1.0, m)* sqrt((2.0*l+1.0)*(2.0*l_prime+1.0)) * potential_value
+ */
+      __pyx_t_13 = PyFloat_FromDouble(__pyx_v_potential_value); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __pyx_t_4 = PyFloat_FromDouble(__pyx_v_R_o); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_6 = __Pyx_PyNumber_Power2(__pyx_t_4, __pyx_v_lamda); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_4 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_12 = __Pyx_PyInt_AddObjC(__pyx_v_lamda, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_12);
+      __pyx_t_5 = __Pyx_PyNumber_Power2(__pyx_t_4, __pyx_t_12); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __pyx_t_12 = __Pyx_PyNumber_Divide(__pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_12);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_coef); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_6 = PyNumber_Multiply(__pyx_t_12, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_5 = PyNumber_InPlaceAdd(__pyx_t_13, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_v_potential_value = __pyx_t_7;
+
+      /* "Potential.pyx":85
+ *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef
+ *     else:
+ *          for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):             # <<<<<<<<<<<<<<
+ *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
+ *             potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef
+ */
+    }
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  }
+  __pyx_L7:;
+
+  /* "Potential.pyx":89
+ *             potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef
+ * 
+ *     potential_value = -2.0 * pow(-1.0, m)* sqrt((2.0*l+1.0)*(2.0*l_prime+1.0)) * potential_value             # <<<<<<<<<<<<<<
+ * 
+ *     if l == l_prime:
+ */
+  __pyx_t_11 = __Pyx_PyInt_From_int(__pyx_v_m); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_5 = __Pyx_PyNumber_Power2(__pyx_float_neg_1_0, __pyx_t_11); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_11 = PyNumber_Multiply(__pyx_float_neg_2_0, __pyx_t_5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_13 = PyFloat_FromDouble((((2.0 * __pyx_v_l) + 1.0) * ((2.0 * __pyx_v_l_prime) + 1.0))); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_13);
+  __pyx_t_12 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
+    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_6);
+    if (likely(__pyx_t_12)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      __Pyx_INCREF(__pyx_t_12);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_6, function);
+    }
+  }
+  __pyx_t_5 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_12, __pyx_t_13) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_13);
+  __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_6 = PyNumber_Multiply(__pyx_t_11, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_potential_value); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_11 = PyNumber_Multiply(__pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_t_11); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_v_potential_value = __pyx_t_7;
+
+  /* "Potential.pyx":91
+ *     potential_value = -2.0 * pow(-1.0, m)* sqrt((2.0*l+1.0)*(2.0*l_prime+1.0)) * potential_value
+ * 
+ *     if l == l_prime:             # <<<<<<<<<<<<<<
+ *         potential_value += 0.5*l*(l+1)*pow(r,-2)
+ * 
+ */
+  __pyx_t_1 = ((__pyx_v_l == __pyx_v_l_prime) != 0);
+  if (__pyx_t_1) {
+
+    /* "Potential.pyx":92
+ * 
+ *     if l == l_prime:
+ *         potential_value += 0.5*l*(l+1)*pow(r,-2)             # <<<<<<<<<<<<<<
+ * 
+ *     return potential_value
+ */
+    __pyx_t_11 = PyFloat_FromDouble(__pyx_v_potential_value); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
+    __pyx_t_5 = PyFloat_FromDouble(((0.5 * __pyx_v_l) * (__pyx_v_l + 1))); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_13 = __Pyx_PyNumber_Power2(__pyx_t_6, __pyx_int_neg_2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_6 = PyNumber_Multiply(__pyx_t_5, __pyx_t_13); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+    __pyx_t_13 = PyNumber_InPlaceAdd(__pyx_t_11, __pyx_t_6); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_t_13); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+    __pyx_v_potential_value = __pyx_t_7;
+
+    /* "Potential.pyx":91
+ *     potential_value = -2.0 * pow(-1.0, m)* sqrt((2.0*l+1.0)*(2.0*l_prime+1.0)) * potential_value
+ * 
+ *     if l == l_prime:             # <<<<<<<<<<<<<<
+ *         potential_value += 0.5*l*(l+1)*pow(r,-2)
+ * 
+ */
+  }
+
+  /* "Potential.pyx":94
+ *         potential_value += 0.5*l*(l+1)*pow(r,-2)
+ * 
+ *     return potential_value             # <<<<<<<<<<<<<<
+ * 
+ */
+  __pyx_r = __pyx_v_potential_value;
+  goto __pyx_L0;
+
+  /* "Potential.pyx":69
+ * 
+ * 
+ * cpdef double H2_Plus_Potential(double r, int l, int l_prime, int m, double R_o):             # <<<<<<<<<<<<<<
+ *     R_o = R_o / 2.0
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_13);
+  __Pyx_WriteUnraisable("Potential.H2_Plus_Potential", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_lamda);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
 /* Python wrapper */
 static PyObject *__pyx_pw_9Potential_1H2_Plus_Potential(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_9Potential_1H2_Plus_Potential = {"H2_Plus_Potential", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_9Potential_1H2_Plus_Potential, METH_VARARGS|METH_KEYWORDS, 0};
 static PyObject *__pyx_pw_9Potential_1H2_Plus_Potential(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   double __pyx_v_r;
   int __pyx_v_l;
@@ -2078,29 +2421,29 @@ static PyObject *__pyx_pw_9Potential_1H2_Plus_Potential(PyObject *__pyx_self, Py
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_l)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("H2_Plus_Potential", 1, 5, 5, 1); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("H2_Plus_Potential", 1, 5, 5, 1); __PYX_ERR(0, 69, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_l_prime)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("H2_Plus_Potential", 1, 5, 5, 2); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("H2_Plus_Potential", 1, 5, 5, 2); __PYX_ERR(0, 69, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_m)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("H2_Plus_Potential", 1, 5, 5, 3); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("H2_Plus_Potential", 1, 5, 5, 3); __PYX_ERR(0, 69, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_R_o)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("H2_Plus_Potential", 1, 5, 5, 4); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("H2_Plus_Potential", 1, 5, 5, 4); __PYX_ERR(0, 69, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "H2_Plus_Potential") < 0)) __PYX_ERR(0, 63, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "H2_Plus_Potential") < 0)) __PYX_ERR(0, 69, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
@@ -2111,15 +2454,15 @@ static PyObject *__pyx_pw_9Potential_1H2_Plus_Potential(PyObject *__pyx_self, Py
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
       values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
     }
-    __pyx_v_r = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_r == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
-    __pyx_v_l = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_l == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
-    __pyx_v_l_prime = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_l_prime == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
-    __pyx_v_m = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_m == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
-    __pyx_v_R_o = __pyx_PyFloat_AsDouble(values[4]); if (unlikely((__pyx_v_R_o == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
+    __pyx_v_r = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_r == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
+    __pyx_v_l = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_l == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
+    __pyx_v_l_prime = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_l_prime == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
+    __pyx_v_m = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_m == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
+    __pyx_v_R_o = __pyx_PyFloat_AsDouble(values[4]); if (unlikely((__pyx_v_R_o == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("H2_Plus_Potential", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 63, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("H2_Plus_Potential", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 69, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("Potential.H2_Plus_Potential", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2133,550 +2476,30 @@ static PyObject *__pyx_pw_9Potential_1H2_Plus_Potential(PyObject *__pyx_self, Py
 }
 
 static PyObject *__pyx_pf_9Potential_H2_Plus_Potential(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_r, int __pyx_v_l, int __pyx_v_l_prime, int __pyx_v_m, double __pyx_v_R_o) {
-  double __pyx_v_potential_value;
-  PyObject *__pyx_v_lamda = NULL;
-  double __pyx_v_coef;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  Py_ssize_t __pyx_t_7;
-  PyObject *(*__pyx_t_8)(PyObject *);
-  int __pyx_t_9;
-  PyObject *__pyx_t_10 = NULL;
-  PyObject *__pyx_t_11 = NULL;
-  PyObject *__pyx_t_12 = NULL;
-  double __pyx_t_13;
+  PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("H2_Plus_Potential", 0);
-
-  /* "Potential.pyx":64
- * 
- * def H2_Plus_Potential(double r, int l, int l_prime, int m, double R_o):
- *     R_o = R_o / 2.0             # <<<<<<<<<<<<<<
- * 
- *     cdef double potential_value = 0.0
- */
-  __pyx_v_R_o = (__pyx_v_R_o / 2.0);
-
-  /* "Potential.pyx":66
- *     R_o = R_o / 2.0
- * 
- *     cdef double potential_value = 0.0             # <<<<<<<<<<<<<<
- * 
- *     if abs(m) > l or abs(m) > l_prime:
- */
-  __pyx_v_potential_value = 0.0;
-
-  /* "Potential.pyx":68
- *     cdef double potential_value = 0.0
- * 
- *     if abs(m) > l or abs(m) > l_prime:             # <<<<<<<<<<<<<<
- *         if l == l_prime:
- *             return 0.5*l*(l+1)*pow(r,-2)
- */
-  __pyx_t_2 = abs(__pyx_v_m); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 68, __pyx_L1_error)
-  __pyx_t_3 = ((__pyx_t_2 > __pyx_v_l) != 0);
-  if (!__pyx_t_3) {
-  } else {
-    __pyx_t_1 = __pyx_t_3;
-    goto __pyx_L4_bool_binop_done;
-  }
-  __pyx_t_2 = abs(__pyx_v_m); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 68, __pyx_L1_error)
-  __pyx_t_3 = ((__pyx_t_2 > __pyx_v_l_prime) != 0);
-  __pyx_t_1 = __pyx_t_3;
-  __pyx_L4_bool_binop_done:;
-  if (__pyx_t_1) {
-
-    /* "Potential.pyx":69
- * 
- *     if abs(m) > l or abs(m) > l_prime:
- *         if l == l_prime:             # <<<<<<<<<<<<<<
- *             return 0.5*l*(l+1)*pow(r,-2)
- *         else:
- */
-    __pyx_t_1 = ((__pyx_v_l == __pyx_v_l_prime) != 0);
-    if (__pyx_t_1) {
-
-      /* "Potential.pyx":70
- *     if abs(m) > l or abs(m) > l_prime:
- *         if l == l_prime:
- *             return 0.5*l*(l+1)*pow(r,-2)             # <<<<<<<<<<<<<<
- *         else:
- *             return 0.0
- */
-      __Pyx_XDECREF(__pyx_r);
-      __pyx_t_4 = PyFloat_FromDouble(((0.5 * __pyx_v_l) * (__pyx_v_l + 1))); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 70, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyNumber_Power2(__pyx_t_5, __pyx_int_neg_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 70, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = PyNumber_Multiply(__pyx_t_4, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 70, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_r = __pyx_t_5;
-      __pyx_t_5 = 0;
-      goto __pyx_L0;
-
-      /* "Potential.pyx":69
- * 
- *     if abs(m) > l or abs(m) > l_prime:
- *         if l == l_prime:             # <<<<<<<<<<<<<<
- *             return 0.5*l*(l+1)*pow(r,-2)
- *         else:
- */
-    }
-
-    /* "Potential.pyx":72
- *             return 0.5*l*(l+1)*pow(r,-2)
- *         else:
- *             return 0.0             # <<<<<<<<<<<<<<
- * 
- *     if r <= R_o:
- */
-    /*else*/ {
-      __Pyx_XDECREF(__pyx_r);
-      __Pyx_INCREF(__pyx_float_0_0);
-      __pyx_r = __pyx_float_0_0;
-      goto __pyx_L0;
-    }
-
-    /* "Potential.pyx":68
- *     cdef double potential_value = 0.0
- * 
- *     if abs(m) > l or abs(m) > l_prime:             # <<<<<<<<<<<<<<
- *         if l == l_prime:
- *             return 0.5*l*(l+1)*pow(r,-2)
- */
-  }
-
-  /* "Potential.pyx":74
- *             return 0.0
- * 
- *     if r <= R_o:             # <<<<<<<<<<<<<<
- *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
- *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
- */
-  __pyx_t_1 = ((__pyx_v_r <= __pyx_v_R_o) != 0);
-  if (__pyx_t_1) {
-
-    /* "Potential.pyx":75
- * 
- *     if r <= R_o:
- *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):             # <<<<<<<<<<<<<<
- *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
- *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef
- */
-    __pyx_t_2 = abs((__pyx_v_l - __pyx_v_l_prime)); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 75, __pyx_L1_error)
-    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 75, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_PyInt_From_long(((__pyx_v_l + __pyx_v_l_prime) + 2)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 75, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
-    __Pyx_GIVEREF(__pyx_t_6);
-    PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_6);
-    __Pyx_INCREF(__pyx_int_2);
-    __Pyx_GIVEREF(__pyx_int_2);
-    PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_int_2);
-    __pyx_t_5 = 0;
-    __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 75, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (likely(PyList_CheckExact(__pyx_t_6)) || PyTuple_CheckExact(__pyx_t_6)) {
-      __pyx_t_4 = __pyx_t_6; __Pyx_INCREF(__pyx_t_4); __pyx_t_7 = 0;
-      __pyx_t_8 = NULL;
-    } else {
-      __pyx_t_7 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_8 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 75, __pyx_L1_error)
-    }
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    for (;;) {
-      if (likely(!__pyx_t_8)) {
-        if (likely(PyList_CheckExact(__pyx_t_4))) {
-          if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_4)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_6 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_7); __Pyx_INCREF(__pyx_t_6); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 75, __pyx_L1_error)
-          #else
-          __pyx_t_6 = PySequence_ITEM(__pyx_t_4, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 75, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_6);
-          #endif
-        } else {
-          if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_7); __Pyx_INCREF(__pyx_t_6); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 75, __pyx_L1_error)
-          #else
-          __pyx_t_6 = PySequence_ITEM(__pyx_t_4, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 75, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_6);
-          #endif
-        }
-      } else {
-        __pyx_t_6 = __pyx_t_8(__pyx_t_4);
-        if (unlikely(!__pyx_t_6)) {
-          PyObject* exc_type = PyErr_Occurred();
-          if (exc_type) {
-            if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 75, __pyx_L1_error)
-          }
-          break;
-        }
-        __Pyx_GOTREF(__pyx_t_6);
-      }
-      __Pyx_XDECREF_SET(__pyx_v_lamda, __pyx_t_6);
-      __pyx_t_6 = 0;
-
-      /* "Potential.pyx":76
- *     if r <= R_o:
- *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
- *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)             # <<<<<<<<<<<<<<
- *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef
- *     else:
- */
-      __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_lamda); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
-      __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_v_lamda); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
-      __pyx_v_coef = (__pyx_f_9Potential_wigner3j(__pyx_v_l, __pyx_t_2, __pyx_v_l_prime, 0, 0, 0) * __pyx_f_9Potential_wigner3j(__pyx_v_l, __pyx_t_9, __pyx_v_l_prime, (-__pyx_v_m), 0, __pyx_v_m));
-
-      /* "Potential.pyx":77
- *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
- *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
- *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef             # <<<<<<<<<<<<<<
- *     else:
- *          for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
- */
-      __pyx_t_6 = PyFloat_FromDouble(__pyx_v_potential_value); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_10 = __Pyx_PyNumber_Power2(__pyx_t_5, __pyx_v_lamda); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_10);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_R_o); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_11 = __Pyx_PyInt_AddObjC(__pyx_v_lamda, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = __Pyx_PyNumber_Power2(__pyx_t_5, __pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = __Pyx_PyNumber_Divide(__pyx_t_10, __pyx_t_12); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = PyFloat_FromDouble(__pyx_v_coef); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_10 = PyNumber_Multiply(__pyx_t_11, __pyx_t_12); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_10);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = PyNumber_InPlaceAdd(__pyx_t_6, __pyx_t_10); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __pyx_t_13 = __pyx_PyFloat_AsDouble(__pyx_t_12); if (unlikely((__pyx_t_13 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_v_potential_value = __pyx_t_13;
-
-      /* "Potential.pyx":75
- * 
- *     if r <= R_o:
- *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):             # <<<<<<<<<<<<<<
- *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
- *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef
- */
-    }
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
-    /* "Potential.pyx":74
- *             return 0.0
- * 
- *     if r <= R_o:             # <<<<<<<<<<<<<<
- *         for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
- *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
- */
-    goto __pyx_L7;
-  }
-
-  /* "Potential.pyx":79
- *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef
- *     else:
- *          for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):             # <<<<<<<<<<<<<<
- *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
- *             potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef
- */
-  /*else*/ {
-    __pyx_t_9 = abs((__pyx_v_l - __pyx_v_l_prime)); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 79, __pyx_L1_error)
-    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 79, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_12 = __Pyx_PyInt_From_long(((__pyx_v_l + __pyx_v_l_prime) + 2)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 79, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_10 = PyTuple_New(3); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 79, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_10);
-    __Pyx_GIVEREF(__pyx_t_4);
-    PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_12);
-    PyTuple_SET_ITEM(__pyx_t_10, 1, __pyx_t_12);
-    __Pyx_INCREF(__pyx_int_2);
-    __Pyx_GIVEREF(__pyx_int_2);
-    PyTuple_SET_ITEM(__pyx_t_10, 2, __pyx_int_2);
-    __pyx_t_4 = 0;
-    __pyx_t_12 = 0;
-    __pyx_t_12 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_10, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 79, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (likely(PyList_CheckExact(__pyx_t_12)) || PyTuple_CheckExact(__pyx_t_12)) {
-      __pyx_t_10 = __pyx_t_12; __Pyx_INCREF(__pyx_t_10); __pyx_t_7 = 0;
-      __pyx_t_8 = NULL;
-    } else {
-      __pyx_t_7 = -1; __pyx_t_10 = PyObject_GetIter(__pyx_t_12); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 79, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_10);
-      __pyx_t_8 = Py_TYPE(__pyx_t_10)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 79, __pyx_L1_error)
-    }
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    for (;;) {
-      if (likely(!__pyx_t_8)) {
-        if (likely(PyList_CheckExact(__pyx_t_10))) {
-          if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_10)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_12 = PyList_GET_ITEM(__pyx_t_10, __pyx_t_7); __Pyx_INCREF(__pyx_t_12); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 79, __pyx_L1_error)
-          #else
-          __pyx_t_12 = PySequence_ITEM(__pyx_t_10, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 79, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_12);
-          #endif
-        } else {
-          if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_10)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_12 = PyTuple_GET_ITEM(__pyx_t_10, __pyx_t_7); __Pyx_INCREF(__pyx_t_12); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 79, __pyx_L1_error)
-          #else
-          __pyx_t_12 = PySequence_ITEM(__pyx_t_10, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 79, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_12);
-          #endif
-        }
-      } else {
-        __pyx_t_12 = __pyx_t_8(__pyx_t_10);
-        if (unlikely(!__pyx_t_12)) {
-          PyObject* exc_type = PyErr_Occurred();
-          if (exc_type) {
-            if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 79, __pyx_L1_error)
-          }
-          break;
-        }
-        __Pyx_GOTREF(__pyx_t_12);
-      }
-      __Pyx_XDECREF_SET(__pyx_v_lamda, __pyx_t_12);
-      __pyx_t_12 = 0;
-
-      /* "Potential.pyx":80
- *     else:
- *          for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
- *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)             # <<<<<<<<<<<<<<
- *             potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef
- * 
- */
-      __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_v_lamda); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L1_error)
-      __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_lamda); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L1_error)
-      __pyx_v_coef = (__pyx_f_9Potential_wigner3j(__pyx_v_l, __pyx_t_9, __pyx_v_l_prime, 0, 0, 0) * __pyx_f_9Potential_wigner3j(__pyx_v_l, __pyx_t_2, __pyx_v_l_prime, (-__pyx_v_m), 0, __pyx_v_m));
-
-      /* "Potential.pyx":81
- *          for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):
- *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
- *             potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef             # <<<<<<<<<<<<<<
- * 
- *     potential_value = -2.0 * pow(-1.0, m)* np.sqrt((2.0*l+1.0)*(2.0*l_prime+1.0)) * potential_value
- */
-      __pyx_t_12 = PyFloat_FromDouble(__pyx_v_potential_value); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_4 = PyFloat_FromDouble(__pyx_v_R_o); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_6 = __Pyx_PyNumber_Power2(__pyx_t_4, __pyx_v_lamda); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_11 = __Pyx_PyInt_AddObjC(__pyx_v_lamda, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_5 = __Pyx_PyNumber_Power2(__pyx_t_4, __pyx_t_11); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = __Pyx_PyNumber_Divide(__pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_coef); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = PyNumber_Multiply(__pyx_t_11, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = PyNumber_InPlaceAdd(__pyx_t_12, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_13 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_13 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_v_potential_value = __pyx_t_13;
-
-      /* "Potential.pyx":79
- *             potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef
- *     else:
- *          for lamda in range(abs(l-l_prime), l + l_prime + 2, 2):             # <<<<<<<<<<<<<<
- *             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
- *             potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef
- */
-    }
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  }
-  __pyx_L7:;
-
-  /* "Potential.pyx":83
- *             potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef
- * 
- *     potential_value = -2.0 * pow(-1.0, m)* np.sqrt((2.0*l+1.0)*(2.0*l_prime+1.0)) * potential_value             # <<<<<<<<<<<<<<
- * 
- *     if l == l_prime:
- */
-  __pyx_t_10 = __Pyx_PyInt_From_int(__pyx_v_m); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_5 = __Pyx_PyNumber_Power2(__pyx_float_neg_1_0, __pyx_t_10); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = PyNumber_Multiply(__pyx_float_neg_2_0, __pyx_t_5); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_10);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyFloat_FromDouble((((2.0 * __pyx_v_l) + 1.0) * ((2.0 * __pyx_v_l_prime) + 1.0))); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_11 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_12))) {
-    __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_12);
-    if (likely(__pyx_t_11)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_12);
-      __Pyx_INCREF(__pyx_t_11);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_12, function);
-    }
-  }
-  __pyx_t_5 = (__pyx_t_11) ? __Pyx_PyObject_Call2Args(__pyx_t_12, __pyx_t_11, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = PyNumber_Multiply(__pyx_t_10, __pyx_t_5); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_potential_value); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_10 = PyNumber_Multiply(__pyx_t_12, __pyx_t_5); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_10);
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_13 = __pyx_PyFloat_AsDouble(__pyx_t_10); if (unlikely((__pyx_t_13 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_v_potential_value = __pyx_t_13;
-
-  /* "Potential.pyx":85
- *     potential_value = -2.0 * pow(-1.0, m)* np.sqrt((2.0*l+1.0)*(2.0*l_prime+1.0)) * potential_value
- * 
- *     if l == l_prime:             # <<<<<<<<<<<<<<
- *         potential_value += 0.5*l*(l+1)*pow(r,-2)
- * 
- */
-  __pyx_t_1 = ((__pyx_v_l == __pyx_v_l_prime) != 0);
-  if (__pyx_t_1) {
-
-    /* "Potential.pyx":86
- * 
- *     if l == l_prime:
- *         potential_value += 0.5*l*(l+1)*pow(r,-2)             # <<<<<<<<<<<<<<
- * 
- *     return potential_value
- */
-    __pyx_t_10 = PyFloat_FromDouble(__pyx_v_potential_value); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 86, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_5 = PyFloat_FromDouble(((0.5 * __pyx_v_l) * (__pyx_v_l + 1))); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 86, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_12 = PyFloat_FromDouble(__pyx_v_r); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 86, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_6 = __Pyx_PyNumber_Power2(__pyx_t_12, __pyx_int_neg_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 86, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __pyx_t_12 = PyNumber_Multiply(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 86, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = PyNumber_InPlaceAdd(__pyx_t_10, __pyx_t_12); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 86, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __pyx_t_13 = __pyx_PyFloat_AsDouble(__pyx_t_6); if (unlikely((__pyx_t_13 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_v_potential_value = __pyx_t_13;
-
-    /* "Potential.pyx":85
- *     potential_value = -2.0 * pow(-1.0, m)* np.sqrt((2.0*l+1.0)*(2.0*l_prime+1.0)) * potential_value
- * 
- *     if l == l_prime:             # <<<<<<<<<<<<<<
- *         potential_value += 0.5*l*(l+1)*pow(r,-2)
- * 
- */
-  }
-
-  /* "Potential.pyx":88
- *         potential_value += 0.5*l*(l+1)*pow(r,-2)
- * 
- *     return potential_value             # <<<<<<<<<<<<<<
- * 
- */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_potential_value); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 88, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_r = __pyx_t_6;
-  __pyx_t_6 = 0;
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_9Potential_H2_Plus_Potential(__pyx_v_r, __pyx_v_l, __pyx_v_l_prime, __pyx_v_m, __pyx_v_R_o, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
   goto __pyx_L0;
-
-  /* "Potential.pyx":63
- * 
- * 
- * def H2_Plus_Potential(double r, int l, int l_prime, int m, double R_o):             # <<<<<<<<<<<<<<
- *     R_o = R_o / 2.0
- * 
- */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_AddTraceback("Potential.H2_Plus_Potential", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_lamda);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
 static PyMethodDef __pyx_methods[] = {
+  {"H2_Plus_Potential", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_9Potential_1H2_Plus_Potential, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
@@ -2722,24 +2545,15 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_n_s_H2_Plus_Potential, __pyx_k_H2_Plus_Potential, sizeof(__pyx_k_H2_Plus_Potential), 0, 0, 1, 1},
-  {&__pyx_n_s_Potential, __pyx_k_Potential, sizeof(__pyx_k_Potential), 0, 0, 1, 1},
-  {&__pyx_kp_s_Potential_pyx, __pyx_k_Potential_pyx, sizeof(__pyx_k_Potential_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_R_o, __pyx_k_R_o, sizeof(__pyx_k_R_o), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-  {&__pyx_n_s_coef, __pyx_k_coef, sizeof(__pyx_k_coef), 0, 0, 1, 1},
-  {&__pyx_n_s_factorial, __pyx_k_factorial, sizeof(__pyx_k_factorial), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_l, __pyx_k_l, sizeof(__pyx_k_l), 0, 0, 1, 1},
   {&__pyx_n_s_l_prime, __pyx_k_l_prime, sizeof(__pyx_k_l_prime), 0, 0, 1, 1},
-  {&__pyx_n_s_lamda, __pyx_k_lamda, sizeof(__pyx_k_lamda), 0, 0, 1, 1},
   {&__pyx_n_s_m, __pyx_k_m, sizeof(__pyx_k_m), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_math, __pyx_k_math, sizeof(__pyx_k_math), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
-  {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
-  {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
-  {&__pyx_n_s_potential_value, __pyx_k_potential_value, sizeof(__pyx_k_potential_value), 0, 0, 1, 1},
   {&__pyx_n_s_r, __pyx_k_r, sizeof(__pyx_k_r), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_sqrt, __pyx_k_sqrt, sizeof(__pyx_k_sqrt), 0, 0, 1, 1},
@@ -2747,7 +2561,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 10, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2756,28 +2570,12 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
 static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
-
-  /* "Potential.pyx":63
- * 
- * 
- * def H2_Plus_Potential(double r, int l, int l_prime, int m, double R_o):             # <<<<<<<<<<<<<<
- *     R_o = R_o / 2.0
- * 
- */
-  __pyx_tuple_ = PyTuple_Pack(8, __pyx_n_s_r, __pyx_n_s_l, __pyx_n_s_l_prime, __pyx_n_s_m, __pyx_n_s_R_o, __pyx_n_s_potential_value, __pyx_n_s_lamda, __pyx_n_s_coef); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple_);
-  __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(5, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Potential_pyx, __pyx_n_s_H2_Plus_Potential, 63, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
-  __pyx_L1_error:;
-  __Pyx_RefNannyFinishContext();
-  return -1;
 }
 
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  __pyx_float_0_0 = PyFloat_FromDouble(0.0); if (unlikely(!__pyx_float_0_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_float_neg_1_0 = PyFloat_FromDouble(-1.0); if (unlikely(!__pyx_float_neg_1_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_float_neg_2_0 = PyFloat_FromDouble(-2.0); if (unlikely(!__pyx_float_neg_2_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -3051,50 +2849,29 @@ if (!__Pyx_RefNanny) {
   #endif
 
   /* "Potential.pyx":1
- * import numpy as np             # <<<<<<<<<<<<<<
- * from math import factorial
+ * from math import sqrt             # <<<<<<<<<<<<<<
  * 
+ * cdef double factorial_new(int x):
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "Potential.pyx":2
- * import numpy as np
- * from math import factorial             # <<<<<<<<<<<<<<
- * 
- * cdef double clebsch(int j1, int j2, int j3, int m1, int m2, int m3):
- */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_n_s_factorial);
-  __Pyx_GIVEREF(__pyx_n_s_factorial);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_factorial);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_math, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __Pyx_INCREF(__pyx_n_s_sqrt);
+  __Pyx_GIVEREF(__pyx_n_s_sqrt);
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_sqrt);
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_math, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_factorial); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_factorial, __pyx_t_1) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_sqrt, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Potential.pyx":63
+  /* "Potential.pyx":69
  * 
  * 
- * def H2_Plus_Potential(double r, int l, int l_prime, int m, double R_o):             # <<<<<<<<<<<<<<
+ * cpdef double H2_Plus_Potential(double r, int l, int l_prime, int m, double R_o):             # <<<<<<<<<<<<<<
  *     R_o = R_o / 2.0
- * 
- */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_9Potential_1H2_Plus_Potential, NULL, __pyx_n_s_Potential); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_H2_Plus_Potential, __pyx_t_2) < 0) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "Potential.pyx":1
- * import numpy as np             # <<<<<<<<<<<<<<
- * from math import factorial
  * 
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -3551,6 +3328,130 @@ static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
 #endif
 }
 
+/* PyIntBinop */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, int inplace, int zerodivision_check) {
+    (void)inplace;
+    (void)zerodivision_check;
+    #if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_CheckExact(op1))) {
+        const long b = intval;
+        long x;
+        long a = PyInt_AS_LONG(op1);
+            x = (long)((unsigned long)a + b);
+            if (likely((x^a) >= 0 || (x^b) >= 0))
+                return PyInt_FromLong(x);
+            return PyLong_Type.tp_as_number->nb_add(op1, op2);
+    }
+    #endif
+    #if CYTHON_USE_PYLONG_INTERNALS
+    if (likely(PyLong_CheckExact(op1))) {
+        const long b = intval;
+        long a, x;
+#ifdef HAVE_LONG_LONG
+        const PY_LONG_LONG llb = intval;
+        PY_LONG_LONG lla, llx;
+#endif
+        const digit* digits = ((PyLongObject*)op1)->ob_digit;
+        const Py_ssize_t size = Py_SIZE(op1);
+        if (likely(__Pyx_sst_abs(size) <= 1)) {
+            a = likely(size) ? digits[0] : 0;
+            if (size == -1) a = -a;
+        } else {
+            switch (size) {
+                case -2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case -3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case -4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                default: return PyLong_Type.tp_as_number->nb_add(op1, op2);
+            }
+        }
+                x = a + b;
+            return PyLong_FromLong(x);
+#ifdef HAVE_LONG_LONG
+        long_long:
+                llx = lla + llb;
+            return PyLong_FromLongLong(llx);
+#endif
+        
+        
+    }
+    #endif
+    if (PyFloat_CheckExact(op1)) {
+        const long b = intval;
+        double a = PyFloat_AS_DOUBLE(op1);
+            double result;
+            PyFPE_START_PROTECT("add", return NULL)
+            result = ((double)a) + (double)b;
+            PyFPE_END_PROTECT(result)
+            return PyFloat_FromDouble(result);
+    }
+    return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
+}
+#endif
+
 /* RaiseArgTupleInvalid */
 static void __Pyx_RaiseArgtupleInvalid(
     const char* func_name,
@@ -3692,130 +3593,6 @@ invalid_keyword:
 bad:
     return -1;
 }
-
-/* PyIntBinop */
-#if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, int inplace, int zerodivision_check) {
-    (void)inplace;
-    (void)zerodivision_check;
-    #if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_CheckExact(op1))) {
-        const long b = intval;
-        long x;
-        long a = PyInt_AS_LONG(op1);
-            x = (long)((unsigned long)a + b);
-            if (likely((x^a) >= 0 || (x^b) >= 0))
-                return PyInt_FromLong(x);
-            return PyLong_Type.tp_as_number->nb_add(op1, op2);
-    }
-    #endif
-    #if CYTHON_USE_PYLONG_INTERNALS
-    if (likely(PyLong_CheckExact(op1))) {
-        const long b = intval;
-        long a, x;
-#ifdef HAVE_LONG_LONG
-        const PY_LONG_LONG llb = intval;
-        PY_LONG_LONG lla, llx;
-#endif
-        const digit* digits = ((PyLongObject*)op1)->ob_digit;
-        const Py_ssize_t size = Py_SIZE(op1);
-        if (likely(__Pyx_sst_abs(size) <= 1)) {
-            a = likely(size) ? digits[0] : 0;
-            if (size == -1) a = -a;
-        } else {
-            switch (size) {
-                case -2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case -3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case -4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                default: return PyLong_Type.tp_as_number->nb_add(op1, op2);
-            }
-        }
-                x = a + b;
-            return PyLong_FromLong(x);
-#ifdef HAVE_LONG_LONG
-        long_long:
-                llx = lla + llb;
-            return PyLong_FromLongLong(llx);
-#endif
-        
-        
-    }
-    #endif
-    if (PyFloat_CheckExact(op1)) {
-        const long b = intval;
-        double a = PyFloat_AS_DOUBLE(op1);
-            double result;
-            PyFPE_START_PROTECT("add", return NULL)
-            result = ((double)a) + (double)b;
-            PyFPE_END_PROTECT(result)
-            return PyFloat_FromDouble(result);
-    }
-    return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
-}
-#endif
 
 /* Import */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
@@ -4126,37 +3903,6 @@ bad:
     }
 
 /* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(int) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
-                                     little, !is_unsigned);
-    }
-}
-
-/* CIntToPy */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
@@ -4183,6 +3929,37 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
         return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(int) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(int) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(int) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(int),
                                      little, !is_unsigned);
     }
 }

@@ -449,7 +449,7 @@ def Length_Gauge_Right_Circular_Matrix(input_par):
     Length_Gauge_Int_Hamiltonian.assemblyEnd()
     return Length_Gauge_Int_Hamiltonian 
 
-def Length_Gauge_Left_Circular_Matirx(input_par):
+def Length_Gauge_Left_Circular_Matrix(input_par):
     
     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
 

@@ -22,7 +22,7 @@ if True:
 
 def Eigen_Value_Solver(Hamiltonian, number_of_eigenvalues, input_par, m, Viewer):
     if rank == 0:
-        print("Diagonalizing")
+        print("Diagonalizing \n ")
         
     EV_Solver = SLEPc.EPS().create(comm=PETSc.COMM_WORLD)
     EV_Solver.setOperators(Hamiltonian) ##pass the hamiltonian to the 

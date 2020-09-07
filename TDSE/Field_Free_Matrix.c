@@ -1092,6 +1092,9 @@ static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, 
     (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
 #endif
 
+/* None.proto */
+static CYTHON_INLINE Py_ssize_t __Pyx_div_Py_ssize_t(Py_ssize_t, Py_ssize_t);
+
 /* ObjectGetItem.proto */
 #if CYTHON_USE_TYPE_SLOTS
 static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key);
@@ -2074,7 +2077,7 @@ static PyObject *__pyx_pf_17Field_Free_Matrix_Build_FF_Hamiltonian_Second_Order(
  *                 print("ECS region has to be between 0.0 and 1.00\n")
  *                 exit()             # <<<<<<<<<<<<<<
  * 
- *     nnz = int((input_par["l_max"] + 1)/2) + 4
+ *     nnz = int(len(index_map_box)/2) + 4
  */
       __pyx_t_10 = __Pyx_PyObject_CallNoArg(__pyx_builtin_exit); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 42, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
@@ -2094,19 +2097,14 @@ static PyObject *__pyx_pf_17Field_Free_Matrix_Build_FF_Hamiltonian_Second_Order(
   /* "Field_Free_Matrix.pyx":44
  *                 exit()
  * 
- *     nnz = int((input_par["l_max"] + 1)/2) + 4             # <<<<<<<<<<<<<<
+ *     nnz = int(len(index_map_box)/2) + 4             # <<<<<<<<<<<<<<
  *     FF_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
  *     istart, iend = FF_Hamiltonian.getOwnershipRange()
  */
-  __pyx_t_10 = __Pyx_PyObject_Dict_GetItem(__pyx_v_input_par, __pyx_n_s_l_max); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_11 = PyObject_Length(__pyx_v_index_map_box); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_10 = PyInt_FromSsize_t(__Pyx_div_Py_ssize_t(__pyx_t_11, 2)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_t_10, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_int_2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 44, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_10);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyInt_Type)), __pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __pyx_t_10 = __Pyx_PyInt_AddObjC(__pyx_t_3, __pyx_int_4, 4, 0, 0); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 44, __pyx_L1_error)
@@ -2117,7 +2115,7 @@ static PyObject *__pyx_pf_17Field_Free_Matrix_Build_FF_Hamiltonian_Second_Order(
 
   /* "Field_Free_Matrix.pyx":45
  * 
- *     nnz = int((input_par["l_max"] + 1)/2) + 4
+ *     nnz = int(len(index_map_box)/2) + 4
  *     FF_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)             # <<<<<<<<<<<<<<
  *     istart, iend = FF_Hamiltonian.getOwnershipRange()
  * 
@@ -2181,7 +2179,7 @@ static PyObject *__pyx_pf_17Field_Free_Matrix_Build_FF_Hamiltonian_Second_Order(
   __pyx_t_1 = 0;
 
   /* "Field_Free_Matrix.pyx":46
- *     nnz = int((input_par["l_max"] + 1)/2) + 4
+ *     nnz = int(len(index_map_box)/2) + 4
  *     FF_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
  *     istart, iend = FF_Hamiltonian.getOwnershipRange()             # <<<<<<<<<<<<<<
  * 
@@ -5036,7 +5034,7 @@ static PyObject *__pyx_pf_17Field_Free_Matrix_2Build_FF_Hamiltonian_Fourth_Order
  * 
  *     ECS_Stencil = Fourth_Order_Stencil()             # <<<<<<<<<<<<<<
  * 
- *     nnz = int((input_par["l_max"] + 1)/2) + 6
+ *     nnz = int(len(index_map_box)/2) + 6
  */
   __pyx_t_10 = __pyx_pf_17Field_Free_Matrix_33Build_FF_Hamiltonian_Fourth_Order_Fourth_Order_Stencil(__pyx_v_Fourth_Order_Stencil); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
@@ -5046,19 +5044,14 @@ static PyObject *__pyx_pf_17Field_Free_Matrix_2Build_FF_Hamiltonian_Fourth_Order
   /* "Field_Free_Matrix.pyx":127
  *     ECS_Stencil = Fourth_Order_Stencil()
  * 
- *     nnz = int((input_par["l_max"] + 1)/2) + 6             # <<<<<<<<<<<<<<
+ *     nnz = int(len(index_map_box)/2) + 6             # <<<<<<<<<<<<<<
  * 
  *     FF_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
  */
-  __pyx_t_10 = __Pyx_PyObject_Dict_GetItem(__pyx_v_input_par, __pyx_n_s_l_max); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_11 = PyObject_Length(__pyx_v_index_map_box); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_10 = PyInt_FromSsize_t(__Pyx_div_Py_ssize_t(__pyx_t_11, 2)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_t_10, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_int_2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 127, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_10);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyInt_Type)), __pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __pyx_t_10 = __Pyx_PyInt_AddObjC(__pyx_t_3, __pyx_int_6, 6, 0, 0); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 127, __pyx_L1_error)
@@ -5068,7 +5061,7 @@ static PyObject *__pyx_pf_17Field_Free_Matrix_2Build_FF_Hamiltonian_Fourth_Order
   __pyx_t_10 = 0;
 
   /* "Field_Free_Matrix.pyx":129
- *     nnz = int((input_par["l_max"] + 1)/2) + 6
+ *     nnz = int(len(index_map_box)/2) + 6
  * 
  *     FF_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)             # <<<<<<<<<<<<<<
  *     istart, iend = FF_Hamiltonian.getOwnershipRange()
@@ -10000,6 +9993,14 @@ static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED
     return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
 }
 #endif
+
+/* None */
+  static CYTHON_INLINE Py_ssize_t __Pyx_div_Py_ssize_t(Py_ssize_t a, Py_ssize_t b) {
+    Py_ssize_t q = a / b;
+    Py_ssize_t r = a - q*b;
+    q -= ((r != 0) & ((r ^ b) < 0));
+    return q;
+}
 
 /* ObjectGetItem */
   #if CYTHON_USE_TYPE_SLOTS
