@@ -34,27 +34,52 @@ def Eigen_Value_Solver(Hamiltonian, number_of_eigenvalues, input_par, m, Viewer)
     EV_Solver.setDimensions(number_of_eigenvalues, PETSc.DECIDE, dimension_size) 
     EV_Solver.solve() 
 
+
+    num_of_cont = 0
+    num_of_bound = 0
     if rank == 0:
         print("Number of eigenvalues requested and converged")
         print(number_of_eigenvalues, EV_Solver.getConverged(), "\n")
-   
-    for i in range(number_of_eigenvalues):
+    
+    converged = EV_Solver.getConverged()
+    for i in range(converged):
         eigen_vector = Hamiltonian.getVecLeft()
         eigen_state = EV_Solver.getEigenpair(i, eigen_vector)
+        print(i)
         
-        if rank == 0:
-            print(round(eigen_state.real, 5))
+        if eigen_state.real < 0:
+            if rank == 0:
+                print(round(eigen_state.real, 5))
 
-        eigen_vector.setName("Psi_" + str(m) + "_"  + str(i)) 
-        Viewer.view(eigen_vector)
-        
-        energy = PETSc.Vec().createMPI(1, comm=PETSc.COMM_WORLD)
-        energy.setValue(0,eigen_state)
-        
-        energy.setName("Energy_" + str(m) + "_"  + str(i)) 
-        energy.assemblyBegin()
-        energy.assemblyEnd()
-        Viewer.view(energy)
+            eigen_vector.setName("BS_Psi_" + str(m) + "_"  + str(num_of_bound)) 
+            Viewer.view(eigen_vector)
+            
+            energy = PETSc.Vec().createMPI(1, comm=PETSc.COMM_WORLD)
+            energy.setValue(0,eigen_state)
+            
+            energy.setName("BS_Energy_" + str(m) + "_"  + str(num_of_bound)) 
+            energy.assemblyBegin()
+            energy.assemblyEnd()
+            Viewer.view(energy)
+            
+            num_of_bound += 1
+
+        else:
+            eigen_vector.setName("CS_Psi_" + str(m) + "_"  + str(num_of_cont)) 
+            Viewer.view(eigen_vector)
+            
+            energy = PETSc.Vec().createMPI(1, comm=PETSc.COMM_WORLD)
+            energy.setValue(0,eigen_state)
+            
+            energy.setName("CS_Energy_" + str(m) + "_"  + str(num_of_cont)) 
+            energy.assemblyBegin()
+            energy.assemblyEnd()
+            Viewer.view(energy)
+            
+            num_of_cont += 1
+
+    
+    return num_of_cont
 
 def Build_Hamiltonian_Second_Order(input_par, grid, m):
     grid_size = grid.size 
@@ -86,6 +111,19 @@ def Build_Hamiltonian_Second_Order(input_par, grid, m):
         for l_prime in l_prime_list:
             col_idx = grid_size*l_prime + grid_idx
             Hamiltonian.setValue(i, col_idx, H2_Plus_Potential(r, l_block, l_prime, m, R_o))
+
+    if input_par["calc_cont_states"] == 1:
+        for i in np.arange(0, matrix_size, grid_size):
+
+            l_block = floor(i/grid_size)
+            j = i + (grid_size - 1)
+            grid_idx = j % grid_size
+            r = grid[grid_idx]
+
+            Hamiltonian.setValue(j, j, (-1.0/2.0)/h2 + H2_Plus_Potential(r, l_block, l_block, m, R_o))
+            Hamiltonian.setValue(j,j - 1, 1.0/h2)
+            Hamiltonian.setValue(j,j - 2, (-1.0/2.0)/h2)
+
 
     Hamiltonian.assemblyBegin()
     Hamiltonian.assemblyEnd()
@@ -150,7 +188,7 @@ def TISE(input_par):
     
     if rank == 0:
         start_time = time.time()
-        print("Calculating Bound States for H2+ \n ")
+        print("Calculating States for H2+ \n ")
         print("R_0 = " + str(input_par["R_o"]) + "\n" )
         print()
 
@@ -158,21 +196,34 @@ def TISE(input_par):
     ViewHDF5 = PETSc.Viewer()
     ViewHDF5.createHDF5(input_par["Target_File"], mode=PETSc.Viewer.Mode.WRITE, comm= PETSc.COMM_WORLD)
 
+    smal_cont_state = 10e5
     for m in range(0, input_par["m_max_bound_state"] + 1):
         if rank == 0:
-            print("Calculating the B-States for m = " + str(m) + "\n")
+            print("Calculating the States for m = " + str(m) + "\n")
 
         Hamiltonian = eval("Build_Hamiltonian_" + input_par["order"] + "_Order(input_par, grid, m)")
-        Eigen_Value_Solver(Hamiltonian, input_par["n_max"], input_par, m, ViewHDF5)
-     
-        if rank == 0:
-            print("Finished calculation for m = " + str(m) + "\n" , "\n")
+
+        if input_par["calc_cont_states"] == 0:
+            num_of_cont_calc = Eigen_Value_Solver(Hamiltonian, input_par["n_max"], input_par, m, ViewHDF5)
+        if input_par["calc_cont_states"] == 1:
+            num_of_cont_calc = Eigen_Value_Solver(Hamiltonian, input_par["num_of_cont_states"], input_par, m, ViewHDF5)
+
+        if num_of_cont_calc < smal_cont_state:
+            smal_cont_state = num_of_cont_calc
 
     if rank == 0:
         total_time = (time.time() - start_time) / 60
-        print("Total time taken for calculating Bound States is " + str(round(total_time, 3)))
+        print("Total time taken for calculating States is " + str(round(total_time, 3)))
+
+    CSC = PETSc.Vec().createMPI(1, comm=PETSc.COMM_WORLD)
+    CSC.setValue(0,smal_cont_state)
+    CSC.setName("CSC")
+    CSC.assemblyBegin()
+    CSC.assemblyEnd()
+    ViewHDF5.view(CSC)
 
     ViewHDF5.destroy()
+
 
 if __name__=="__main__":
     input_par = Mod.Input_File_Reader("input.json")
