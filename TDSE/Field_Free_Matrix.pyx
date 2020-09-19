@@ -20,8 +20,8 @@ if True:
 
 def Build_FF_Hamiltonian_Second_Order(input_par):
 
-    cdef double h2
-    cdef int grid_size, l_blk, grid_idx, ECS_idx, m_blk, l_prime
+    cdef double h2, r
+    cdef int grid_size, l_blk, grid_idx, ECS_idx, m_blk, l_prime, col_idx
     
     h2 = input_par["grid_spacing"] * input_par["grid_spacing"]
     index_map_m_1, index_map_box = Mod.Index_Map_M_Block(input_par)

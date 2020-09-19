@@ -30,7 +30,7 @@ def Eigen_Value_Solver(Hamiltonian, number_of_eigenvalues, input_par, m, Viewer)
     EV_Solver.setTolerances(input_par["tolerance"], PETSc.DECIDE)
     EV_Solver.setWhichEigenpairs(EV_Solver.Which.SMALLEST_REAL)
     size_of_matrix = PETSc.Mat.getSize(Hamiltonian)
-    dimension_size = int(size_of_matrix[0]) * 0.1
+    dimension_size = int(size_of_matrix[0]) * 0.2
     EV_Solver.setDimensions(number_of_eigenvalues, PETSc.DECIDE, dimension_size) 
     EV_Solver.solve() 
 
