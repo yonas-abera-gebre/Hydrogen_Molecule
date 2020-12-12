@@ -94,3 +94,23 @@ cpdef double H2_Plus_Potential(double r, int l, int l_prime, int m, double R_o):
 
     return potential_value
 
+cpdef double Ele_Ele_Interaction(double r, int l, int l_prime, int m, double R_o):
+    R_o = R_o / 2.0
+    
+    cdef double potential_value = 0.0
+    
+    if abs(m) > l or abs(m) > l_prime:
+        return 0.0
+     
+    if r <= R_o:
+        for lamda in range(0, l + l_prime + 2, 2):
+            coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
+            potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef   
+    else:
+         for lamda in range(0, l + l_prime + 2, 2):
+            coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
+            potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef
+
+    potential_value = -2.0 * pow(-1.0, m)* sqrt((2.0*l+1.0)*(2.0*l_prime+1.0)) * potential_value 
+
+    return potential_value
