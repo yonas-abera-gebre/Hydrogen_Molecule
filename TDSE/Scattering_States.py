@@ -1,9 +1,11 @@
 if True:
     import sys
     import matplotlib.pyplot as plt
+    import matplotlib
     from sympy.physics.wigner import wigner_3j as wigner3j
     from numpy import sin, log, pi, angle
     import numpy as np
+    import mpmath as mp
     from scipy import special
 
 def Ele_Ele_Int(r, l, l_prime, m, R_o):
@@ -27,9 +29,16 @@ def Ele_Ele_Int(r, l, l_prime, m, R_o):
 
     return potential_value
 
-def Coulomb_Function(r, lo, k, Z = 2):
+def Coulomb_Function_Limit(r, lo, k, Z=2):
     phase = angle(special.gamma(lo + 1 - 1J*Z/k))
     return sin(k*r + (Z/k)*log(2*k*r) - lo*pi/2 + phase)
+
+def Coulomb_Function(grid, lo, k, Z=2):
+    cf = np.zeros(len(grid))
+    for i, r in enumerate(grid):
+        cf[i] = mp.coulombf(lo, -1*Z/k, k*r)
+
+    return cf
 
 def Right_Side(grid, lo, mo, l_prime, k, R0):
     col_fun = Coulomb_Function(grid, lo, k)
@@ -47,9 +56,12 @@ def Right_Side(grid, lo, mo, l_prime, k, R0):
 
 def Left_Side_Matrix(grid, lo, mo, l_prime, k, R0):
     grid_size = grid.size 
-    l_max = 25
+    l_max = 20
 
-    l_list = list(range(0, l_max, 1))
+    if lo%2 == 0:
+        l_list = list(range(0, l_max, 2))
+    else:
+        l_list = list(range(1, l_max, 2))
 
     matrix_size_row = grid_size 
     matrix_size_col = grid_size*len(l_list)
@@ -66,6 +78,7 @@ def Left_Side_Matrix(grid, lo, mo, l_prime, k, R0):
             if l != l_prime:
                 LSM[i, col_idx] =  -1*Ele_Ele_Int(r,l_prime, l, mo, R0)
             else:
+                
                 if i >=  1:
                     LSM[i, col_idx-1] =  (1.0/2.0)/h2
                 if i < grid_size - 1:
@@ -79,19 +92,26 @@ def Left_Side_Matrix(grid, lo, mo, l_prime, k, R0):
 def Solve_R_Vector(grid, lo, mo, l_prime, k, R0):
     
     Right_Vec = Right_Side(grid, lo, mo, l_prime, k, R0)
+    print("Made the right vector")
     LSM = Left_Side_Matrix(grid, lo, mo, l_prime, k, R0)
-
+    print("Made the LSM")
     R = np.linalg.lstsq(LSM, Right_Vec, rcond=None)[0]
-
-    Plot_Result(grid, LSM, Right_Vec, R)
+    print("Solved Ax=b")
+    Plot_Result(grid, LSM, Right_Vec, R, lo)
+    print("Plotted results")
     return R
 
-def Plot_Result(grid, LSM, Right_Vec, soln):
+def Plot_Result(grid, LSM, Right_Vec, soln, lo):
+    if lo%2 == 0:
+        l_list = list(range(0, 20, 2))
+    else:
+        l_list = list(range(1, 20, 2))
+
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    plt.imshow(np.absolute(LSM[:,list(range(4*len(grid)))]))
-    ax.set_xticks(np.arange(0.5*len(grid), 4*len(grid), len(grid)))
-    xlabel = np.arange(0, 4, 1)
+    plt.imshow(np.absolute(LSM[:,list(range(5*len(grid)))]))#, norm=matplotlib.colors.LogNorm())
+    ax.set_xticks(np.arange(0.5*len(grid), 5*len(grid), len(grid)))
+    xlabel = l_list
     ax.set_xticklabels(xlabel)
     plt.colorbar(orientation='vertical')
     plt.tight_layout()
@@ -100,32 +120,37 @@ def Plot_Result(grid, LSM, Right_Vec, soln):
 
     plt.plot(grid, Right_Vec)
     plt.tight_layout()
-    plt.xlim(0,10)
+    # plt.xlim(0,10)
     plt.savefig("Right_Vector.png")
     plt.clf()
 
-    l = 0
+    
+    count = 0 
     for i in range(0, 5*len(grid), len(grid)):
-        plt.plot(grid, soln[i:i+len(grid)], label = str(l))
-        l += 1
+        norm = np.linalg.norm(soln[i:i+len(grid)])
+        plt.plot(grid, soln[i:i+len(grid)], label = str(l_list[count]))
+        count += 1
 
     plt.legend(loc = 'lower right')
     plt.tight_layout()
     plt.xlim(0,25)
+    # plt.title("l_prime = 3")
+    plt.tight_layout()
     plt.savefig("Soln.png")
     plt.clf()
 
 
 if __name__=="__main__":
 
-    grid = np.arange(0.1, 50, 0.1)
-    lo = 2
-    l_prime = 1
+    grid = np.arange(0.1, 100+0.1, 0.1)
+
+    lo = 5
+    l_prime = 3
     mo = 0
     k = 0.5
-    R0 = 2
-        
-    Solve_R_Vector(grid, lo, mo, l_prime, k, R0)
+    Ro = 0.5
+
+    Solve_R_Vector(grid, lo, mo, l_prime, k, Ro)
 
     
 
