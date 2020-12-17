@@ -144,8 +144,8 @@ if __name__=="__main__":
 
     grid = np.arange(0.1, 100+0.1, 0.1)
 
-    lo = 5
-    l_prime = 3
+    lo = 4
+    l_prime = 2
     mo = 0
     k = 0.5
     Ro = 0.5
