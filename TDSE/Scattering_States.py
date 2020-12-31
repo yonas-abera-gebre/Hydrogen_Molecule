@@ -7,6 +7,7 @@ if True:
     import numpy as np
     import mpmath as mp
     from scipy import special
+    from scipy.special import sph_harm
 
 def Ele_Ele_Int(r, l, l_prime, m, R_o):
     R_o = R_o / 2.0
@@ -56,7 +57,7 @@ def Right_Side(grid, lo, mo, l_prime, k, R0):
 
 def Left_Side_Matrix(grid, lo, mo, l_prime, k, R0):
     grid_size = grid.size 
-    l_max = 20
+    l_max = 40
 
     if lo%2 == 0:
         l_list = list(range(0, l_max, 2))
@@ -87,6 +88,16 @@ def Left_Side_Matrix(grid, lo, mo, l_prime, k, R0):
                 diag_ele = k*k/2 - 1/h2 - 0.5*l*(l+1)*pow(r,-2) - Ele_Ele_Int(r, l, l, mo, R0)
                 LSM[i, col_idx] =  diag_ele
 
+    # i = len(grid) - 1
+    # r = grid[-1]
+    # j = l_list.index(l_prime)
+    # col_idx = i + j*grid_size
+    # LSM[i, col_idx-2] =  (1.0/2.0)/h2
+    # LSM[i, col_idx-1] =  (-1.0)/h2
+    # diag_ele = k*k/2 + (1.0/2.0)/h2 - 0.5*l*(l+1)*pow(r,-2) - Ele_Ele_Int(r, l_prime, l_prime, mo, R0)
+    # LSM[i, col_idx] =  diag_ele
+
+
     return LSM
 
 def Solve_R_Vector(grid, lo, mo, l_prime, k, R0):
@@ -100,6 +111,23 @@ def Solve_R_Vector(grid, lo, mo, l_prime, k, R0):
     Plot_Result(grid, LSM, Right_Vec, R, lo)
     print("Plotted results")
     return R
+
+def Chi_L_M(grid, soln):
+    phi =0
+    theta = 0
+    theta, phi = np.meshgrid(theta, phi)
+    chi = np.zeros(len(grid))
+    l = 0
+    m = 0
+    for i in range(0, 20*len(grid), len(grid)):
+        chi += soln[i:i+len(grid)]*sph_harm(m, l, phi, theta)[0][0].real
+        l +=2
+
+    plt.clf()
+    plt.plot(grid, chi)
+    plt.xlim(0,50)
+    plt.savefig("Chi_4.png")
+    return chi  
 
 def Plot_Result(grid, LSM, Right_Vec, soln, lo):
     if lo%2 == 0:
@@ -124,33 +152,51 @@ def Plot_Result(grid, LSM, Right_Vec, soln, lo):
     plt.savefig("Right_Vector.png")
     plt.clf()
 
-    
+    fig = plt.figure()
     count = 0 
-    for i in range(0, 5*len(grid), len(grid)):
-        norm = np.linalg.norm(soln[i:i+len(grid)])
-        plt.plot(grid, soln[i:i+len(grid)], label = str(l_list[count]))
+ 
+    for i in range(0, 4*len(grid), len(grid)):
+        plt.plot(grid, soln[i:i+len(grid)], label = "l = " + str(l_list[count]))
+        plt.legend(loc = 'lower right')
+        plt.xlim(0,50)
+        plt.legend(loc = 'lower right')
+        plt.tight_layout()
+        # plt.title("l_prime = 3")
+        plt.tight_layout()
+        name = "4_"+str(l_list[count])+"Soln.png"
         count += 1
+        plt.savefig(name)
+        plt.clf()
 
-    plt.legend(loc = 'lower right')
-    plt.tight_layout()
-    plt.xlim(0,25)
-    # plt.title("l_prime = 3")
-    plt.tight_layout()
-    plt.savefig("Soln.png")
-    plt.clf()
-
+    # soln_check = LSM.dot(soln)
+    # plt.plot(grid, soln_check)
+    # plt.plot(grid, Right_Vec)
+    # plt.tight_layout()
+    # plt.xlim(0,10)
+    # plt.savefig("Soln_Check4.png")
 
 if __name__=="__main__":
 
-    grid = np.arange(0.1, 100+0.1, 0.1)
+    grid = np.arange(0.1, 50+0.1, 0.1)
 
     lo = 4
-    l_prime = 2
+    l_prime = 4
     mo = 0
-    k = 0.5
-    Ro = 0.5
+    k = 4
+    Ro = 2
 
-    Solve_R_Vector(grid, lo, mo, l_prime, k, Ro)
+    # Right_Vec = Right_Side(grid, lo, mo, l_prime, k, Ro)
 
+    cf = Coulomb_Function(grid, lo, k, Z=2)
+    # pot = np.zeros(len(grid))
+    # for i, r in enumerate(grid):
+    #     pot[i] = Ele_Ele_Int(r, lo, l_prime, mo, Ro)
+
+    plt.plot(grid, cf)
+    plt.xlim(0,50)
+    plt.savefig("Phi.png")
+
+    # soln = Solve_R_Vector(grid, lo, mo, l_prime, k, Ro)
+    # Chi_L_M(grid, soln)
     
 
