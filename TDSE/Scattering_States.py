@@ -9,22 +9,22 @@ if True:
     from scipy import special
     from scipy.special import sph_harm
 
-def Ele_Ele_Int(r, l, l_prime, m, R_o):
-    R_o = R_o / 2.0
+def Ele_Ele_Int(r, l, l_prime, m, Ro):
+    Ro = Ro / 2.0
     
     potential_value = 0.0
     
     if abs(m) > l or abs(m) > l_prime:
         return 0.0
      
-    if r <= R_o:
+    if r <= Ro:
         for lamda in range(0, l + l_prime + 2, 2):
             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
-            potential_value += pow(r, lamda)/pow(R_o, lamda + 1) * coef   
+            potential_value += pow(r, lamda)/pow(Ro, lamda + 1) * coef   
     else:
          for lamda in range(0, l + l_prime + 2, 2):
             coef = wigner3j(l,lamda,l_prime,0,0,0) * wigner3j(l,lamda,l_prime,-m,0,m)
-            potential_value += pow(R_o,lamda)/pow(r,lamda + 1) * coef
+            potential_value += pow(Ro,lamda)/pow(r,lamda + 1) * coef
 
     potential_value = -2.0 * pow(-1.0, m)* np.sqrt((2.0*l+1.0)*(2.0*l_prime+1.0)) * potential_value 
 
@@ -41,29 +41,31 @@ def Coulomb_Function(grid, lo, k, Z=2):
 
     return cf
 
-def Right_Side(grid, lo, mo, l_prime, k, R0):
+def Right_Side(grid, lo, mo, l_prime, k, Ro):
     col_fun = Coulomb_Function(grid, lo, k)
     Right_Vec =  np.zeros(len(grid))
 
+
     for i, r in enumerate(grid):
-        pot = Ele_Ele_Int(r, l_prime, lo, mo, R0)
+        pot = Ele_Ele_Int(r, l_prime, lo, mo, Ro)
 
         if l_prime == lo:
-            pot += 2/r
+            pot += 2.0/r
 
         Right_Vec[i]  = col_fun[i] * pot / k
-
+        
     return Right_Vec
 
-def Left_Side_Matrix(grid, lo, mo, l_prime, k, R0):
+def Left_Side_Matrix(grid, lo, mo, l_prime, k, Ro):
     grid_size = grid.size 
-    l_max = 40
+    l_max = 10
 
     if lo%2 == 0:
         l_list = list(range(0, l_max, 2))
     else:
         l_list = list(range(1, l_max, 2))
 
+    print(l_list)
     matrix_size_row = grid_size 
     matrix_size_col = grid_size*len(l_list)
 
@@ -77,7 +79,7 @@ def Left_Side_Matrix(grid, lo, mo, l_prime, k, R0):
             col_idx = i + j*grid_size
 
             if l != l_prime:
-                LSM[i, col_idx] =  -1*Ele_Ele_Int(r,l_prime, l, mo, R0)
+                LSM[i, col_idx] =  -1*Ele_Ele_Int(r,l_prime, l, mo, Ro)
             else:
                 
                 if i >=  1:
@@ -85,7 +87,8 @@ def Left_Side_Matrix(grid, lo, mo, l_prime, k, R0):
                 if i < grid_size - 1:
                     LSM[i, col_idx+1] =  (1.0/2.0)/h2
 
-                diag_ele = k*k/2 - 1/h2 - 0.5*l*(l+1)*pow(r,-2) - Ele_Ele_Int(r, l, l, mo, R0)
+                diag_ele = k*k/2 - 1/h2 - 0.5*l*(l+1)*pow(r,-2) - Ele_Ele_Int(r, l, l, mo, Ro)
+              
                 LSM[i, col_idx] =  diag_ele
 
     # i = len(grid) - 1
@@ -177,24 +180,39 @@ def Plot_Result(grid, LSM, Right_Vec, soln, lo):
 
 if __name__=="__main__":
 
-    grid = np.arange(0.1, 50+0.1, 0.1)
+    grid = np.arange(1.0, 50+1.0, 1.0)
 
     lo = 4
-    l_prime = 4
+    l_prime = 2
     mo = 0
     k = 4
     Ro = 2
 
-    # Right_Vec = Right_Side(grid, lo, mo, l_prime, k, Ro)
+    # Right_Vec, pot_vec = Right_Side(grid, lo, mo, l_prime, k, Ro)
 
-    cf = Coulomb_Function(grid, lo, k, Z=2)
-    # pot = np.zeros(len(grid))
-    # for i, r in enumerate(grid):
-    #     pot[i] = Ele_Ele_Int(r, lo, l_prime, mo, Ro)
+    # cf = Coulomb_Function(grid, lo, k, Z=2)
+    LSM = Left_Side_Matrix(grid, lo, mo, l_prime, k, Ro)
 
-    plt.plot(grid, cf)
-    plt.xlim(0,50)
-    plt.savefig("Phi.png")
+    l_max = 20
+    if lo%2 == 0:
+        l_list = list(range(0, l_max, 2))
+    else:
+        l_list = list(range(1, l_max, 2))
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    plt.imshow(np.absolute(LSM[:,list(range(4*len(grid)))]), norm=matplotlib.colors.LogNorm())
+    ax.set_xticks(np.arange(0.5*len(grid), 4*len(grid), len(grid)))
+    xlabel = l_list
+    ax.set_xticklabels(xlabel)
+    plt.colorbar(orientation='vertical')
+    plt.tight_layout()
+    plt.savefig("Left_Side_Matrix.png")
+    plt.clf()
+
+    # plt.xlim(0.75,10)
+    # plt.ylim(-3,1)
+    # plt.savefig("pot.png")
 
     # soln = Solve_R_Vector(grid, lo, mo, l_prime, k, Ro)
     # Chi_L_M(grid, soln)
