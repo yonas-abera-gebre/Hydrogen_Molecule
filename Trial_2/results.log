@@ -1,0 +1,34 @@
+Calculating States for H2+ 
+ 
+R_0 = 2
+
+Calculating the States for m = 0
+
+Diagonalizing 
+ 
+Number of eigenvalues requested and converged
+3 3 
+
+Calculating the States for m = 1
+
+Diagonalizing 
+ 
+Number of eigenvalues requested and converged
+3 3 
+
+Calculating the States for m = 2
+
+Diagonalizing 
+ 
+Number of eigenvalues requested and converged
+3 3 
+
+Calculating the States for m = 3
+
+Diagonalizing 
+ 
+Number of eigenvalues requested and converged
+3 3 
+
+Total time taken for calculating States is 122.4 minutes !!!
+*****************************************************************

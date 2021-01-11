@@ -2,7 +2,7 @@ import numpy as np
 import sys
 import json
 from math import floor
-import H2_Module as Mod 
+import Module as Mod 
 import Coefficent_Calculator as CC
 import time as time_mod   
 
@@ -26,8 +26,8 @@ def Velocity_Gauge_Z_Matrix_Upper(input_par):
     cdef double h2
     cdef int l_block, m_block, grid_idx, col_idx, grid_size
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size 
     matrix_size = grid_size * len(index_map_m_l)
     h2 = input_par["grid_spacing"] * 2.0
@@ -62,8 +62,8 @@ def Velocity_Gauge_Z_Matrix_Lower(input_par):
     cdef double h2
     cdef int l_block, m_block, grid_idx, col_idx, grid_size
     
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size 
     matrix_size = grid_size * len(index_map_m_l)
     h2 = input_par["grid_spacing"] * 2.0
@@ -131,8 +131,8 @@ def Velocity_Gauge_Right_Circular_Matrix_Upper(input_par):
     cdef complex factor
     cdef int l_block, m_block, grid_idx, col_idx, grid_size
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size 
     matrix_size = grid_size * len(index_map_m_l)
     h2 = input_par["grid_spacing"]*2.0
@@ -170,8 +170,8 @@ def Velocity_Gauge_Right_Circular_Matrix_Lower(input_par):
     cdef complex factor
     cdef int l_block, m_block, grid_idx, col_idx, grid_size
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size 
     matrix_size = grid_size * len(index_map_m_l)
     h2 = input_par["grid_spacing"]*2.0
@@ -208,8 +208,8 @@ def Velocity_Gauge_Left_Circular_Matrix_Upper(input_par):
     cdef complex factor
     cdef int l_block, m_block, grid_idx, col_idx, grid_size
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size 
     matrix_size = grid_size * len(index_map_m_l)
     h2 = input_par["grid_spacing"]*2.0
@@ -245,8 +245,8 @@ def Velocity_Gauge_Left_Circular_Matrix_Lower(input_par):
     cdef complex factor
     cdef int l_block, m_block, grid_idx, col_idx, grid_size
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size 
     matrix_size = grid_size * len(index_map_m_l)
     h2 = input_par["grid_spacing"]*2.0
@@ -281,8 +281,8 @@ def Length_Gauge_Z_Matrix(input_par):
     cdef double factor
     cdef int l_block, m_block, grid_idx, col_idx, grid_size
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size 
     matrix_size = grid_size * len(index_map_m_l)
 
@@ -314,8 +314,8 @@ def Length_Gauge_X_Matrix(input_par):
 
     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size
     matrix_size = grid_size * len(index_map_m_l)
 
@@ -362,8 +362,8 @@ def Length_Gauge_Y_Matrix(input_par):
     
     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size
     matrix_size = grid_size * len(index_map_m_l)
     
@@ -410,8 +410,8 @@ def Length_Gauge_Right_Circular_Matrix(input_par):
     
     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size
     matrix_size = grid_size * len(index_map_m_l)
    
@@ -453,8 +453,8 @@ def Length_Gauge_Left_Circular_Matrix(input_par):
     
     cdef int l_block, m_block, l_prime, m_prime, columon_idx, grid_idx, grid_size
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size
     matrix_size = grid_size * len(index_map_m_l)
     

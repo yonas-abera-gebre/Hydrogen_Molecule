@@ -1,6 +1,6 @@
 if True:
     import sys
-    import H2_Module as Mod 
+    import Module as Mod 
     import matplotlib.pyplot as plt
 
     from Potential import Ele_Ele_Interaction as EEI

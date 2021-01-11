@@ -3,9 +3,9 @@ if True:
     import sys
     import time
     import json
-    from numpy import pi
+    from numpy import pi, ceil
     from math import floor
-    import H2_Module as Mod 
+    import Module as Mod 
     from Potential import H2_Plus_Potential
          
 if True:
@@ -24,8 +24,8 @@ def Build_FF_Hamiltonian_Second_Order(input_par):
     cdef int grid_size, l_blk, grid_idx, ECS_idx, m_blk, l_prime, col_idx
     
     h2 = input_par["grid_spacing"] * input_par["grid_spacing"]
-    index_map_m_1, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_1, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size
     matrix_size = grid_size * len(index_map_box)
     R_o = input_par["R_o"]
@@ -41,7 +41,7 @@ def Build_FF_Hamiltonian_Second_Order(input_par):
                 print("ECS region has to be between 0.0 and 1.00\n")
                 exit() 
 
-    nnz = int(len(index_map_box)/2) + 4
+    nnz = ceil(input_par["l_max"] / 2 + 1) + 2
     FF_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     istart, iend = FF_Hamiltonian.getOwnershipRange() 
 
@@ -97,8 +97,8 @@ def Build_FF_Hamiltonian_Fourth_Order(input_par):
     cdef int grid_size, ECS, l_blk, grid_idx, ECS_idx
 
     h2 = input_par["grid_spacing"] * input_par["grid_spacing"]
-    index_map_m_1, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_1, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size
     matrix_size = grid_size * len(index_map_box)
     R_o = input_par["R_o"]
@@ -124,7 +124,7 @@ def Build_FF_Hamiltonian_Fourth_Order(input_par):
     
     ECS_Stencil = Fourth_Order_Stencil()
 
-    nnz = int(len(index_map_box)/2) + 6
+    nnz = ceil(input_par["l_max"] / 2 + 1) + 4
 
     FF_Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     istart, iend = FF_Hamiltonian.getOwnershipRange() 

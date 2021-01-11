@@ -2,7 +2,7 @@ if True:
     import sys
     import time
     import json
-    import H2_Module as Mod 
+    import Module as Mod 
     from Potential import H2_Plus_Potential
     from math import ceil, floor
     import numpy as np
@@ -19,7 +19,6 @@ if True:
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
-
 def Eigen_Value_Solver(Hamiltonian, number_of_eigenvalues, input_par, m, Viewer):
     if rank == 0:
         print("Diagonalizing \n ")
@@ -30,76 +29,54 @@ def Eigen_Value_Solver(Hamiltonian, number_of_eigenvalues, input_par, m, Viewer)
     EV_Solver.setTolerances(input_par["tolerance"], PETSc.DECIDE)
     EV_Solver.setWhichEigenpairs(EV_Solver.Which.SMALLEST_REAL)
     size_of_matrix = PETSc.Mat.getSize(Hamiltonian)
-    dimension_size = int(size_of_matrix[0]) * 0.2
-    EV_Solver.setDimensions(number_of_eigenvalues, PETSc.DECIDE, dimension_size) 
+    dimension_size = int(size_of_matrix[0]) * 0.1
+    EV_Solver.setDimensions(number_of_eigenvalues , PETSc.DECIDE, dimension_size) 
     EV_Solver.solve() 
 
-
-    num_of_cont = 0
-    num_of_bound = 0
     if rank == 0:
         print("Number of eigenvalues requested and converged")
         print(number_of_eigenvalues, EV_Solver.getConverged(), "\n")
     
     converged = EV_Solver.getConverged()
     for i in range(converged):
+       
         eigen_vector = Hamiltonian.getVecLeft()
         eigen_state = EV_Solver.getEigenpair(i, eigen_vector)
-        print(i)
         
-        if eigen_state.real < 0:
+        if eigen_state.real > 0:
             if rank == 0:
-                print(round(eigen_state.real, 5))
+                print("The eigenstae calculated for i = " + str(i) + "is not bound")
 
-            eigen_vector.setName("BS_Psi_" + str(m) + "_"  + str(num_of_bound)) 
-            Viewer.view(eigen_vector)
-            
-            energy = PETSc.Vec().createMPI(1, comm=PETSc.COMM_WORLD)
-            energy.setValue(0,eigen_state)
-            
-            energy.setName("BS_Energy_" + str(m) + "_"  + str(num_of_bound)) 
-            energy.assemblyBegin()
-            energy.assemblyEnd()
-            Viewer.view(energy)
-            
-            num_of_bound += 1
-
-        else:
-            eigen_vector.setName("CS_Psi_" + str(m) + "_"  + str(num_of_cont)) 
-            Viewer.view(eigen_vector)
-            
-            energy = PETSc.Vec().createMPI(1, comm=PETSc.COMM_WORLD)
-            energy.setValue(0,eigen_state)
-            
-            energy.setName("CS_Energy_" + str(m) + "_"  + str(num_of_cont)) 
-            energy.assemblyBegin()
-            energy.assemblyEnd()
-            Viewer.view(energy)
-            
-            num_of_cont += 1
-
-    
-    return num_of_cont
-
+        eigen_vector.setName("Psi_" + str(m) + "_"  + str(i)) 
+        Viewer.view(eigen_vector)
+        
+        energy = PETSc.Vec().createMPI(1, comm=PETSc.COMM_WORLD)
+        energy.setValue(0,eigen_state)
+        
+        energy.setName("Energy_" + str(m) + "_"  + str(i)) 
+        energy.assemblyBegin()
+        energy.assemblyEnd()
+        Viewer.view(energy)
+        
 def Build_Hamiltonian_Second_Order(input_par, grid, m):
-    grid_size = grid.size 
-    matrix_size = grid_size * (input_par["l_max_bound_state"] + 1)
-    nnz = int(input_par["l_max_bound_state"] / 2 + 1) + 4
+
+    matrix_size = grid.size * (input_par["l_max_bound_state"] + 1)
+    nnz = ceil(input_par["l_max_bound_state"] / 2 + 1) + 2
 
     h2 = input_par["grid_spacing"]*input_par["grid_spacing"]
+    R_o = input_par["R_o"]
+
     Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     istart, iend = Hamiltonian.getOwnershipRange()
 
-    R_o = input_par["R_o"]
-
     for i  in range(istart, iend):
-        l_block = floor(i/grid_size)
-        grid_idx = i % grid_size
+        l_block = floor(i/grid.size)
+        grid_idx = i %grid.size
         r = grid[grid_idx]
         Hamiltonian.setValue(i, i, 1.0/h2 + H2_Plus_Potential(r, l_block, l_block, m, R_o))
         if grid_idx >=  1:
             Hamiltonian.setValue(i, i-1, (-1.0/2.0)/h2)
-        if grid_idx < grid.size - 1:
+        if grid_idx <grid.size - 1:
             Hamiltonian.setValue(i, i+1, (-1.0/2.0)/h2)
     
         if l_block % 2 == 0:
@@ -109,20 +86,8 @@ def Build_Hamiltonian_Second_Order(input_par, grid, m):
 
         l_prime_list.remove(l_block)
         for l_prime in l_prime_list:
-            col_idx = grid_size*l_prime + grid_idx
+            col_idx =grid.size*l_prime + grid_idx
             Hamiltonian.setValue(i, col_idx, H2_Plus_Potential(r, l_block, l_prime, m, R_o))
-
-    if input_par["calc_cont_states"] == 1:
-        for i in np.arange(0, matrix_size, grid_size):
-
-            l_block = floor(i/grid_size)
-            j = i + (grid_size - 1)
-            grid_idx = j % grid_size
-            r = grid[grid_idx]
-
-            Hamiltonian.setValue(j, j, (-1.0/2.0)/h2 + H2_Plus_Potential(r, l_block, l_block, m, R_o))
-            Hamiltonian.setValue(j,j - 1, 1.0/h2)
-            Hamiltonian.setValue(j,j - 2, (-1.0/2.0)/h2)
 
 
     Hamiltonian.assemblyBegin()
@@ -130,19 +95,19 @@ def Build_Hamiltonian_Second_Order(input_par, grid, m):
     return Hamiltonian
 
 def Build_Hamiltonian_Fourth_Order(input_par, grid, m): 
-    grid_size = grid.size 
-    matrix_size = grid_size * (input_par["l_max_bound_state"] + 1)
-    nnz = int(input_par["l_max_bound_state"] / 2 + 1) + 6
+
+    matrix_size =grid.size * (input_par["l_max_bound_state"] + 1)
+    nnz = ceil(input_par["l_max_bound_state"] / 2 + 1) + 4
     
     h2 = input_par["grid_spacing"]*input_par["grid_spacing"]
+    R_o = input_par["R_o"]
+
     Hamiltonian = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     istart, iend = Hamiltonian.getOwnershipRange()
 
-    R_o = input_par["R_o"]
-
     for i  in range(istart, iend):
-        l_block = floor(i/grid_size)
-        grid_idx = i % grid_size
+        l_block = floor(i/grid.size)
+        grid_idx = i %grid.size
         r = grid[grid_idx]
 
         Hamiltonian.setValue(i, i, (15.0/ 12.0)/h2 + H2_Plus_Potential(r, l_block, l_block, m, R_o))  
@@ -163,19 +128,19 @@ def Build_Hamiltonian_Fourth_Order(input_par, grid, m):
 
         l_prime_list.remove(l_block)
         for l_prime in l_prime_list:
-            col_idx = grid_size*l_prime + grid_idx
+            col_idx =grid.size*l_prime + grid_idx
             Hamiltonian.setValue(i, col_idx, H2_Plus_Potential(r, l_block, l_prime, m, R_o))
 
-    for i in np.arange(0, matrix_size, grid_size):
-        l_block = floor(i/grid_size)
+    for i in np.arange(0, matrix_size,grid.size):
+        l_block = floor(i/grid.size)
 
         Hamiltonian.setValue(i, i, (20.0/24.0)/h2 + H2_Plus_Potential(grid[0], l_block, l_block, m, R_o)) 
         Hamiltonian.setValue(i, i+1, (-6.0/24.0)/h2)
         Hamiltonian.setValue(i, i+2, (-4.0/24.0)/h2)
         Hamiltonian.setValue(i, i+3, (1.0/24.0)/h2) 
 
-        j = i + (grid_size - 1)
-        Hamiltonian.setValue(j, j, (20.0/24.0)/h2 + H2_Plus_Potential(grid[grid_size - 1], l_block, l_block, m, R_o)) 
+        j = i + (grid.size - 1)
+        Hamiltonian.setValue(j, j, (20.0/24.0)/h2 + H2_Plus_Potential(grid[grid.size - 1], l_block, l_block, m, R_o)) 
         Hamiltonian.setValue(j, j-1, (-6.0/24.0)/h2)
         Hamiltonian.setValue(j, j-2, (-4.0/24.0)/h2)
         Hamiltonian.setValue(j, j-3, (1.0/24.0)/h2)
@@ -190,40 +155,24 @@ def TISE(input_par):
         start_time = time.time()
         print("Calculating States for H2+ \n ")
         print("R_0 = " + str(input_par["R_o"]) + "\n" )
-        print()
 
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     ViewHDF5 = PETSc.Viewer()
     ViewHDF5.createHDF5(input_par["Target_File"], mode=PETSc.Viewer.Mode.WRITE, comm= PETSc.COMM_WORLD)
 
-    smal_cont_state = 10e5
     for m in range(0, input_par["m_max_bound_state"] + 1):
         if rank == 0:
             print("Calculating the States for m = " + str(m) + "\n")
 
         Hamiltonian = eval("Build_Hamiltonian_" + input_par["order"] + "_Order(input_par, grid, m)")
-
-        if input_par["calc_cont_states"] == 0:
-            num_of_cont_calc = Eigen_Value_Solver(Hamiltonian, input_par["n_max"], input_par, m, ViewHDF5)
-        if input_par["calc_cont_states"] == 1:
-            num_of_cont_calc = Eigen_Value_Solver(Hamiltonian, input_par["num_of_cont_states"], input_par, m, ViewHDF5)
-
-        if num_of_cont_calc < smal_cont_state:
-            smal_cont_state = num_of_cont_calc
+        Eigen_Value_Solver(Hamiltonian, input_par["n_max"], input_par, m, ViewHDF5)
 
     if rank == 0:
         total_time = (time.time() - start_time) / 60
-        print("Total time taken for calculating States is " + str(round(total_time, 3)))
-
-    CSC = PETSc.Vec().createMPI(1, comm=PETSc.COMM_WORLD)
-    CSC.setValue(0,smal_cont_state)
-    CSC.setName("CSC")
-    CSC.assemblyBegin()
-    CSC.assemblyEnd()
-    ViewHDF5.view(CSC)
-
+        print("Total time taken for calculating States is " + str(round(total_time, 1)) + " minutes !!!")
+        print("*****************************************************************")
+    
     ViewHDF5.destroy()
-
 
 if __name__=="__main__":
     input_par = Mod.Input_File_Reader("input.json")

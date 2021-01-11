@@ -3,7 +3,7 @@ if True:
     import sys
     import time as time_mod
     import Laser_Pulse as LP
-    import H2_Module as Mod 
+    import Module as Mod 
     import Interaction as Int
     import Field_Free_Matrix as FF
     import Dipole_Acceleration_Matrix as DA
@@ -33,8 +33,7 @@ def Build_Psi(psi_inital):
 
 def Crank_Nicolson_Time_Propagator(input_par, psi_inital):
 
-    laser_pulse, laser_time, total_polarization, total_poynting, elliptical_pulse = LP.Build_Laser_Pulse(input_par)    
-
+    laser_pulse, laser_time, total_polarization, total_poynting, elliptical_pulse, free_prop_idx  = LP.Build_Laser_Pulse(input_par)    
     if rank == 0:
         print("Making FF_Hamiltonian \n ")
 
@@ -48,7 +47,7 @@ def Crank_Nicolson_Time_Propagator(input_par, psi_inital):
         nnz = int((input_par["l_max"] + 1)/2) + 4
         Full_Ham = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     if input_par["gauge"] == "Velocity":
-        nnz = int((input_par["l_max"] + 1)/2) + 4
+        nnz = int((input_par["l_max"] + 1)/2) + 6
         Full_Ham = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
 
     FF_Ham.copy(Full_Ham, structure=PETSc.Mat.Structure.DIFFERENT_NONZERO_PATTERN)

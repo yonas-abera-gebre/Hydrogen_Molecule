@@ -5,7 +5,7 @@ if True:
     from math import floor
     import json
     from sympy.physics.wigner import gaunt, wigner_3j
-    import H2_Module as Mod 
+    import Module as Mod 
     
          
 if True:
@@ -84,8 +84,8 @@ def Dipole_Acceleration_Z_Matrix(input_par):
 
     cdef int l_block, m_block, grid_size, grid_idx, columon_idx
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size
     matrix_size = grid_size * len(index_map_m_l)
 
@@ -115,8 +115,8 @@ def Dipole_Acceleration_X_Matrix(input_par):
     
     cdef int l_block, m_block, grid_size, columon_idx, grid_idx
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size
     matrix_size = grid_size * len(index_map_m_l)
 
@@ -160,8 +160,8 @@ def Dipole_Acceleration_Y_Matrix(input_par):
 
     cdef int l_block, m_block, grid_size, columon_idx, grid_idx
 
-    index_map_m_l, index_map_box = Mod.Index_Map_M_Block(input_par)
-    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"], input_par["grid_spacing"])
+    index_map_m_l, index_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     grid_size = grid.size
     matrix_size = grid_size * len(index_map_m_l)
 

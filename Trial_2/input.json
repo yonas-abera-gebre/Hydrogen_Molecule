@@ -1,0 +1,80 @@
+{
+    "grid_size": 10,
+    "grid_spacing": 0.1,
+    "ECS_region": 0.95,
+    "order": "Fourth",
+    "n_max": 2,
+    "l_max_bound_state": 5,
+    "m_max_bound_state": 3,
+    "R_o": 2,
+    "solver": "File",
+    "Target_File": "Hydrogen_Ion.h5",
+    "tolerance": 1e-9,
+    "inital_state": {
+        "amplitudes": [
+            1.0
+        ],
+        "m,n,parity_values": [
+            [
+                0,
+                1,
+                0
+            ]
+        ],
+        "phase": 0
+    },
+    "l_max": 11,
+    "m_max": 11,
+    "time_spacing": 0.05,
+    "laser": {
+        "freq_shift": 1,
+        "pulses": [
+            {
+                "intensity": 3.5e14,
+                "envelop": "Sin",
+                "omega": 0.114,
+                "num_of_cycles": 4,
+                "CEP": 0,
+                "polarization": [
+                    1,
+                    0,
+                    0
+                ],
+                "poynting": [
+                    0,
+                    0,
+                    1
+                ],
+                "ellipticity": 0,
+                "cycle_delay": 0
+             },
+             {
+                "intensity": 3.5e14,
+                "envelop": "Sin",
+                "omega": 0.114,
+                "num_of_cycles": 4,
+                "CEP": 0,
+                "polarization": [
+                    0,
+                    1,
+                    0
+                ],
+                "poynting": [
+                    0,
+                    0,
+                    1
+                ],
+                "ellipticity": 1,
+                "cycle_delay": 4
+            }
+        ],
+    "free_prop_steps": 4620
+    },
+    "time_propagator": "Crank_Nicolson",
+    "gauge": "Velocity",
+    "HHG": 1,
+    "Dipole": 0,
+    "propagate": 1,
+    "psi_write_frequency": 1,
+    "TDSE_File": "TDSE.h5"
+}

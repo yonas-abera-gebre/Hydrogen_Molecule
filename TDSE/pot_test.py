@@ -1,5 +1,5 @@
 from Potential import wigner3j
-import H2_Module as Mod 
+import Module as Mod 
 import time
 
 input_par = Mod.Input_File_Reader(input_file = "input.json")
