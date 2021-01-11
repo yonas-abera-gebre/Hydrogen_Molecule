@@ -283,7 +283,8 @@ def Crank_Nicolson_Time_Propagator(input_par, psi_inital):
     if rank == 0:
             print("Starting time propagation \n")
             start_time = time_mod.time()
-            print(save_idx, "\n")
+            print(save_idx)
+            print("\n \n")
 
     for i, t in enumerate(laser_time):
         
