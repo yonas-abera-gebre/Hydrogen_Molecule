@@ -274,14 +274,16 @@ def Crank_Nicolson_Time_Propagator(input_par, psi_inital):
                 Dip_Mat_Y.mult(Psi, Psi_Dipole)
                 Dip_Y[i] = Psi_Dipole.dot(Psi)
 
-                
-    if rank == 0:
-            print("Starting time propagation")
-            start_time = time_mod.time()
-
-    interval = int(len(laser_time)/input_par["psi_write_frequency"])
-    psi_save_array = np.arange(interval , interval + len(laser_time), interval)
+    
+    if free_prop_idx == len(laser_time) - 1:
+        save_idx = [free_prop_idx]
+    else:
+        save_idx = list(range(free_prop_idx, len(laser_time), int((len(laser_time) - free_prop_idx)/10)))
     save_count = 0
+    if rank == 0:
+            print("Starting time propagation \n")
+            start_time = time_mod.time()
+            print(save_idx, "\n")
 
     for i, t in enumerate(laser_time):
         
@@ -302,17 +304,19 @@ def Crank_Nicolson_Time_Propagator(input_par, psi_inital):
         if rank == 0:
             print(i, len(laser_time)-1)
     
-        if i + 1 in psi_save_array:
+
+        if i in save_idx:
             if rank == 0:
                 print("Saving Wavefunction at " + str(i))
-    
+
             Psi_name = "Psi" + str(save_count)
             save_count += 1
+            if i == save_idx[-1]:
+                Psi_name = "Psi_Final"
+            
             Psi.setName(Psi_name) 
             ViewHDF5.view(Psi)
             
-    Psi.setName("Psi_Final") 
-    ViewHDF5.view(Psi)
     ViewHDF5.destroy()
     
     if rank == 0:
