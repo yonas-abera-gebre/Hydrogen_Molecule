@@ -112,6 +112,49 @@ def Wave_Function_Pairity(wave_function, input_par):
     else:
         return 0 
 
+def Target_File_Reader_WO_Parity(input_par):
+    file = h5py.File(input_par["Target_File"], 'r')
+    energy = {}
+    wave_function = {}
+    for m in range(-1*input_par["m_max_bound_state"] , input_par["m_max_bound_state"] + 1):
+
+        for i in range(input_par["n_max"]):
+            
+            energy_temp = file["Energy_" + str(abs(m)) + "_" + str(i)]
+            energy_temp = np.array(energy_temp[:,0] + 1.0j*energy_temp[:,1])
+            wave_function_temp = file["Psi_" + str(abs(m)) + "_" + str(i)]
+            wave_function_temp = np.array(wave_function_temp[:,0] + 1.0j*wave_function_temp[:,1])
+            
+            energy[(m, i)] = energy_temp
+            wave_function[(m, i)] = wave_function_temp
+             
+    
+    return energy, wave_function
+
+def Psi_Reader(input_par, name):
+
+    TDSE_file =  h5py.File(input_par["TDSE_File"])
+
+    Psi_Dictionary = {}
+    
+    psi  = TDSE_file[name]
+    psi = psi[:,0] + 1.0j*psi[:,1]
+    norm = np.linalg.norm(psi)
+    print(norm)
+
+    index_map_l_m, index_map_box =  Index_Map(input_par)
+    
+    r_ind_max = int(input_par["grid_size"] / input_par["grid_spacing"])
+    r_ind_lower = 0
+    r_ind_upper = r_ind_max
+    
+    for i in index_map_box:   
+        Psi_Dictionary[i] = np.array(psi[r_ind_lower: r_ind_upper])
+        r_ind_lower = r_ind_upper
+        r_ind_upper = r_ind_upper + r_ind_max
+      
+    return Psi_Dictionary
+
 def Matrix_Build_Status(input):
 
     build_status = {}

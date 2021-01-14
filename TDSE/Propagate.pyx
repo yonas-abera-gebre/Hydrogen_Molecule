@@ -285,6 +285,12 @@ def Crank_Nicolson_Time_Propagator(input_par, psi_inital):
             start_time = time_mod.time()
             print(save_idx)
             print("\n \n")
+    
+    
+    if rank == 0:
+        print("Saving Psi inital \n")
+    Psi.setName("Psi_Inital") 
+    ViewHDF5.view(Psi)
 
     for i, t in enumerate(laser_time):
         
