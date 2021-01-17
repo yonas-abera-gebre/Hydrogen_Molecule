@@ -35,21 +35,21 @@ def Bound_State_Plotter(input_par, m_n_array):
 def Psi_Plotter(input_par, Psi):
     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
     idx_map_l_m, idx_map_box = Mod.Index_Map(input_par)
-    l_list = range(10, 20)
+    l_list = range(0, 10)
     for key in idx_map_box:
         
         l = key[1]
         if l in l_list:
             plt.plot(grid, np.absolute(Psi[key]), label= str(key))
      
-    plt.xlim(0, 10)
+    plt.xlim(0, 450)
     plt.legend()
-    plt.savefig("Psi_Final.png")
+    plt.savefig("Psi_Inital.png")
 if __name__=="__main__":
 
     input_par = Mod.Input_File_Reader(input_file = "input.json")
     
-    Psi = Mod.Psi_Reader(input_par, "Psi_Final")
+    Psi = Mod.Psi_Reader(input_par, "Psi_Inital")
 
     
     Psi_Plotter(input_par, Psi)

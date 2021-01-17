@@ -320,10 +320,12 @@ def Crank_Nicolson_Time_Propagator(input_par, psi_inital):
             save_count += 1
             if i == save_idx[-1]:
                 Psi_name = "Psi_Final"
-            
+        
             Psi.setName(Psi_name) 
             ViewHDF5.view(Psi)
-            
+
+    Psi.setName("Psi_Test") 
+    ViewHDF5.view(Psi)  
     ViewHDF5.destroy()
     
     if rank == 0:
