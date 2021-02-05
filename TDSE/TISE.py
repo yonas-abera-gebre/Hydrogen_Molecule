@@ -11,6 +11,8 @@ if True:
     import petsc4py
     from petsc4py import PETSc
     petsc4py.init(sys.argv)
+    # PETSc.Options().setValue("ksp_view", "")
+    # PETSc.Options().setValue("vec_type", "bv")
     import slepc4py 
     from slepc4py import SLEPc
     petsc4py.init(comm=PETSc.COMM_WORLD)
@@ -26,10 +28,11 @@ def Eigen_Value_Solver(Hamiltonian, number_of_eigenvalues, input_par, m, Viewer)
     EV_Solver = SLEPc.EPS().create(comm=PETSc.COMM_WORLD)
     EV_Solver.setOperators(Hamiltonian) ##pass the hamiltonian to the 
     EV_Solver.setProblemType(SLEPc.EPS.ProblemType.NHEP)
+    # EV_Solver.setType(SLEPc.EPS.Type.BLZPACK)
     EV_Solver.setTolerances(input_par["tolerance"], PETSc.DECIDE)
     EV_Solver.setWhichEigenpairs(EV_Solver.Which.SMALLEST_REAL)
     size_of_matrix = PETSc.Mat.getSize(Hamiltonian)
-    dimension_size = int(size_of_matrix[0]) * 0.1
+    dimension_size = int(size_of_matrix[0])*0.005
     EV_Solver.setDimensions(number_of_eigenvalues , PETSc.DECIDE, dimension_size) 
     EV_Solver.solve() 
 
@@ -39,7 +42,8 @@ def Eigen_Value_Solver(Hamiltonian, number_of_eigenvalues, input_par, m, Viewer)
     
     converged = EV_Solver.getConverged()
     for i in range(converged):
-       
+        if i == 35:
+            break
         eigen_vector = Hamiltonian.getVecLeft()
         eigen_state = EV_Solver.getEigenpair(i, eigen_vector)
         

@@ -1,5 +1,6 @@
 Plot wavefunctions
 
+
 check limiting cases
         make RO -> to 0 and see if the potential mathces H with 2Z
 

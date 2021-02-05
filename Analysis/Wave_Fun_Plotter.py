@@ -42,9 +42,10 @@ def Psi_Plotter(input_par, Psi):
         if l in l_list:
             plt.plot(grid, np.absolute(Psi[key]), label= str(key))
      
-    plt.xlim(0, 450)
+    plt.xlim(0, 10)
     plt.legend()
-    plt.savefig("Psi_Inital.png")
+    plt.savefig("PsiI.png")
+
 if __name__=="__main__":
 
     input_par = Mod.Input_File_Reader(input_file = "input.json")

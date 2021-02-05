@@ -7,6 +7,7 @@ if True:
     import Interaction as Int
     import Field_Free_Matrix as FF
     import Dipole_Acceleration_Matrix as DA
+    from numpy import ceil
 
 
 if True:
@@ -42,14 +43,9 @@ def Crank_Nicolson_Time_Propagator(input_par, psi_inital):
 
     build_status = Mod.Matrix_Build_Status(input)
     matrix_size = FF_Ham.getSize()[0]
-
-    if input_par["gauge"] == "Length":
-        nnz = int((input_par["l_max"] + 1)/2) + 4
-        Full_Ham = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
-    if input_par["gauge"] == "Velocity":
-        nnz = int((input_par["l_max"] + 1)/2) + 6
-        Full_Ham = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
-
+   
+    nnz = ceil(input_par["l_max"] / 2 + 1) + 6
+    Full_Ham = PETSc.Mat().createAIJ([matrix_size, matrix_size], nnz=nnz, comm=PETSc.COMM_WORLD)
     FF_Ham.copy(Full_Ham, structure=PETSc.Mat.Structure.DIFFERENT_NONZERO_PATTERN)
 
 
@@ -278,7 +274,7 @@ def Crank_Nicolson_Time_Propagator(input_par, psi_inital):
     if free_prop_idx == len(laser_time) - 1:
         save_idx = [free_prop_idx]
     else:
-        save_idx = list(range(free_prop_idx, len(laser_time), int((len(laser_time) - free_prop_idx)/10)))
+        save_idx = list(range(free_prop_idx, len(laser_time), int((len(laser_time) - free_prop_idx)/15)))
     save_count = 0
     if rank == 0:
             print("Starting time propagation \n")
@@ -302,7 +298,7 @@ def Crank_Nicolson_Time_Propagator(input_par, psi_inital):
         Full_Ham.shift(1.0)
 
         ksp.setOperators(Full_Ham_Left, Full_Ham_Left)
-        ksp.setTolerances(1.e-12, PETSc.DEFAULT, PETSc.DEFAULT, PETSc.DEFAULT)
+        ksp.setTolerances(1.e-15, PETSc.DEFAULT, PETSc.DEFAULT, PETSc.DEFAULT)
         ksp.setFromOptions()
 
         Full_Ham.mult(Psi, Psi_Right)

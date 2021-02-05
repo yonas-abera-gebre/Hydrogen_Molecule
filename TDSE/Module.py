@@ -140,7 +140,7 @@ def Psi_Reader(input_par, name):
     psi  = TDSE_file[name]
     psi = psi[:,0] + 1.0j*psi[:,1]
     norm = np.linalg.norm(psi)
-    print(norm)
+    print("norn  = ",  norm)
 
     index_map_l_m, index_map_box =  Index_Map(input_par)
     

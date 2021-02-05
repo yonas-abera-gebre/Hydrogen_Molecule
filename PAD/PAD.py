@@ -13,6 +13,7 @@ if True:
     path = expanduser("~/Research/Hydrogen_Molecule/TDSE")
     sys.path.append(path)
     import Module as Mod
+    import PModule as PMod
 
 
 def Cont_State_Save(l_array, k_array, grid):
@@ -28,9 +29,9 @@ def Cont_State_Save(l_array, k_array, grid):
             key = str((l, float(k)))          
             CS[key] = list(coulomb_fun)
 
-    # with open("CSD.json", 'w') as file:
-    #     json.dump(CS, file)
-    # print("Finished")
+    with open("CSC.json", 'w') as file:
+        json.dump(CS, file)
+    print("Finished")
 
 def Cont_State_Read():
     with open("CSA.json") as file:
@@ -39,15 +40,29 @@ def Cont_State_Read():
         CSB = json.load(file)
     with open("CSC.json") as file:
         CSC = json.load(file)
-    with open("CSD.json") as file:
-        CSD = json.load(file)
+    # with open("CSD.json") as file:
+    #     CSD = json.load(file)
+    # with open("CSE.json") as file:
+    #     CSE = json.load(file)
+    # with open("CSF.json") as file:
+    #     CSF = json.load(file)
+    # with open("CSG.json") as file:
+    #     CSG = json.load(file)
 
     CSB.update(CSA)
     CSC.update(CSB)
-    CSD.update(CSC)
+    # CSD.update(CSC)
+    # CSE.update(CSD)
+    # CSF.update(CSE)
+    # CSG.update(CSF)
+   
+    # with open("CS.json", 'w') as file:
+    #     json.dump(CSG, file)
+
+
     CS  = {}
 
-    for key in CSD.keys():
+    for key in CSC.keys():
         l_low = key.index("(")
         l_high = key.index(",")
         l = key[l_low+1:l_high]
@@ -56,7 +71,7 @@ def Cont_State_Read():
         k = float(key[k_low+1:k_high])
         k = round(k, 3)
         name = str(l) + str(k)
-        CS[name] = CSD[key]
+        CS[name] = CSC[key]
 
  
     return CS
@@ -72,22 +87,18 @@ def Coulomb_Fun_Limit(grid, lo, k, z=2):
     phase = angle(special.gamma(lo + 1 - 1j*z/k))
     return sin(k*grid + (z/k)*log(2*k*grid) - lo*pi/2 + phase)
 
-def Proj_Bound_States_Out(input_par, Psi, bound_states):
+def Proj_Bound_States_Out(input_par, psi, bound_states):
     
     idx_map_l_m, idx_map_box = Mod.Index_Map(input_par)
     grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
+    index_map_l_m, index_map_box =  Mod.Index_Map(input_par)
 
-    for key in idx_map_box:
-        m, l  = key[0], key[1]
-        if  l > input_par["l_max_bound_state"]:
-            continue
-       
-        l_idx = int(grid.size*l)
+    for m in range(input_par["m_max_bound_state"] + 1):
         for n in range(input_par["n_max"]):
-            bound_states_l_comp = bound_states[(m, n)][l_idx:l_idx+grid.size]
-            Psi[key] -= np.sum(bound_states_l_comp.conj()*Psi[key])*bound_states_l_comp
-        
-    return Psi
+            b_state = bound_states[(m, n)][int(grid.size*abs(m)):]
+            low_idx = idx_map_box[(m,abs(m))] * grid.size
+            psi[low_idx: low_idx + len(b_state)] -= np.sum(b_state.conj()*psi[low_idx: low_idx + len(b_state)])*b_state
+    return psi
 
 def Coefficent_Calculator(input_par, k_array, CS, Psi, z=2):
     COEF = {}
@@ -96,17 +107,32 @@ def Coefficent_Calculator(input_par, k_array, CS, Psi, z=2):
 
     for key in idx_map_box:
         m, l  = key[0], key[1]
-        if l == 35:
-            continue
-
         COEF_Minor = {}
-       
         for k in k_array:
             k = round(k, 3)
             name = str(l) + str(k)
             CF = np.array(CS[name])
             phase = angle(special.gamma(l + 1 - 1j*z/k))
-            coef = np.exp(-1.j*phase)* 1.j**l *np.sum(CF.conj()*Psi[key])    
+            coef = np.exp(-1.j*phase)* 1.j**l *np.sum(CF.conj()*Psi[key])   
+            COEF_Minor[k] = coef
+
+        COEF[key] = COEF_Minor
+
+    return COEF
+
+def Coefficent_Calculator_New(input_par, k_array, Psi, z=2):
+    COEF = {}
+
+    idx_map_l_m, idx_map_box = Mod.Index_Map(input_par)
+    grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
+    for key in idx_map_box:
+        m, l  = key[0], key[1]
+        COEF_Minor = {}
+        for k in k_array:
+            k = round(k, 3)
+            CF = Coulomb_Fun(grid, int(l), k, z=2)
+            phase = angle(special.gamma(l + 1 - 1j*z/k))
+            coef = np.exp(-1.j*phase)* 1.j**l *np.sum(CF.conj()*Psi[key])   
             COEF_Minor[k] = coef
 
         COEF[key] = COEF_Minor
@@ -122,11 +148,9 @@ def Coef_Organizer(input_par, COEF, k_array):
         COEF_Minor = {}
         for key in idx_map_box:
             m, l  = key[0], key[1]
-            if l == 35:
-                continue
             COEF_Minor[str((l,m))] = COEF[key][k]
 
-        COEF_Organized[k] = COEF_Minor
+        COEF_Organized[str(k)] = COEF_Minor
 
     return COEF_Organized
 
@@ -136,8 +160,6 @@ def K_Sphere(coef_dic, input_par, phi, theta):
     out_going_wave = np.zeros(phi.shape, dtype=complex)
     for key in idx_map_box:
         m, l  = key[0], key[1]
-        if l == 35:
-            continue
         coef = coef_dic[str((l,m))]#[0] + 1j*coef_dic[str((l,m))][1]
         out_going_wave += coef*sph_harm(m, l, phi, theta)
 
@@ -149,10 +171,10 @@ def closest(lst, k):
 def PAD_Momentum(COEF, input_par):
 
     resolution = 0.05
-    x_momentum = np.arange(-2.5 ,2.5 + resolution, resolution)
-    z_momentum = np.arange(-2.5 ,2.5 + resolution, resolution)
-    resolution = 0.05
-    y_momentum = np.arange(-2. ,2. + resolution, resolution)
+    x_momentum = np.arange(-1.5 , 1.5 + resolution, resolution)
+    z_momentum = np.arange(-1.5 , 1.5 + resolution, resolution)
+    resolution = 0.01
+    y_momentum = np.arange(-1.5 ,1.5 + resolution, resolution)
     
     
 
@@ -198,20 +220,39 @@ def PAD_Momentum(COEF, input_par):
 
 if __name__=="__main__":
     input_par = Mod.Input_File_Reader("input.json")
-    k_array = np.arange(0.05, 3, 0.05)
+    k_array = np.arange(0.05, 3.0, 0.05)
 
 
-
-    energy, bound_states = Mod.Target_File_Reader_WO_Parity(input_par)
-    Psi = Mod.Psi_Reader(input_par, "Psi_Final")
-    Psi =  Proj_Bound_States_Out(input_par, Psi, bound_states)
-
+    # l_array = range(20, 31)
+    # grid = Mod.Make_Grid(input_par["grid_spacing"], input_par["grid_size"])
+    # Cont_State_Save(l_array, k_array, grid)
+    
     CS = Cont_State_Read()
-    COEF = Coefficent_Calculator(input_par, k_array, CS, Psi)
+    
+    # energy, bound_states = Mod.Target_File_Reader_WO_Parity(input_par)
+    # psi = PMod.Get_Psi(input_par, "Psi10")
+    # psi =  Proj_Bound_States_Out(input_par, psi, bound_states)
+    # psi = PMod.Organize_Psi(input_par, psi)
 
+    bound_states = PMod.Bound_State_Reader(input_par)
+    psi = PMod.Psi_Reader(input_par)
+    psi = PMod.Proj_Bound_States_Out(input_par, psi, bound_states)
+
+    COEF = Coefficent_Calculator(input_par, k_array, CS, psi)
+
+    # COEF = Coefficent_Calculator_New(input_par, k_array, psi)
     COEF_Organized = Coef_Organizer(input_par, COEF, k_array)
+    PES = PMod.Photo_Energy_Spectrum(input_par, k_array, COEF_Organized)
+    
+    plt.semilogy(k_array, PES/PES.max())
+    
+    plt.savefig("PES.png")
+    plt.clf()
 
-    pad_value, x_momentum, y_momentum = PAD_Momentum(COEF_Organized, input_par)
-    pad_value = pad_value / pad_value.max()
-    plt.imshow(pad_value, cmap='jet')#, interpolation="spline16")#, interpolation='nearest')
-    plt.savefig("PAD_Final.png")
+
+
+
+    # pad_value, x_momentum, y_momentum = PAD_Momentum(COEF_Organized, input_par)
+    # pad_value = pad_value / pad_value.max()
+    # plt.imshow(pad_value, cmap='jet')#, interpolation="spline16")#, interpolation='nearest')
+    # plt.savefig("PAD10.png")
